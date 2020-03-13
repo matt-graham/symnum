@@ -6,7 +6,7 @@ setuptools.setup(
         'Symbolically construct NumPy functions and their derivatives'
     ),
     url='https://github.com/matt-graham/symnum.git',
-    packages=['mici'],
+    packages=['symnum'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3',
