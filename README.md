@@ -39,8 +39,10 @@ still being efficient for small toy examples.
 
 ## Doesn't SymPy already have array support and allow export of NumPy functions?
 
-Yes and yes! SymNum is mainly a convenience wrapper around functionality already provided by SymPy to make it easier to use for those already familiar with NumPy and Autograd / JAX. Specifically SymPy
-has several inbuilt array like classes, which can be broadly split in to the
+Yes and yes! SymNum is mainly a convenience wrapper around functionality already 
+provided by SymPy to make it easier to use for those already familiar with NumPy 
+and Autograd / JAX. Specifically SymPy has several inbuilt array like classes, 
+which can be broadly split in to the
 [array types](https://docs.sympy.org/latest/modules/tensor/array.html) defined 
 in `sympy.tensor.array` and the 
 [matrix types](https://docs.sympy.org/latest/modules/matrices/matrices.html) 
@@ -51,7 +53,7 @@ of NumPy's core `ndarray` class, however both have some issues which means they
 don't provide an easy drop-in replacement, with for example matrix classes 
 being limited to two-dimensions, while both the inbuilt array and matrix classes
 do not support the full broadcasting and operator overloading semantics of NumPy 
-arrays. The `SymbloicArray` class in `symnum.array` aims to provide a more
+arrays. The `SymbolicArray` class in `symnum.array` aims to provide a more
 `ndarray` like interface, supporting broadcasting of elementwise binary 
 arithmetic operations like `*`, `/`, `+` and `-`, elementwise NumPy ufunc-like
 mathematical functions like `numpy.log` via the `symnum.numpy` module, simple
@@ -75,6 +77,7 @@ simpler generation of NumPy functions using such features.
 ```Python
 import numpy as np
 import symnum.numpy as snp
+from symnum.array import named_array
 from symnum import numpy_func, sympy_jacobian, numpy_jacobian
 
 # Define a function using the symnum.numpy interface which replicates a subset
@@ -85,7 +88,7 @@ def func(x):
             snp.array([snp.cos(-x[1]**2 + 3 * x[0]), snp.sin(x[0] - 1)]))
 
 # Create a named symbolic array to act as input and evaluate func symbolically
-x = symnum.array.named_array(name='x', shape=2)
+x = named_array(name='x', shape=2)
 y = func(x)
 
 # Evaluate Jacobian of func symbolically
