@@ -4,7 +4,7 @@ from collections import namedtuple
 import sympy as sym
 from sympy.printing.pycode import NumPyPrinter
 import numpy
-from symnum.array import named_array
+from symnum.array import named_array, SHAPE_TYPES
 
 
 class FunctionExpression(sym.Expr):
@@ -21,9 +21,9 @@ def _construct_symbolic_arguments(*arg_shapes, arg_names=None):
     if arg_names is not None and len(arg_shapes) != len(arg_names):
         raise ValueError('Shapes must be specified for all function arguments.')
     elif arg_names is None:
-        arg_names = [f'arg_{i}' for i in len(arg_shapes)]
+        arg_names = [f'arg_{i}' for i in range(len(arg_shapes))]
     args = tuple(
-        named_array(name, shape) if isinstance(shape, (int, tuple))
+        named_array(name, shape) if isinstance(shape, SHAPE_TYPES)
         else sym.Symbol(name) 
         for shape, name in zip(arg_shapes, arg_names))
     return args

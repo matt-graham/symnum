@@ -10,6 +10,7 @@ import numpy as np
 SYMPY_ARRAY_TYPES = (sym.NDimArray, sym.MatrixBase)
 ARRAY_TYPES = SYMPY_ARRAY_TYPES  + (np.ndarray,)
 SCALAR_TYPES = (sym.Expr, int, float)
+SHAPE_TYPES = (int, tuple, sym.containers.Tuple)
 
 
 def flatten(iterable):
@@ -81,7 +82,7 @@ def named_array(name, shape):
     """Create a symbolic array with common name prefix to elements."""
     if shape == () or shape is None or shape == 1:
         array = SymbolicArray([sym.Symbol(name)], ())
-    elif isinstance(shape, (int, tuple, sym.containers.Tuple)):
+    elif isinstance(shape, SHAPE_TYPES):
         if isinstance(shape, int):
             shape = (shape,)
         array = SymbolicArray(
