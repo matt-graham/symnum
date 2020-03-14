@@ -33,7 +33,7 @@ def elementwise_unary_func(sympy_func, numpy_func):
     
     @wraps(numpy_func)
     def wrapped_func(array):
-        if isinstance(array, np.ndarray):
+        if isinstance(array, np.ndarray) or np.isscalar(array):
             return numpy_func(array)
         elif isinstance(array, SYMPY_ARRAY_TYPES):
             return array.applyfunc(sympy_func)
