@@ -4,13 +4,13 @@ from collections import namedtuple
 import sympy as sym
 from sympy.printing.pycode import NumPyPrinter
 import numpy
-from symnum.array import named_array, SHAPE_TYPES
+from symnum.array import named_array, is_valid_shape
 
 
 class FunctionExpression(sym.Expr):
-    
+
     __slots__ = ['args', 'return_val']
-    
+
     def __init__(self, args, return_val):
         self.args = args
         self.return_val = return_val
@@ -19,19 +19,21 @@ class FunctionExpression(sym.Expr):
 def _construct_symbolic_arguments(*arg_shapes, arg_names=None):
     """Construct a tuple of symbolic array arguments with given shapes."""
     if arg_names is not None and len(arg_shapes) != len(arg_names):
-        raise ValueError('Shapes must be specified for all function arguments.')
+        raise ValueError(
+            'Shapes must be specified for all function arguments.')
     elif arg_names is None:
         arg_names = [f'arg_{i}' for i in range(len(arg_shapes))]
     args = tuple(
-        named_array(name, shape) if isinstance(shape, SHAPE_TYPES)
-        else sym.Symbol(name) 
+        named_array(name, shape) if is_valid_shape(shape)
+        else sym.Symbol(name)
         for shape, name in zip(arg_shapes, arg_names))
     return args
 
 
-def numpy_func(func, *arg_shapes, arg_names=None, func_name_prefix='', **kwargs):
+def numpy_func(func, *arg_shapes, arg_names=None, func_name_prefix='',
+               **kwargs):
     """Generate a NumPy function from a SymPy symbolic array function.
-    
+
     Args:
         func (Callable[..., Expr or SymbolicArray]): Function which takes one
             or more `SymbolicArray` as arguments and returns a symbolic scalar
@@ -43,8 +45,8 @@ def numpy_func(func, *arg_shapes, arg_names=None, func_name_prefix='', **kwargs)
             `numpy_func(func, (2, 2), (2, 4, 3), ...)`.
         func_name_prefix (string): Prefix to prepend on to name of `func` to
             when setting name of generated function.
-        **kwargs: Any keyword arguments to the NumPy code generation function. 
-        
+        **kwargs: Any keyword arguments to the NumPy code generation function.
+
     Returns:
         Callable[..., scalar or ndarray]: Generated NumPy function.
     """
@@ -58,29 +60,30 @@ def numpy_func(func, *arg_shapes, arg_names=None, func_name_prefix='', **kwargs)
 
 def numpify(*arg_shapes, arg_names=None, **kwargs):
     """Decorator to convert NumPy function to  a SymPy symbolic array function.
-    
+
     Args:
         *arg_shapes: Variable length list of tuples defining shapes of array
             arguments to `func`, e.g. if `func` takes two arguments `x` and `y`
             with `x` an array with shape `(2, 2)` and `y` an array with shape
             `(2, 4, 3)` the call signature would be of the form
             `numpy_func(func, (2, 2), (2, 4, 3), ...)`.
-        **kwargs: Any keyword arguments to the NumPy code generation function. 
-        
+        **kwargs: Any keyword arguments to the NumPy code generation function.
+
     Returns:
         Callable[[Callable], Callable]: Decorator which takes a SymPy function
             of type `Callable[..., Symbol or SymbolicArray]` which accepts one
             or more `SymbolicArray` as arguments and returns a symbolic scalar
-            or `SymbolicArray` value, and returns a corresponding NumPy function 
-            of type `Callable[..., scalar or ndarray]` which accepts one or more
-            NumPy array arguments and returns a scalar or NumPy array.
+            or `SymbolicArray` value, and returns a corresponding NumPy
+            function of type `Callable[..., scalar or ndarray]` which accepts
+            one or more NumPy array arguments and returns a scalar or NumPy
+            array.
     """
-    
+
     def decorator(func):
         _arg_names = (
             func.__code__.co_varnames if arg_names is None else arg_names)
         return numpy_func(func, *arg_shapes, arg_names=_arg_names, **kwargs)
-    
+
     return decorator
 
 
@@ -96,6 +99,7 @@ def flatten_arrays(seq):
         else:
             flattened.append(el)
             shapes.append(())
+
     def unflatten(flattened):
         unflattened = []
         i = 0
@@ -108,6 +112,7 @@ def flatten_arrays(seq):
                 unflattened.append(sym.Array(flattened[i:i+size], shape))
                 i += size
         return unflattened
+
     return flattened, unflatten
 
 
@@ -118,22 +123,21 @@ def to_tuple(lst):
 
 class TupleArrayPrinter(NumPyPrinter):
     """SymPy printer which uses nested tuples for array literals.
-    
+
     Rather than printing array-like objects as numpy.array calls with a nested
     list argument (which is not numba compatible) a nested tuple argument is
     used instead.
     """
-    
+
     def _print_arraylike(self, expr):
         exp_str = self._print(to_tuple(expr.tolist()))
         return f'numpy.array({exp_str}, dtype=numpy.float64)'
-    
+
     _print_NDimArray = _print_arraylike
     _print_DenseNDimArray = _print_arraylike
     _print_ImmutableNDimArray = _print_arraylike
     _print_ImmutableDenseNDimArray = _print_arraylike
     _print_MatrixBase = _print_arraylike
-
 
 
 def generate_input_list_string(inputs):
@@ -166,20 +170,21 @@ def generate_code(inputs, exprs, func_name='generated_function', printer=None):
             func_expr_args[i] = expr.args
             for arg in expr.args:
                 ignore_set.update(
-                    (arg,) if isinstance(arg, sym.Symbol) else arg.free_symbols)
+                    (arg,) if isinstance(arg, sym.Symbol)
+                    else arg.free_symbols)
             exprs[i] = expr.return_val
     flat_exprs, unflatten = flatten_arrays(exprs)
     intermediates, flat_outputs = sym.cse(
-        flat_exprs, symbols=sym.numbered_symbols('_i'), 
+        flat_exprs, symbols=sym.numbered_symbols('_i'),
         optimizations='basic', ignore=ignore_set)
     outputs = unflatten(flat_outputs)
     code = f'def {func_name}({generate_input_list_string(inputs)}):\n    '
-    code += '\n    '.join([f'{printer.doprint(i[0])} = {printer.doprint(i[1])}' 
+    code += '\n    '.join([f'{printer.doprint(i[0])} = {printer.doprint(i[1])}'
                            for i in intermediates])
     code += '\n    return (\n        '
     code += ',\n        '.join([
-        (f'lambda {generate_input_list_string(func_expr_args[i])}: ' 
-         if i in func_expr_args else '') + 
+        (f'lambda {generate_input_list_string(func_expr_args[i])}: '
+         if i in func_expr_args else '') +
         f'{printer.doprint(output)}' for i, output in enumerate(outputs)])
     code += '\n    )'
     return code
@@ -198,16 +203,3 @@ def generate_func(inputs, exprs, func_name='generated_function', printer=None,
     func = namespace[func_name]
     func.__doc__ = f'Automatically generated {func_name} function.\n\n{code}'
     return func
-
-
-def delayed_generate_func(*args, **kwargs):
-    
-    generated_func = None
-    
-    def wrapped(*inner_args, **inner_kwargs):
-        nonlocal generated_func
-        if generated_func is None:
-            generated_func = generate_func(*args, **kwargs)
-        return generated_func(*inner_args, **inner_kwargs)
-    
-    return wrapped
