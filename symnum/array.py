@@ -58,7 +58,7 @@ def binary_broadcasting_func(func, name=None, doc=None):
 
     def wrapped_func(arg_1, arg_2):
         if is_scalar(arg_1) and is_scalar(arg_2):
-            return func(arg_1, array_2)
+            return func(arg_1, arg_2)
         elif is_scalar(arg_1) and is_array(arg_2):
             return SymbolicArray(
                 [func(arg_1, a2) for a2 in flatten(arg_2)], arg_2.shape)
