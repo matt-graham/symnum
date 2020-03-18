@@ -180,6 +180,10 @@ def sympy_mtp(func, wrt=0, return_hessian_grad_and_value=False):
     return mtp_func
 
 
+def _get_func_arg_names(func):
+    return func.__code__.co_varnames[:func.__code__.co_argcount]
+
+
 def numpy_grad(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
     """Construct a function to compute the gradient of a scalar-valued function.
 
@@ -204,7 +208,7 @@ def numpy_grad(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
             gradient function.
     """
     return numpy_func(sympy_grad(func, wrt, return_value), *arg_shapes,
-                      arg_names=func.__code__.co_varnames,
+                      arg_names=_get_func_arg_names(func),
                       func_name_prefix='grad_', **kwargs)
 
 
@@ -232,7 +236,7 @@ def numpy_jacobian(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
             Jacobian function.
     """
     return numpy_func(sympy_jacobian(func, wrt, return_value), *arg_shapes,
-                      arg_names=func.__code__.co_varnames,
+                      arg_names=_get_func_arg_names(func),
                       func_name_prefix='jacob_', **kwargs)
 
 
@@ -261,31 +265,31 @@ def numpy_hessian(func, *arg_shapes, wrt=0, return_grad_and_value=False,
             NumPy Hessian function.
     """
     return numpy_func(sympy_hessian(func, wrt, return_grad_and_value),
-                      *arg_shapes, arg_names=func.__code__.co_varnames,
+                      *arg_shapes, arg_names=_get_func_arg_names(func),
                       func_name_prefix='hess_', **kwargs)
 
 
 def numpy_jvp(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
     return numpy_func(sympy_jvp(func, wrt, return_value), *arg_shapes,
-                      arg_names=func.__code__.co_varnames,
+                      arg_names=_get_func_arg_names(func),
                       func_name_prefix='jvp_', **kwargs)
 
 
 def numpy_vjp(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
     return numpy_func(sympy_vjp(func, wrt, return_value), *arg_shapes,
-                      arg_names=func.__code__.co_varnames,
+                      arg_names=_get_func_arg_names(func),
                       func_name_prefix='vjp_', **kwargs)
 
 
 def numpy_mhp(func, *arg_shapes, wrt=0, return_jacobian_and_value=False,
               **kwargs):
     return numpy_func(sympy_mhp(func, wrt, return_jacobian_and_value),
-                      *arg_shapes, arg_names=func.__code__.co_varnames,
+                      *arg_shapes, arg_names=_get_func_arg_names(func),
                       func_name_prefix='mhp_', **kwargs)
 
 
 def numpy_mtp(func, *arg_shapes, wrt=0, return_hessian_grad_and_value=False,
               **kwargs):
     return numpy_func(sympy_mtp(func, wrt, return_hessian_grad_and_value),
-                      *arg_shapes, arg_names=func.__code__.co_varnames,
+                      *arg_shapes, arg_names=_get_func_arg_names(func),
                       func_name_prefix='mtp_', **kwargs)
