@@ -16,6 +16,10 @@ class FunctionExpression(sym.Expr):
         self.return_val = return_val
 
 
+def _get_func_arg_names(func):
+    return func.__code__.co_varnames[:func.__code__.co_argcount]
+
+
 def _construct_symbolic_arguments(*arg_shapes, arg_names=None):
     """Construct a tuple of symbolic array arguments with given shapes."""
     if arg_names is not None and len(arg_shapes) != len(arg_names):
@@ -81,7 +85,7 @@ def numpify(*arg_shapes, arg_names=None, **kwargs):
 
     def decorator(func):
         _arg_names = (
-            func.__code__.co_varnames if arg_names is None else arg_names)
+            _get_func_arg_names(func) if arg_names is None else arg_names)
         return numpy_func(func, *arg_shapes, arg_names=_arg_names, **kwargs)
 
     return decorator

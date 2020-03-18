@@ -5,7 +5,7 @@ from functools import wraps
 import sympy as sym
 from symnum.array import named_array, SymbolicArray, is_scalar
 from symnum.code_generation import (
-    generate_func, numpy_func, FunctionExpression)
+    generate_func, numpy_func, FunctionExpression, _get_func_arg_names)
 
 
 __all__ = [
@@ -178,10 +178,6 @@ def sympy_mtp(func, wrt=0, return_hessian_grad_and_value=False):
             else m_mtp)
 
     return mtp_func
-
-
-def _get_func_arg_names(func):
-    return func.__code__.co_varnames[:func.__code__.co_argcount]
 
 
 def numpy_grad(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
