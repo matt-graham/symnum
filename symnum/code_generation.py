@@ -207,11 +207,10 @@ def generate_func(inputs, exprs, func_name='generated_function', printer=None,
     """Generate a Python function from symbolic expression(s)."""
     code = generate_code(inputs, exprs, func_name, printer)
     if exec_global:
-        exec(code, globals())
-        func = globals()[func_name]
+        namespace = globals()
     else:
         namespace = {'numpy': numpy if numpy_module is None else numpy_module}
-        exec(code, namespace)
+    exec(code, namespace)
     func = namespace[func_name]
     func.__doc__ = f'Automatically generated {func_name} function.\n\n{code}'
     return func
