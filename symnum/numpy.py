@@ -13,7 +13,6 @@ from sympy import S as _sym_singletons
 
 # Define mappings from objects in NumPy namespace to SymPy equivalents
 
-
 _constants = {
     'pi': _sym_singletons.Pi,
     ('inf', 'infty', 'INF', 'Infinity', 'PINF'): _sym_singletons.Infinity,
@@ -59,10 +58,9 @@ _unary_elementwise_funcs = {
     'isnan': lambda x: x == _sym_S.NaN,
     'isreal': lambda x: x.is_real,
     'iscomplex': lambda x: x.is_complex,
-    'isfinite': lambda x: not (
-        x == _sym_S.Infinity or x == _sym_S.NegativeInfinity or x == _sym_S.NaN)
+    'isfinite': lambda x: not (x == _sym_S.Infinity or
+                               x == _sym_S.NegativeInfinity or x == _sym_S.NaN)
 }
-
 
 
 _binary_broadcasting_funcs = {
@@ -84,7 +82,7 @@ _binary_op_funcs = {
 
 
 def _wrap_numpy(numpy_name=None):
-    
+
     def decorator(func):
         _numpy_name = func.__name__ if numpy_name is None else numpy_name
         try:
@@ -96,14 +94,14 @@ def _wrap_numpy(numpy_name=None):
             func.__doc__ += numpy_func_doc
         finally:
             return func
-    
+
     return decorator
 
 
 def _wrap_unary_elementwise_func(sympy_func, numpy_name):
-    
+
     elementwise_func = _unary_elementwise_func(sympy_func, numpy_name, '')
-    
+
     @_wrap_numpy(numpy_name)
     def wrapped(x, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
@@ -116,9 +114,9 @@ def _wrap_unary_elementwise_func(sympy_func, numpy_name):
 
 
 def _wrap_binary_broadcasting_func(sympy_func, numpy_name):
-    
+
     broadcasting_func = _binary_broadcasting_func(sympy_func, numpy_name, '')
-    
+
     @_wrap_numpy(numpy_name)
     def wrapped(x1, x2, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
@@ -131,7 +129,7 @@ def _wrap_binary_broadcasting_func(sympy_func, numpy_name):
 
 
 def _wrap_binary_op_func(op_func, numpy_name):
-    
+
     @_wrap_numpy(numpy_name)
     def wrapped(x1, x2, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
@@ -149,7 +147,7 @@ def _add_wrapped_funcs_to_namespace(func_mapping, namespace, wrapper):
             for name in name_or_names:
                 namespace[name] = wrapper(sympy_func, name)
         else:
-            namespace[name_or_names] = wrapper(sympy_func, name_or_names)    
+            namespace[name_or_names] = wrapper(sympy_func, name_or_names)
 
 
 def _populate_namespace(namespace):
@@ -165,7 +163,7 @@ def _populate_namespace(namespace):
         _binary_broadcasting_funcs, namespace, _wrap_binary_broadcasting_func)
     _add_wrapped_funcs_to_namespace(
         _binary_op_funcs, namespace, _wrap_binary_op_func)
-        
+
 
 _populate_namespace(globals())
 
@@ -180,7 +178,7 @@ def _contains_expr(iterable):
 @_wrap_numpy()
 def array(object, dtype=None):
     if (_is_sympy_array(object) or isinstance(object, _sym.Expr)
-        or (isinstance(object, _Iterable) and _contains_expr(object))):
+            or (isinstance(object, _Iterable) and _contains_expr(object))):
         return _SymbolicArray(object, dtype=dtype)
     else:
         return _np.array(object, dtype)
