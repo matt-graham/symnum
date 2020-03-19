@@ -1,11 +1,18 @@
 """Utility functions to generate NumPy function code."""
 
 from collections import namedtuple
+import warnings
 import sympy as sym
 from sympy.printing.pycode import NumPyPrinter
 import numpy
 from symnum.array import (
     named_array, is_valid_shape, is_sympy_array, infer_dtype, SymbolicArray)
+
+try:
+    import numba
+    NUMBA_AVAILABLE = True
+except ImportError:
+    NUMBA_AVAILABLE = False
 
 
 class FunctionExpression(sym.Expr):
@@ -167,7 +174,8 @@ def generate_input_list_string(inputs):
     return ", ".join(input_strings)
 
 
-def generate_code(inputs, exprs, func_name='generated_function', printer=None):
+def generate_code(inputs, exprs, func_name='generated_function', printer=None,
+                  simplify=False):
     """Generate code for a Python function from symbolic expression(s)."""
     if printer is None:
         printer = TupleArrayPrinter()
@@ -186,6 +194,8 @@ def generate_code(inputs, exprs, func_name='generated_function', printer=None):
                     else arg.free_symbols)
             exprs[i] = expr.return_val
     flat_exprs, unflatten = flatten_arrays(exprs)
+    if simplify:
+        flat_exprs = [sym.simplify(expr) for expr in flat_exprs]
     intermediates, flat_outputs = sym.cse(
         flat_exprs, symbols=sym.numbered_symbols('_i'),
         optimizations='basic', ignore=ignore_set)
@@ -203,7 +213,7 @@ def generate_code(inputs, exprs, func_name='generated_function', printer=None):
 
 
 def generate_func(inputs, exprs, func_name='generated_function', printer=None,
-                  numpy_module=None, exec_global=False):
+                  numpy_module=None, exec_global=False, jit=False):
     """Generate a Python function from symbolic expression(s)."""
     code = generate_code(inputs, exprs, func_name, printer)
     if exec_global:
@@ -213,4 +223,8 @@ def generate_func(inputs, exprs, func_name='generated_function', printer=None,
     exec(code, namespace)
     func = namespace[func_name]
     func.__doc__ = f'Automatically generated {func_name} function.\n\n{code}'
+    if NUMBA_AVAILABLE and jit:
+        func = numba.njit(func)
+    elif jit:
+        warnings.warn('Cannot JIT compile function as Numba is not installed.')
     return func
