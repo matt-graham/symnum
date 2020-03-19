@@ -123,16 +123,24 @@ def slice_iterator(arr, axes):
             for ax in range(arr.ndim))]
 
 
-def named_array(name, shape):
+def named_array(name, shape, dtype=None):
     """Create a symbolic array with common name prefix to elements."""
+    if dtype is None:
+        dtype = np.float64
+    assumptions = {
+        'integer': np.issubdtype(dtype, np.integer),
+        'real': not np.issubdtype(dtype, np.complexfloating),
+        'complex': True,  # Complex numbers are superset of reals
+    }
     if shape == () or shape is None or shape == 1:
-        array = SymbolicArray([sym.Symbol(name)], ())
+        array = SymbolicArray([sym.Symbol(name, **assumptions)], (), dtype)
     elif is_valid_shape(shape):
         if isinstance(shape, int):
             shape = (shape,)
         array = SymbolicArray(
-            [sym.Symbol(f'{name}[{", ".join([str(i) for i in index])}]')
-             for index in product(*(range(s) for s in shape))], shape)
+            [sym.Symbol(f'{name}[{", ".join([str(i) for i in index])}]',
+                        **assumptions)
+             for index in product(*(range(s) for s in shape))], shape, dtype)
     else:
         raise ValueError(
             f'Unrecognised shape type {type(shape)} with value {shape}.')
@@ -140,8 +148,9 @@ def named_array(name, shape):
     return array
 
 
-def _infer_dtype(array_elements):
-    """Infer safe dtype for array elements."""
+def infer_dtype(array):
+    """Infer safe dtype for array."""
+    array_elements = flatten(array.tolist())
     if all(el.is_integer for el in array_elements):
         return np.int64
     elif all(el.is_real for el in array_elements):
@@ -189,7 +198,7 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
 
     def __new__(cls, iterable, shape=None, dtype=None):
         instance = super().__new__(SymbolicArray, iterable, shape)
-        instance.dtype = dtype
+        instance._dtype = dtype
         return instance
 
     def __array__(self, dtype=None):
@@ -201,12 +210,14 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
             else:
                 dtype = np.object
         else:
-            dtype = self._infer_dtype() if dtype is None else dtype
+            dtype = self.dtype if dtype is None else dtype
         return np.array(self.tolist(), dtype)
 
-    def _infer_dtype(self):
-        return (self.dtype if self.dtype is not None
-                else _infer_dtype(self.flatten()))
+    @property
+    def dtype(self):
+        if self._dtype is None:
+            self._dtype = infer_dtype(self)
+        return self._dtype
 
     @binary_broadcasting_func
     def __mul__(self, other):

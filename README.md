@@ -57,9 +57,11 @@ of NumPy  arrays. The `SymbolicArray` class in `symnum.array` aims to provide a
 more `ndarray` like interface, supporting broadcasting of elementwise binary
 arithmetic operations like `*`, `/`, `+` and `-`, elementwise NumPy ufunc-like
 mathematical functions like `numpy.log` via the `symnum.numpy` module, simple
-array contractions over potentially multiple axes with the `sum` and `prod` methods and matrix multiplication with the `@` operator.
+array contractions over potentially multiple axes with the `sum` and `prod` 
+methods and matrix multiplication with the `@` operator.
 
-Similarly SymPy has extensive built in [code generation](https://docs.sympy.org/latest/modules/codegen.html) features, including the
+Similarly SymPy has extensive built in [code generation](https://docs.sympy.org/latest/modules/codegen.html) 
+features, including the
 [`lambdify`](https://docs.sympy.org/latest/modules/utilities/lambdify.html) 
 function which supports generation of functions which operate on
 NumPy arrays. It can be non-trivial however to use these functions to generate
@@ -74,7 +76,7 @@ simpler generation of NumPy functions using such features.
 ```Python
 import numpy as np
 import symnum.numpy as snp
-from symnum import named_array, numpy_func, sympy_jacobian, numpy_jacobian
+from symnum import named_array, numpify_func, sympy_jacobian, numpy_jacobian
 
 # Define a function using the symnum.numpy interface which replicates a subset
 # of the NumPy API including a SymbolicArray class with similar broadcasting
@@ -90,23 +92,19 @@ y = func(x)
 # Evaluate Jacobian of func symbolically.
 dy_dx = sympy_jacobian(func)(x)
 
-# Evaluate func on a NumPy array. Providing all arguments to a function using
-# the symnum.numpy interface are ndarrays and no symbolic constants or native
-# SymPy functions are used then a NumPy array is returned.
-x_np = np.array([0.2, 1.1])
-y_np = func(x_np)
-
 # Alternatively we can symbolically 'trace' func and use this to generate a
-# NumPy function which accepts ndarray arguments. This allows mixing in of
-# native SymPy functions in to the function definition. To allow the tracing we
+# NumPy function which accepts ndarray arguments. To allow the tracing we
 # need to manually specify the shapes of the arguments to the function.
-func_np = numpy_func(func, x.shape)
+x_np = np.array([0.2, 1.1])
+func_np = numpify_func(func, x.shape)
 y_np = func_np(x_np)
 
 # We can also use a similar approach to generate a NumPy function to evaluate
-# the Jacobian of func on ndarray arguments. We again need to manually specify 
-# the shapes of the arguments
-jac_func_np = numpy_jacobian(func, x.shape)
+# the Jacobian of func on ndarray arguments. The numpified function func_np 
+# stores the symbolic function used to generate it and details of the argument
+# shapes and so we can pass it as a sole argument to numpy_jacobian without
+# specifying the argument shapes.
+jac_func_np = numpy_jacobian(func_np)
 dy_dx_np = jac_func_np(x_np)
 ```
 

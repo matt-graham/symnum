@@ -4,7 +4,8 @@ from collections import namedtuple
 import sympy as sym
 from sympy.printing.pycode import NumPyPrinter
 import numpy
-from symnum.array import named_array, is_valid_shape
+from symnum.array import (
+    named_array, is_valid_shape, is_sympy_array, infer_dtype, SymbolicArray)
 
 
 class FunctionExpression(sym.Expr):
@@ -17,15 +18,15 @@ class FunctionExpression(sym.Expr):
 
 
 def _get_func_arg_names(func):
-    return func.__code__.co_varnames[:func.__code__.co_argcount]
+    if hasattr(func, '_arg_names'):
+        return func._arg_names
+    else:
+        return func.__code__.co_varnames[:func.__code__.co_argcount]
 
 
 def _construct_symbolic_arguments(*arg_shapes, arg_names=None):
     """Construct a tuple of symbolic array arguments with given shapes."""
-    if arg_names is not None and len(arg_shapes) != len(arg_names):
-        raise ValueError(
-            'Shapes must be specified for all function arguments.')
-    elif arg_names is None:
+    if arg_names is None:
         arg_names = [f'arg_{i}' for i in range(len(arg_shapes))]
     args = tuple(
         named_array(name, shape) if is_valid_shape(shape)
@@ -34,59 +35,65 @@ def _construct_symbolic_arguments(*arg_shapes, arg_names=None):
     return args
 
 
-def numpy_func(func, *arg_shapes, arg_names=None, func_name_prefix='',
-               **kwargs):
+def numpify_func(sympy_func, *arg_shapes, **kwargs):
     """Generate a NumPy function from a SymPy symbolic array function.
 
     Args:
-        func (Callable[..., Expr or SymbolicArray]): Function which takes one
-            or more `SymbolicArray` as arguments and returns a symbolic scalar
-            expression or `SymbolicArray` value.
-        arg_shapes (Iterable[Tuple]): List of tuples defining shapes of array
-            arguments to `func`, e.g. if `func` takes two arguments `x` and `y`
-            with `x` an array with shape `(2, 2)` and `y` an array with shape
-            `(2, 4, 3)` the call signature would be of the form
-            `numpy_func(func, (2, 2), (2, 4, 3), ...)`.
-        func_name_prefix (string): Prefix to prepend on to name of `func` to
-            when setting name of generated function.
+        sympy_func (Callable[..., Expr or SymbolicArray]): Function which takes
+            one or more `SymbolicArray` as arguments and returns a symbolic
+            scalar expression or `SymbolicArray` value.
+        *arg_shapes: Variable length list of tuples or integers defining shapes
+            of array arguments to `func`, e.g. if `func` takes two arguments
+            `x` and `y` with `x` an array with shape `(2, 2)` and `y` an array
+            with shape `(2, 4, 3)` the call signature would be of the form
+            `numpify_func(func, (2, 2), (2, 4, 3))`.
         **kwargs: Any keyword arguments to the NumPy code generation function.
 
     Returns:
-        Callable[..., scalar or ndarray]: Generated NumPy function.
+        numpy_func (Callable[..., scalar or ndarray]): Generated NumPy function
+            which takes one or more `ndarray` arguments and return a scalar or
+            `ndarray` value.
     """
+    if len(arg_shapes) == 0 and hasattr(sympy_func, '_arg_shapes'):
+        arg_shapes = sympy_func._arg_shapes
+    arg_names = _get_func_arg_names(sympy_func)
+    if len(arg_shapes) != len(arg_names):
+        raise ValueError(
+            'Shapes must be specified for all function arguments.')
     args = _construct_symbolic_arguments(*arg_shapes, arg_names=arg_names)
-    if func.__name__ == '<lambda>':
-        func_name = f'{func_name_prefix}lambda_{id(func)}'
+    if sympy_func.__name__ == '<lambda>':
+        func_name = f'lambda_{id(sympy_func)}'
     else:
-        func_name = f'{func_name_prefix}{func.__name__}'
-    return generate_func(args, func(*args), func_name, **kwargs)
+        func_name = f'{sympy_func.__name__}'
+    numpy_func = generate_func(args, sympy_func(*args), func_name, **kwargs)
+    numpy_func._sympy_func = sympy_func
+    numpy_func._arg_shapes = arg_shapes
+    numpy_func._arg_names = arg_names
+    return numpy_func
 
 
-def numpify(*arg_shapes, arg_names=None, **kwargs):
-    """Decorator to convert NumPy function to  a SymPy symbolic array function.
+def numpify(*arg_shapes, **kwargs):
+    """Decorator to convert SymPy symbolic array function to a NumPy function.
 
     Args:
-        *arg_shapes: Variable length list of tuples defining shapes of array
-            arguments to `func`, e.g. if `func` takes two arguments `x` and `y`
-            with `x` an array with shape `(2, 2)` and `y` an array with shape
-            `(2, 4, 3)` the call signature would be of the form
-            `numpy_func(func, (2, 2), (2, 4, 3), ...)`.
+        *arg_shapes: Variable length list of tuples and integers defining
+            shapes of array arguments to `func`, e.g. if `func` takes two
+            arguments `x` and `y` with `x` an array with shape `(2, 2)` and `y`
+            an array with shape `(2, 4, 3)` the call signature would be of the
+            form `numpify((2, 2), (2, 4, 3))(func)`.
         **kwargs: Any keyword arguments to the NumPy code generation function.
 
     Returns:
         Callable[[Callable], Callable]: Decorator which takes a SymPy function
-            of type `Callable[..., Symbol or SymbolicArray]` which accepts one
+            of type `Callable[..., Expr or SymbolicArray]` which accepts one
             or more `SymbolicArray` as arguments and returns a symbolic scalar
             or `SymbolicArray` value, and returns a corresponding NumPy
             function of type `Callable[..., scalar or ndarray]` which accepts
-            one or more NumPy array arguments and returns a scalar or NumPy
-            array.
+            one or more `ndarray` arguments and returns a scalar or `ndarray`.
     """
 
     def decorator(func):
-        _arg_names = (
-            _get_func_arg_names(func) if arg_names is None else arg_names)
-        return numpy_func(func, *arg_shapes, arg_names=_arg_names, **kwargs)
+        return numpify_func(func, *arg_shapes, **kwargs)
 
     return decorator
 
@@ -94,26 +101,27 @@ def numpify(*arg_shapes, arg_names=None, **kwargs):
 def flatten_arrays(seq):
     """Flatten a sequence of arrays to a flat list."""
     flattened = []
-    shapes = []
+    shape_size_and_dtypes = []
     for el in seq:
-        if isinstance(el, sym.Array):
-            size = numpy.prod(el.shape)
-            flattened += el.reshape(size).tolist()
-            shapes.append((el.shape, size))
+        if is_sympy_array(el):
+            el = SymbolicArray(el)
+            flattened += el.reshape(el.size).tolist()
+            shape_size_and_dtypes.append((el.shape, el.size, el.dtype))
         else:
             flattened.append(el)
-            shapes.append(())
+            shape_size_and_dtypes.append(())
 
     def unflatten(flattened):
         unflattened = []
         i = 0
-        for s in shapes:
+        for s in shape_size_and_dtypes:
             if s == ():
                 unflattened.append(flattened[i])
                 i += 1
             else:
-                shape, size = s
-                unflattened.append(sym.Array(flattened[i:i+size], shape))
+                shape, size, dtype = s
+                unflattened.append(
+                    SymbolicArray(flattened[i:i+size], shape, dtype))
                 i += size
         return unflattened
 
@@ -133,9 +141,9 @@ class TupleArrayPrinter(NumPyPrinter):
     used instead.
     """
 
-    def _print_arraylike(self, expr):
-        exp_str = self._print(to_tuple(expr.tolist()))
-        return f'numpy.array({exp_str}, dtype=numpy.float64)'
+    def _print_arraylike(self, array):
+        array_str = self._print(to_tuple(array.tolist()))
+        return f"numpy.array({array_str})"
 
     _print_NDimArray = _print_arraylike
     _print_DenseNDimArray = _print_arraylike

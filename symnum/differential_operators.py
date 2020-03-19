@@ -1,11 +1,10 @@
 """Autograd-style functional differential operators."""
 
 from itertools import product
-from functools import wraps
 import sympy as sym
 from symnum.array import named_array, SymbolicArray, is_scalar
 from symnum.code_generation import (
-    generate_func, numpy_func, FunctionExpression, _get_func_arg_names)
+    numpify_func, FunctionExpression, _get_func_arg_names)
 
 
 __all__ = [
@@ -14,6 +13,31 @@ __all__ = [
     'numpy_grad', 'numpy_jacobian', 'numpy_hessian',
     'numpy_jvp', 'numpy_vjp', 'numpy_mhp', 'numpy_mtp',
 ]
+
+
+def _get_sympy_func(func):
+    if hasattr(func, '_sympy_func'):
+        return func._sympy_func
+    else:
+        return func
+
+
+def _wrap_derived(func, prefix=None, op='derivative'):
+
+    def decorator(f):
+        try:
+            f.__name__ = (
+                (f'{prefix}_' if prefix is not None else '') + func.__name__)
+            f.__doc__ = (
+                f'Automatically generated {op} of {func.__name__}.\n\n'
+                f'Original docstring for {func.__name__}:\n\n{func.__doc__}')
+            if hasattr(func, '_arg_shapes'):
+                f._arg_shapes = func._arg_shapes
+            f._arg_names = _get_func_arg_names(func)
+        finally:
+            return f
+
+    return decorator
 
 
 def sympy_grad(func, wrt=0, return_value=False):
@@ -34,9 +58,9 @@ def sympy_grad(func, wrt=0, return_value=False):
             SymPy gradient function.
     """
 
-    @wraps(func)
+    @_wrap_derived(func, 'grad', 'gradient')
     def grad_func(*args):
-        val = func(*args)
+        val = _get_sympy_func(func)(*args)
         if not is_scalar(val) or (hasattr(val, 'shape') and val.shape != ()):
             raise ValueError(
                 'grad should only be used with scalar valued functions.')
@@ -72,9 +96,9 @@ def sympy_jacobian(func, wrt=0, return_value=False):
             Generated SymPy Jacobian function.
     """
 
-    @wraps(func)
+    @_wrap_derived(func, 'jacob', 'Jacobian')
     def jacob_func(*args):
-        val = func(*args)
+        val = _get_sympy_func(func)(*args)
         jacob = _jacobian_transpose(
             sym.diff(val, args[wrt]), val.shape, args[wrt].shape)
         return (jacob, val) if return_value else jacob
@@ -101,9 +125,9 @@ def sympy_hessian(func, wrt=0, return_grad_and_value=False):
             Generated SymPy Hessian function.
     """
 
-    @wraps(func)
-    def hessian_func(*args):
-        val = func(*args)
+    @_wrap_derived(func, 'hess', 'Hessian')
+    def hess_func(*args):
+        val = _get_sympy_func(func)(*args)
         if not is_scalar(val) or (hasattr(val, 'shape') and val.shape != ()):
             raise ValueError(
                 'hessian should only be used with scalar valued functions.')
@@ -111,14 +135,14 @@ def sympy_hessian(func, wrt=0, return_grad_and_value=False):
         hess = sym.diff(grad, args[wrt])
         return (hess, grad, val) if return_grad_and_value else hess
 
-    return hessian_func
+    return hess_func
 
 
 def sympy_jvp(func, wrt=0, return_value=False):
 
-    @wraps(func)
+    @_wrap_derived(func, 'jvp', 'Jacobian-vector-product')
     def jvp_func(*args):
-        val = func(*args)
+        val = _get_sympy_func(func)(*args)
         jacob = _jacobian_transpose(
             sym.diff(val, args[wrt]), val.shape, args[wrt].shape)
         v = named_array('v', args[wrt].shape)
@@ -133,9 +157,9 @@ def sympy_jvp(func, wrt=0, return_value=False):
 
 def sympy_vjp(func, wrt=0, return_value=False):
 
-    @wraps(func)
+    @_wrap_derived(func, 'vjp', 'vector-Jacobian-product')
     def vjp_func(*args):
-        val = func(*args)
+        val = _get_sympy_func(func)(*args)
         jacob_transposed = sym.diff(val, args[wrt])
         v = named_array('v', val[wrt].shape)
         vjp = SymbolicArray([
@@ -149,6 +173,7 @@ def sympy_vjp(func, wrt=0, return_value=False):
 
 def sympy_mhp(func, wrt=0, return_jacobian_and_value=False):
 
+    @_wrap_derived(func, 'mhp', 'matrix-Hessian-product')
     def mhp_func(*args):
         jac, val = sympy_jacobian(func, wrt, return_value=True)(*args)
         hess = sym.diff(jac, args[wrt])
@@ -164,6 +189,7 @@ def sympy_mhp(func, wrt=0, return_jacobian_and_value=False):
 
 def sympy_mtp(func, wrt=0, return_hessian_grad_and_value=False):
 
+    @_wrap_derived(func, 'mtp', 'matrix-Tressian-product')
     def mtp_func(*args):
         hess, grad, val = sympy_hessian(
             func, wrt, return_grad_and_value=True)(*args)
@@ -203,9 +229,8 @@ def numpy_grad(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
         Callable[..., ndarray or Tuple[ndarray, ndarray]]: Generated NumPy
             gradient function.
     """
-    return numpy_func(sympy_grad(func, wrt, return_value), *arg_shapes,
-                      arg_names=_get_func_arg_names(func),
-                      func_name_prefix='grad_', **kwargs)
+    return numpify_func(
+        sympy_grad(func, wrt, return_value), *arg_shapes, **kwargs)
 
 
 def numpy_jacobian(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
@@ -231,9 +256,8 @@ def numpy_jacobian(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
         Callable[..., ndarray or Tuple[ndarray, scalar]]: Generated NumPy
             Jacobian function.
     """
-    return numpy_func(sympy_jacobian(func, wrt, return_value), *arg_shapes,
-                      arg_names=_get_func_arg_names(func),
-                      func_name_prefix='jacob_', **kwargs)
+    return numpify_func(
+        sympy_jacobian(func, wrt, return_value), *arg_shapes, **kwargs)
 
 
 def numpy_hessian(func, *arg_shapes, wrt=0, return_grad_and_value=False,
@@ -260,32 +284,28 @@ def numpy_hessian(func, *arg_shapes, wrt=0, return_grad_and_value=False,
         Callable[..., ndarray or Tuple[ndarray, ndarray, scalar]]: Generated
             NumPy Hessian function.
     """
-    return numpy_func(sympy_hessian(func, wrt, return_grad_and_value),
-                      *arg_shapes, arg_names=_get_func_arg_names(func),
-                      func_name_prefix='hess_', **kwargs)
+    return numpify_func(
+        sympy_hessian(func, wrt, return_grad_and_value), *arg_shapes, **kwargs)
 
 
 def numpy_jvp(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
-    return numpy_func(sympy_jvp(func, wrt, return_value), *arg_shapes,
-                      arg_names=_get_func_arg_names(func),
-                      func_name_prefix='jvp_', **kwargs)
+    return numpify_func(
+        sympy_jvp(func, wrt, return_value), *arg_shapes, **kwargs)
 
 
 def numpy_vjp(func, *arg_shapes, wrt=0, return_value=False, **kwargs):
-    return numpy_func(sympy_vjp(func, wrt, return_value), *arg_shapes,
-                      arg_names=_get_func_arg_names(func),
-                      func_name_prefix='vjp_', **kwargs)
+    return numpify_func(
+        sympy_vjp(func, wrt, return_value), *arg_shapes, **kwargs)
 
 
 def numpy_mhp(func, *arg_shapes, wrt=0, return_jacobian_and_value=False,
               **kwargs):
-    return numpy_func(sympy_mhp(func, wrt, return_jacobian_and_value),
-                      *arg_shapes, arg_names=_get_func_arg_names(func),
-                      func_name_prefix='mhp_', **kwargs)
+    return numpify_func(
+        sympy_mhp(func, wrt, return_jacobian_and_value), *arg_shapes, **kwargs)
 
 
 def numpy_mtp(func, *arg_shapes, wrt=0, return_hessian_grad_and_value=False,
               **kwargs):
-    return numpy_func(sympy_mtp(func, wrt, return_hessian_grad_and_value),
-                      *arg_shapes, arg_names=_get_func_arg_names(func),
-                      func_name_prefix='mtp_', **kwargs)
+    return numpify_func(
+        sympy_mtp(func, wrt, return_hessian_grad_and_value), *arg_shapes,
+        **kwargs)
