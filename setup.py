@@ -1,3 +1,5 @@
+import setuptools
+
 setuptools.setup(
     name='symnum',
     version='0.1.0',
