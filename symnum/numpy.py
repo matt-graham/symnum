@@ -57,7 +57,7 @@ _unary_elementwise_funcs = {
     'isneginf': lambda x:  x == _sym_S.NegativeInfinity,
     'isnan': lambda x: x == _sym_S.NaN,
     'isreal': lambda x: x.is_real,
-    'iscomplex': lambda x: x.is_complex,
+    'iscomplex': lambda x: not x.is_real,
     'isfinite': lambda x: not (x == _sym_S.Infinity or
                                x == _sym_S.NegativeInfinity or x == _sym_S.NaN)
 }
