@@ -161,7 +161,7 @@ def sympy_vjp(func, wrt=0, return_value=False):
     def vjp_func(*args):
         val = _get_sympy_func(func)(*args)
         jacob_transposed = sym.diff(val, args[wrt])
-        v = named_array('v', val[wrt].shape)
+        v = named_array('v', val.shape)
         vjp = SymbolicArray([
             (jacob_transposed[indices] * v).sum() for indices in
             product(*[range(s) for s in args[wrt].shape])], args[wrt].shape)
