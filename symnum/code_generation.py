@@ -27,6 +27,12 @@ class FunctionExpression(sym.Expr):
         self.args = args
         self.return_val = return_val
 
+    def __call__(self, *args):
+        arg_subs = [
+            (sym_old, sym_new) for arg_old, arg_new in zip(self.args, args)
+            for sym_old, sym_new in zip(arg_old.flat, arg_new.flat)]
+        return self.return_val.subs(arg_subs)
+
 
 def _get_func_arg_names(func):
     if hasattr(func, '_arg_names'):
