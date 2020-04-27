@@ -76,11 +76,9 @@ simpler generation of NumPy functions using such features.
 ```Python
 import numpy as np
 import symnum.numpy as snp
-from symnum import named_array, numpify_func, sympy_jacobian, numpy_jacobian
+from symnum import named_array, numpify_func, jacobian
 
-# Define a function using the symnum.numpy interface which replicates a subset
-# of the NumPy API including a SymbolicArray class with similar broadcasting
-# and operator overloading semantics to the NumPy ndarray class.
+# Define a function using the symnum.numpy interface.
 def func(x):
     return (snp.array([[1., -0.5], [-2., 3.]]) @ 
             snp.array([snp.cos(-x[1]**2 + 3 * x[0]), snp.sin(x[0] - 1)]))
@@ -88,9 +86,6 @@ def func(x):
 # Create a named symbolic array to act as input and evaluate func symbolically.
 x = named_array(name='x', shape=2)
 y = func(x)
-
-# Evaluate Jacobian of func symbolically.
-dy_dx = sympy_jacobian(func)(x)
 
 # Alternatively we can symbolically 'trace' func and use this to generate a
 # NumPy function which accepts ndarray arguments. To allow the tracing we
@@ -102,9 +97,9 @@ y_np = func_np(x_np)
 # We can also use a similar approach to generate a NumPy function to evaluate
 # the Jacobian of func on ndarray arguments. The numpified function func_np 
 # stores the symbolic function used to generate it and details of the argument
-# shapes and so we can pass it as a sole argument to numpy_jacobian without
+# shapes and so we can pass it as a sole argument to jacobian without
 # specifying the argument shapes.
-jac_func_np = numpy_jacobian(func_np)
+jacob_func_np = jacobian(func_np)
 dy_dx_np = jac_func_np(x_np)
 ```
 
