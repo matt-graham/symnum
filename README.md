@@ -22,7 +22,7 @@ cheaper to evaluate than corresponding
 compilation](https://jax.readthedocs.io/en/latest/notebooks/quickstart.html#Using-jit-to-speed-up-functions))
 in such cases, and which can be serialised with the inbuilt Python `pickle`
 library allowing use for example in libraries which use `multiprocessing` to
-implement paralellisation across multiple processes.
+implement parallelisation across multiple processes.
 
 The original motivating use case for SymNum was to allow automatically
 constructing the  derivatives of the sorts of functions of low dimensional
@@ -41,8 +41,8 @@ examples.
 
 Yes: SymNum is mainly a convenience wrapper around functionality already
 provided by SymPy to make it easier to use for those already familiar with
-NumPy  and Autograd / JAX. Specifically SymPy has several inbuilt array like
-classes,  which can be broadly split in to the [array
+NumPy and Autograd / JAX. Specifically SymPy has several inbuilt array like
+classes, which can be broadly split in to the [array
 types](https://docs.sympy.org/latest/modules/tensor/array.html) defined  in
 `sympy.tensor.array` and the  [matrix
 types](https://docs.sympy.org/latest/modules/matrices/matrices.html)  defined
@@ -53,7 +53,7 @@ of NumPy's core `ndarray` class, however both have some issues which means they
 don't provide an easy drop-in replacement, with for example matrix classes
 being limited to two-dimensions, while both the inbuilt array and matrix
 classes do not support the full broadcasting and operator overloading semantics
-of NumPy  arrays. The `SymbolicArray` class in `symnum.array` aims to provide a
+of NumPy arrays. The `SymbolicArray` class in `symnum.array` aims to provide a
 more `ndarray` like interface, supporting broadcasting of elementwise binary
 arithmetic operations like `*`, `/`, `+` and `-`, elementwise NumPy ufunc-like
 mathematical functions like `numpy.log` via the `symnum.numpy` module, simple
@@ -100,7 +100,7 @@ y_np = func_np(x_np)
 # shapes and so we can pass it as a sole argument to jacobian without
 # specifying the argument shapes.
 jacob_func_np = jacobian(func_np)
-dy_dx_np = jac_func_np(x_np)
+dy_dx_np = jacob_func_np(x_np)
 ```
 
 See also the demo Jupyter notebook
