@@ -219,7 +219,7 @@ def hessian_vector_product(func, wrt=0, return_aux=False):
 
     @_wrap_derived(func, 'hvp', 'Hessian-vector-product')
     def hvp_func(*args):
-        hess, grad, val = hessian(func, wrt, return_aux=True)
+        hess, grad, val = hessian(func, wrt, return_aux=True)(*args)
         v = _named_array('v', args[wrt].shape)
         hvp = _generalised_dot(hess, v, args[wrt].shape)
         v_hvp = FunctionExpression((v,), hvp)
