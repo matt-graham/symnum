@@ -3,7 +3,7 @@
 from itertools import product
 import sympy as sym
 from symnum.array import named_array, SymbolicArray, is_scalar
-from symnum.code_generation import (
+from symnum.codegen import (
     numpify_func, FunctionExpression, _get_func_arg_names)
 
 
