@@ -4,8 +4,15 @@ setuptools.setup(
     name='symnum',
     version='0.1.0',
     author='Matt Graham',
-    description=(
-        'Symbolically construct NumPy functions and their derivatives'
+    description='Symbolically construct NumPy functions and their derivatives',
+    long_description=(
+        'SymNum is a Python package that acts a bridge between NumPy and SciPy,'
+        'providing a NumPy-like interface that can be used to symbolically '
+        'define functions which take arrays as arguments and return arrays or '
+        'scalars as values. A series of Autograd style functional differential '
+        'operators are also provided to construct derivatives of symbolic '
+        'functions, with the option to generate NumPy code to numerically '
+        'evaluate these derivative functions.'
     ),
     url='https://github.com/matt-graham/symnum.git',
     packages=setuptools.find_packages(),

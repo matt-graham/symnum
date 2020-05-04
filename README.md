@@ -1,9 +1,13 @@
+<a href="https://badge.fury.io/py/symnum">
+  <img src="https://badge.fury.io/py/symnum.svg" alt="PyPI version"/>
+</a>
+
 ## What is SymNum?
 
 SymNum is a Python package that acts a bridge between
 [NumPy](https://numpy.org/) and [SymPy](https://www.sympy.org/), providing a
-NumPy-like interface that can  be used to symbolically define functions which
-take arrays as arguments and  return arrays or scalars as values. A series of
+NumPy-like interface that can be used to symbolically define functions which
+take arrays as arguments and return arrays or scalars as values. A series of
 [Autograd](https://github.com/HIPS/autograd) style functional differential
 operators are also provided to construct derivatives of symbolic functions,
 with the option to generate NumPy code to numerically evaluate these derivative
