@@ -69,7 +69,9 @@ _binary_broadcasting_funcs = {
     'arctan2': _sym.atan2,
     'logical_and': _sym.And,
     'logical_or': _sym.Or,
-    'logical_xor': _sym.Xor
+    'logical_xor': _sym.Xor,
+    'maximum': _sym.Max,
+    'minimum': _sym.Min,
 }
 
 
