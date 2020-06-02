@@ -1,4 +1,3 @@
-
 """Autograd-style functional differential operators for NumPy functions."""
 
 import inspect as _inspect

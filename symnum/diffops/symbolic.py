@@ -93,7 +93,7 @@ def jacobian(func, wrt=0, return_aux=False):
         wrt (int): Index of argument to take derivatives with respect to.
         return_aux (bool): Whether the generated Jacobian function returns
             both the Jacobian and value of `func` as a 2-tuple (True) or just
-            the Jaconbian (False).
+            the Jacobian (False).
 
     Returns:
         Callable[..., Union[Array, Tuple[Array, Array]]]: Generated Jacobian
