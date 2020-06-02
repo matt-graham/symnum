@@ -51,6 +51,8 @@ _unary_elementwise_funcs = {
     'angle': lambda x, deg=False: (
         _sym.arg(x) * 180 / _sym.pi if deg else _sym.arg(x)),
     ('conj', 'conjugate'): _sym.conjugate,
+    'real': _sym.re,
+    'imag': _sym.im,
     'logical_not': _sym.Not,
     'isinf': lambda x: x == _sym_S.Infinity or x == _sym_S.NegativeInfinity,
     'isposinf': lambda x: x == _sym_S.Infinity,

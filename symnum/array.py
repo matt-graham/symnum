@@ -316,6 +316,16 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         return _matrix_multiply(other, self)
 
     @property
+    @unary_elementwise_func
+    def real(self):
+        return sym.re(self)
+
+    @property
+    @unary_elementwise_func
+    def imag(self):
+        return sym.im(self)
+
+    @property
     def size(self):
         return np.prod(self.shape)
 
