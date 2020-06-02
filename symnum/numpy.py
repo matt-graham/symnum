@@ -7,7 +7,8 @@ import numpy as _np
 from symnum.array import (
     SymbolicArray as _SymbolicArray, is_sympy_array as _is_sympy_array,
     flatten as _flatten, unary_elementwise_func as _unary_elementwise_func,
-    binary_broadcasting_func as _binary_broadcasting_func)
+    binary_broadcasting_func as _binary_broadcasting_func,
+    slice_iterator as _slice_iterator)
 from sympy import S as _sym_singletons
 
 
@@ -231,3 +232,36 @@ def sum(a, axis=None):
 @_wrap_numpy()
 def prod(a, axis=None):
     return a.prod(axis)
+
+
+# Array joining
+
+
+@_wrap_numpy()
+def concatenate(arrays, axis=0):
+    for i in range(len(arrays)):
+        if (axis > 0 and axis > arrays[i].ndim - 1) or (
+                axis < 0 and abs(axis) > arrays[i].ndim):
+            raise ValueError(
+                f'axis {axis} is out of bounds for array of dimension '
+                f'{arrays[i].ndim}')
+    ndim = arrays[0].ndim
+    for i in range(1, len(arrays)):
+        if arrays[i].ndim != ndim:
+            raise ValueError(
+                f'all the input arrays must have same number of dimensions, but'
+                f' the array at index 0 has {arrays[0].ndim} dimension(s) and '
+                f'the array at index {i} has {arrays[i].ndim} dimension(s)')
+        for d in (set(range(arrays[0].ndim)) - set([axis])):
+            if arrays[0].shape[d] != arrays[i].shape[d]:
+                raise ValueError(
+                    f'all the input array dimensions for the concatenation axis'
+                    f' must match exactly, but along dimension {d}, the array '
+                    f'at index 0 has size {arrays[0].shape[d]} and the array at'
+                    f' index {i} has size {arrays[i].shape[d]}')
+    array_slices = [slc for arr in arrays for slc in _slice_iterator(arr, axis)]
+    concatenated = array(array_slices)
+    if axis != 0:
+        concatenated = concatenated.transpose(
+            tuple(range(1, axis + 1)) + (0,) + tuple(range(axis + 1, ndim)))
+    return concatenated
