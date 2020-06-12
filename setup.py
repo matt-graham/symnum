@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='symnum',
-    version='0.1.0',
+    version='0.1.1',
     author='Matt Graham',
     description='Symbolically construct NumPy functions and their derivatives',
     long_description=(
