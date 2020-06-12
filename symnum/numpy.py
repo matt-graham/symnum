@@ -6,7 +6,7 @@ import sympy as _sym
 import numpy as _np
 from symnum.array import (
     SymbolicArray as _SymbolicArray, is_sympy_array as _is_sympy_array,
-    flatten as _flatten, unary_elementwise_func as _unary_elementwise_func,
+    unary_elementwise_func as _unary_elementwise_func,
     binary_broadcasting_func as _binary_broadcasting_func,
     slice_iterator as _slice_iterator)
 from sympy import S as _sym_singletons
@@ -174,6 +174,16 @@ _populate_namespace(globals())
 
 
 # Array creation functions
+
+def _flatten(iterable):
+    """Recursively flatten nested iterables to a list."""
+    flattened = []
+    for el in iterable:
+        if isinstance(el, _Iterable):
+            flattened.extend(_flatten(el))
+        else:
+            flattened.append(el)
+    return flattened
 
 
 def _contains_expr(iterable):

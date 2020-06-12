@@ -1,7 +1,6 @@
 """Symbolic array classes."""
 
 from itertools import product
-from collections import Iterable
 import sympy as sym
 from sympy.tensor.array import permutedims
 import numpy as np
@@ -33,17 +32,6 @@ def is_valid_shape(obj):
     return isinstance(obj, _shape_types)
 
 
-def flatten(iterable):
-    """Recursively flatten nested iterables to a list."""
-    flattened = []
-    for el in iterable:
-        if isinstance(el, Iterable):
-            flattened.extend(flatten(el))
-        else:
-            flattened.append(el)
-    return flattened
-
-
 def _broadcastable_shapes(shape_1, shape_2):
     """Check if two array shapes are compatible for broadcasting."""
     return all(
@@ -60,16 +48,20 @@ def binary_broadcasting_func(func, name=None, doc=None):
         if is_scalar(arg_1) and is_scalar(arg_2):
             return func(arg_1, arg_2)
         elif is_scalar(arg_1) and is_array(arg_2):
+            arg_2 = as_symbolic_array(arg_2)
             return SymbolicArray(
-                [func(arg_1, a2) for a2 in flatten(arg_2)], arg_2.shape)
+                [func(arg_1, a2) for a2 in arg_2.flat], arg_2.shape)
         elif is_array(arg_1) and is_scalar(arg_2):
+            arg_1 = as_symbolic_array(arg_1)
             return SymbolicArray(
-                [func(a1, arg_2) for a1 in flatten(arg_1)], arg_1.shape)
+                [func(a1, arg_2) for a1 in arg_1.flat], arg_1.shape)
         elif is_array(arg_1) and is_array(arg_2):
+            arg_1 = as_symbolic_array(arg_1)
+            arg_2 = as_symbolic_array(arg_2)
             if arg_1.shape == arg_2.shape:
                 return SymbolicArray(
                     [func(a1, a2) for a1, a2 in
-                     zip(flatten(arg_1), flatten(arg_2))],
+                     zip(arg_1.flat, arg_2.flat)],
                     arg_1.shape)
             elif _broadcastable_shapes(arg_1.shape, arg_2.shape):
                 broadcaster = np.broadcast(arg_1, arg_2)
@@ -100,7 +92,8 @@ def unary_elementwise_func(func, name=None, doc=None):
         if is_scalar(arg):
             return func(arg)
         elif is_array(arg):
-            return SymbolicArray([func(a) for a in flatten(arg)], arg.shape)
+            arg = as_symbolic_array(arg)
+            return SymbolicArray([func(a) for a in arg.flat], arg.shape)
         else:
             raise NotImplementedError(
                 f'{name} not implemented for argument of type {type(arg)}.')
@@ -132,7 +125,7 @@ def named_array(name, shape, dtype=None):
         'real': not np.issubdtype(dtype, np.complexfloating),
         'complex': True,  # Complex numbers are superset of reals
     }
-    if shape == () or shape is None or shape == 1:
+    if shape == () or shape is None:
         array = SymbolicArray([sym.Symbol(name, **assumptions)], (), dtype)
     elif is_valid_shape(shape):
         if isinstance(shape, int):
@@ -150,12 +143,11 @@ def named_array(name, shape, dtype=None):
 
 def infer_dtype(array):
     """Infer safe dtype for array."""
-    array_elements = flatten(array.tolist())
-    if all(el.is_integer for el in array_elements):
+    if all(el.is_integer for el in array.flat):
         return np.int64
-    elif all(el.is_real for el in array_elements):
+    elif all(el.is_real for el in array.flat):
         return np.float64
-    elif all(el.is_complex for el in array_elements):
+    elif all(el.is_complex for el in array.flat):
         return np.complex128
     else:
         return np.object
@@ -185,6 +177,13 @@ def _matrix_multiply(left, right):
             [sum(left[i, :] * right[:, j]) for i in range(left.shape[0])
              for j in range(right.shape[-1])],
             shape=(left.shape[0], right.shape[-1]))
+
+
+def as_symbolic_array(array):
+    if isinstance(array, SymbolicArray):
+        return array
+    else:
+        return SymbolicArray(array, array.shape)
 
 
 class SymbolicArray(sym.ImmutableDenseNDimArray):
@@ -231,9 +230,13 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
     def __truediv__(self, other):
         return self / other
 
+    __div__ = __truediv__
+
     @binary_broadcasting_func
     def __rtruediv__(self, other):
         return other / self
+
+    __rdiv__ = __rtruediv__
 
     @binary_broadcasting_func
     def __floordiv__(self, other):
@@ -266,6 +269,10 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
     @binary_broadcasting_func
     def __pow__(self, other):
         return self**other
+
+    @binary_broadcasting_func
+    def __rpow__(self, other):
+        return other**self
 
     @binary_broadcasting_func
     def __eq__(self, other):
@@ -334,12 +341,21 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         return len(self.shape)
 
     def flatten(self):
-        return flatten(self.tolist())
+        return SymbolicArray(self.flat, self.size)
 
     @property
     def flat(self):
-        for el in self.flatten():
-            yield el
+        if self.shape == ():
+            yield self._args[0][0]
+        else:
+            for idx in product(*(range(s) for s in self.shape)):
+                yield self[idx]
+
+    def tolist(self):
+        if self.shape == ():
+            return self._args[0][0]
+        else:
+            return super().tolist()
 
     @property
     def T(self):
@@ -355,35 +371,35 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
             return permutedims(self, axes)
 
     def reshape(self, shape):
-        return SymbolicArray(self.flatten(), shape)
+        return SymbolicArray(self.flat, shape)
 
     def any(self, axis=None):
         if axis is None:
-            return any(self.flatten())
+            return any(self.flat)
         else:
             raise NotImplementedError()
 
     def all(self, axis=None):
         if axis is None:
-            return all(self.flatten())
+            return all(self.flat)
         else:
             raise NotImplementedError()
 
     def max(self, axis=None):
         if axis is None:
-            return max(self.flatten())
+            return max(self.flat)
         else:
             raise NotImplementedError()
 
     def min(self, axis=None):
         if axis is None:
-            return min(self.flatten())
+            return min(self.flat)
         else:
             raise NotImplementedError()
 
     def sum(self, axis=None):
         if axis is None:
-            return sum(self.flatten())
+            return sum(self.flat)
         elif isinstance(axis, (tuple, list, int)):
             return sum(slice_iterator(self, axis))
         else:
@@ -391,7 +407,7 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
 
     def prod(self, axis=None):
         if axis is None:
-            return sym.prod(self.flatten())
+            return sym.prod(self.flat)
         elif isinstance(axis, (tuple, list, int)):
             return sym.prod(slice_iterator(self, axis))
         else:
