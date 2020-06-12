@@ -137,8 +137,6 @@ SymNum only supports a small subset of the NumPy API at the moment. A
 non-exhaustive list of things that don't currently work
 
   * Indexed / sliced assignment to arrays e.g. `a[i, j] = x` and `a[:, j] = y`
-  * Functions for stacking and concatenating arrays such as `numpy.stack` and 
-    `numpy.concatenate`.
   * Matrix multiplication with `@` of arrays with dimensions > 2.
   * Linear algebra operations in `numpy.linalg` and FFT functions in `numpy.fft`.
   * All `scipy` functions such as the special functions in `scipy.special`.
