@@ -7,7 +7,7 @@ setuptools.setup(
     description='Symbolically construct NumPy functions and their derivatives',
     long_description=(
         'SymNum is a Python package that acts a bridge between NumPy and SymPy,'
-        'providing a NumPy-like interface that can be used to symbolically '
+        ' providing a NumPy-like interface that can be used to symbolically '
         'define functions which take arrays as arguments and return arrays or '
         'scalars as values. A series of Autograd style functional differential '
         'operators are also provided to construct derivatives of symbolic '
