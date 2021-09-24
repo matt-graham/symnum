@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='symnum',
-    version='0.1.1',
+    version='0.1.2',
     author='Matt Graham',
     description='Symbolically construct NumPy functions and their derivatives',
     long_description=(
@@ -28,6 +28,6 @@ setuptools.setup(
     keywords='sympy numpy differentiation',
     license='MIT',
     license_file='LICENSE',
-    install_requires=['numpy>=1.15', 'sympy>=1.5'],
+    install_requires=['numpy>=1.15', 'sympy>=1.8'],
     python_requires='>=3.6',
 )
