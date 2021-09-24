@@ -9,7 +9,7 @@ import numpy as np
 _sympy_array_types = (sym.NDimArray, sym.MatrixBase)
 _array_types = _sympy_array_types + (np.ndarray,)
 _scalar_types = (sym.Expr, int, float, complex)
-_shape_types = (int, tuple, sym.containers.Tuple)
+_shape_types = (int, tuple, sym.Tuple)
 
 
 def is_array(obj):
