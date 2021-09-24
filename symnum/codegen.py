@@ -7,7 +7,7 @@ import sys
 from collections import namedtuple
 import warnings
 import sympy as sym
-from sympy.printing.pycode import NumPyPrinter
+from sympy.printing.numpy import NumPyPrinter
 import numpy
 import math
 from symnum.array import (
