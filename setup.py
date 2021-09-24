@@ -27,7 +27,7 @@ setuptools.setup(
     ],
     keywords='sympy numpy differentiation',
     license='MIT',
-    license_file='LICENSE',
+    license_files=('LICENSE',),
     install_requires=['numpy>=1.15', 'sympy>=1.8'],
     python_requires='>=3.6',
 )
