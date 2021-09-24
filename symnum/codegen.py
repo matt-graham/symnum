@@ -9,6 +9,7 @@ import warnings
 import sympy as sym
 from sympy.printing.pycode import NumPyPrinter
 import numpy
+import math
 from symnum.array import (
     named_array, is_valid_shape, is_sympy_array, infer_dtype, SymbolicArray)
 
@@ -239,6 +240,7 @@ def generate_func(inputs, exprs, func_name='generated_function', printer=None,
         namespace = _create_temporary_module(
             f'symnum_{func_name}_module_').__dict__
     namespace['numpy'] = numpy if numpy_module is None else numpy_module
+    namespace['math'] = math
     exec(code, namespace)
     func = namespace[func_name]
     func.__doc__ = f'Automatically generated {func_name} function.\n\n{code}'
