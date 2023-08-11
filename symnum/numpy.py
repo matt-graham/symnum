@@ -55,14 +55,14 @@ _unary_elementwise_funcs = {
     'real': _sym.re,
     'imag': _sym.im,
     'logical_not': _sym.Not,
-    'isinf': lambda x: x == _sym_S.Infinity or x == _sym_S.NegativeInfinity,
-    'isposinf': lambda x: x == _sym_S.Infinity,
-    'isneginf': lambda x:  x == _sym_S.NegativeInfinity,
-    'isnan': lambda x: x == _sym_S.NaN,
+    'isinf': lambda x: x == _sym_singletons.Infinity or x == _sym_singletons.NegativeInfinity,
+    'isposinf': lambda x: x == _sym_singletons.Infinity,
+    'isneginf': lambda x:  x == _sym_singletons.NegativeInfinity,
+    'isnan': lambda x: x == _sym_singletons.NaN,
     'isreal': lambda x: x.is_real,
     'iscomplex': lambda x: not x.is_real,
-    'isfinite': lambda x: not (x == _sym_S.Infinity or
-                               x == _sym_S.NegativeInfinity or x == _sym_S.NaN)
+    'isfinite': lambda x: not (x == _sym_singletons.Infinity or
+                               x == _sym_singletons.NegativeInfinity or x == _sym_singletons.NaN)
 }
 
 
