@@ -4,27 +4,29 @@ from itertools import product as _product
 import sympy as sym
 from numpy import ndarray
 from symnum.array import (
-    named_array as _named_array, is_scalar as _is_scalar, SymbolicArray)
+    named_array as _named_array,
+    is_scalar as _is_scalar,
+    SymbolicArray,
+)
 from symnum.codegen import FunctionExpression, _get_func_arg_names
 
 
 def _get_sympy_func(func):
-    if hasattr(func, '_sympy_func'):
+    if hasattr(func, "_sympy_func"):
         return func._sympy_func
     else:
         return func
 
 
-def _wrap_derived(func, prefix=None, op='derivative'):
-
+def _wrap_derived(func, prefix=None, op="derivative"):
     def decorator(f):
         try:
-            f.__name__ = (
-                (f'{prefix}_' if prefix is not None else '') + func.__name__)
+            f.__name__ = (f"{prefix}_" if prefix is not None else "") + func.__name__
             f.__doc__ = (
-                f'Automatically generated {op} of {func.__name__}.\n\n'
-                f'Original docstring for {func.__name__}:\n\n{func.__doc__}')
-            if hasattr(func, '_arg_shapes'):
+                f"Automatically generated {op} of {func.__name__}.\n\n"
+                f"Original docstring for {func.__name__}:\n\n{func.__doc__}"
+            )
+            if hasattr(func, "_arg_shapes"):
                 f._arg_shapes = func._arg_shapes
             f._arg_names = _get_func_arg_names(func)
         finally:
@@ -37,13 +39,17 @@ def _jacobian_transpose(jac, shape_val, shape_arg):
     n_dim_val = len(shape_val)
     n_dim_arg = len(shape_arg)
     n_dim = n_dim_arg + n_dim_val
-    return jac.transpose(
-        tuple(range(n_dim_arg, n_dim)) + tuple(range(n_dim_arg)))
+    return jac.transpose(tuple(range(n_dim_arg, n_dim)) + tuple(range(n_dim_arg)))
 
 
 def _generalised_dot(a, b, shape_out):
-    return SymbolicArray([(a[indices] * b).sum() for indices in
-                          _product(*[range(s) for s in shape_out])], shape_out)
+    return SymbolicArray(
+        [
+            (a[indices] * b).sum()
+            for indices in _product(*[range(s) for s in shape_out])
+        ],
+        shape_out,
+    )
 
 
 def gradient(func, wrt=0, return_aux=False):
@@ -66,12 +72,13 @@ def gradient(func, wrt=0, return_aux=False):
             function.
     """
 
-    @_wrap_derived(func, 'grad', 'gradient')
+    @_wrap_derived(func, "grad", "gradient")
     def grad_func(*args):
         val = _get_sympy_func(func)(*args)
-        if not _is_scalar(val) or (hasattr(val, 'shape') and val.shape != ()):
+        if not _is_scalar(val) or (hasattr(val, "shape") and val.shape != ()):
             raise ValueError(
-                'gradient should only be used with scalar valued functions.')
+                "gradient should only be used with scalar valued functions."
+            )
         grad = sym.diff(val, args[wrt])
         return (grad, val) if return_aux else grad
 
@@ -100,11 +107,12 @@ def jacobian(func, wrt=0, return_aux=False):
             function.
     """
 
-    @_wrap_derived(func, 'jacob', 'Jacobian')
+    @_wrap_derived(func, "jacob", "Jacobian")
     def jacob_func(*args):
         val = _get_sympy_func(func)(*args)
         jacob = _jacobian_transpose(
-            sym.diff(val, args[wrt]), val.shape, args[wrt].shape)
+            sym.diff(val, args[wrt]), val.shape, args[wrt].shape
+        )
         return (jacob, val) if return_aux else jacob
 
     return jacob_func
@@ -130,12 +138,13 @@ def hessian(func, wrt=0, return_aux=False):
             Hessian function.
     """
 
-    @_wrap_derived(func, 'hess', 'Hessian')
+    @_wrap_derived(func, "hess", "Hessian")
     def hess_func(*args):
         val = _get_sympy_func(func)(*args)
-        if not _is_scalar(val) or (hasattr(val, 'shape') and val.shape != ()):
+        if not _is_scalar(val) or (hasattr(val, "shape") and val.shape != ()):
             raise ValueError(
-                'hessian should only be used with scalar valued functions.')
+                "hessian should only be used with scalar valued functions."
+            )
         grad = sym.diff(val, args[wrt])
         hess = sym.diff(grad, args[wrt])
         return (hess, grad, val) if return_aux else hess
@@ -173,12 +182,13 @@ def jacobian_vector_product(func, wrt=0, return_aux=False):
             Generated Jacobian-vector-product operator.
     """
 
-    @_wrap_derived(func, 'jvp', 'Jacobian-vector-product')
+    @_wrap_derived(func, "jvp", "Jacobian-vector-product")
     def jvp_func(*args):
         val = _get_sympy_func(func)(*args)
         jacob = _jacobian_transpose(
-            sym.diff(val, args[wrt]), val.shape, args[wrt].shape)
-        v = _named_array('v', args[wrt].shape)
+            sym.diff(val, args[wrt]), val.shape, args[wrt].shape
+        )
+        v = _named_array("v", args[wrt].shape)
         jvp = _generalised_dot(jacob, v, val.shape)
         v_jvp = FunctionExpression((v,), jvp)
         return (v_jvp, val) if return_aux else v_jvp
@@ -217,10 +227,10 @@ def hessian_vector_product(func, wrt=0, return_aux=False):
             Generated Hessian-vector-product operator.
     """
 
-    @_wrap_derived(func, 'hvp', 'Hessian-vector-product')
+    @_wrap_derived(func, "hvp", "Hessian-vector-product")
     def hvp_func(*args):
         hess, grad, val = hessian(func, wrt, return_aux=True)(*args)
-        v = _named_array('v', args[wrt].shape)
+        v = _named_array("v", args[wrt].shape)
         hvp = _generalised_dot(hess, v, args[wrt].shape)
         v_hvp = FunctionExpression((v,), hvp)
         return (v_hvp, grad, val) if return_aux else v_hvp
@@ -258,11 +268,11 @@ def vector_jacobian_product(func, wrt=0, return_aux=False):
             Generated vector-Jacobian-product operator.
     """
 
-    @_wrap_derived(func, 'vjp', 'vector-Jacobian-product')
+    @_wrap_derived(func, "vjp", "vector-Jacobian-product")
     def vjp_func(*args):
         val = _get_sympy_func(func)(*args)
         jacob_transposed = sym.diff(val, args[wrt])
-        v = _named_array('v', val.shape)
+        v = _named_array("v", val.shape)
         vjp = _generalised_dot(jacob_transposed, v, args[wrt].shape)
         v_vjp = FunctionExpression((v,), vjp)
         return (v_vjp, val) if return_aux else v_vjp
@@ -301,11 +311,11 @@ def matrix_hessian_product(func, wrt=0, return_aux=False):
             Generated matrix-Hessian-product operator.
     """
 
-    @_wrap_derived(func, 'mhp', 'matrix-Hessian-product')
+    @_wrap_derived(func, "mhp", "matrix-Hessian-product")
     def mhp_func(*args):
         jac, val = jacobian(func, wrt, return_aux=True)(*args)
         hess = sym.diff(jac, args[wrt])
-        m = _named_array('m', jac.shape)
+        m = _named_array("m", jac.shape)
         mhp = _generalised_dot(hess, m, args[wrt].shape)
         m_mhp = FunctionExpression((m,), mhp)
         return (m_mhp, jac, val) if return_aux else m_mhp
@@ -346,11 +356,11 @@ def matrix_tressian_product(func, wrt=0, return_aux=False):
             Generated matrix-Tressian-product operator.
     """
 
-    @_wrap_derived(func, 'mtp', 'matrix-Tressian-product')
+    @_wrap_derived(func, "mtp", "matrix-Tressian-product")
     def mtp_func(*args):
         hess, grad, val = hessian(func, wrt, return_aux=True)(*args)
         tress = sym.diff(hess, args[wrt])
-        m = _named_array('m', hess.shape)
+        m = _named_array("m", hess.shape)
         mtp = _generalised_dot(tress, m, args[wrt].shape)
         m_mtp = FunctionExpression((m,), mtp)
         return (m_mtp, hess, grad, val) if return_aux else m_mtp

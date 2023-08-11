@@ -6,12 +6,12 @@ from symnum.codegen import numpify_func as _numpify_func
 
 
 def _wrap_sympy_operator(sympy_operator):
-
     def numpy_operator(func, *arg_shapes, wrt=0, return_aux=False, **kwargs):
         return _numpify_func(
-            sympy_operator(func, wrt, return_aux), *arg_shapes, **kwargs)
+            sympy_operator(func, wrt, return_aux), *arg_shapes, **kwargs
+        )
 
-    docstring = sympy_operator.__doc__.replace('symbolic', 'NumPy')
+    docstring = sympy_operator.__doc__.replace("symbolic", "NumPy")
 
     arg_shapes_docstring = f"""\
         *arg_shapes: Variable length list of tuples defining shapes of array
@@ -21,8 +21,7 @@ def _wrap_sympy_operator(sympy_operator):
             `{sympy_operator.__name__}(func, (2, 2), (2, 4, 3), ...)`.
     """
 
-    docstring = docstring.replace(
-        '        wrt', f'{arg_shapes_docstring}        wrt')
+    docstring = docstring.replace("        wrt", f"{arg_shapes_docstring}        wrt")
 
     kwargs_docstring = f"""\
         **kwargs: Any keyword arguments to the NumPy code generation function
@@ -37,7 +36,8 @@ def _wrap_sympy_operator(sympy_operator):
                 NumPy API calls in generated function. Defaults to `numpy`."""
 
     docstring = docstring.replace(
-        '\n\n    Returns', f'\n{kwargs_docstring}\n\n    Returns')
+        "\n\n    Returns", f"\n{kwargs_docstring}\n\n    Returns"
+    )
 
     numpy_operator.__doc__ = docstring
 
@@ -45,8 +45,8 @@ def _wrap_sympy_operator(sympy_operator):
 
 
 def _populate_namespace(namespace):
-    for (name, operator) in _inspect.getmembers(_diffops, _inspect.isfunction):
-        if name[0] != '_':
+    for name, operator in _inspect.getmembers(_diffops, _inspect.isfunction):
+        if name[0] != "_":
             namespace[name] = _wrap_sympy_operator(operator)
 
 

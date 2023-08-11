@@ -35,8 +35,8 @@ def is_valid_shape(obj):
 def _broadcastable_shapes(shape_1, shape_2):
     """Check if two array shapes are compatible for broadcasting."""
     return all(
-        (s1 == s2 or s1 == 1 or s2 == 1)
-        for s1, s2 in zip(shape_1[::-1], shape_2[::-1]))
+        (s1 == s2 or s1 == 1 or s2 == 1) for s1, s2 in zip(shape_1[::-1], shape_2[::-1])
+    )
 
 
 def binary_broadcasting_func(func, name=None, doc=None):
@@ -49,33 +49,33 @@ def binary_broadcasting_func(func, name=None, doc=None):
             return func(arg_1, arg_2)
         elif is_scalar(arg_1) and is_array(arg_2):
             arg_2 = as_symbolic_array(arg_2)
-            return SymbolicArray(
-                [func(arg_1, a2) for a2 in arg_2.flat], arg_2.shape)
+            return SymbolicArray([func(arg_1, a2) for a2 in arg_2.flat], arg_2.shape)
         elif is_array(arg_1) and is_scalar(arg_2):
             arg_1 = as_symbolic_array(arg_1)
-            return SymbolicArray(
-                [func(a1, arg_2) for a1 in arg_1.flat], arg_1.shape)
+            return SymbolicArray([func(a1, arg_2) for a1 in arg_1.flat], arg_1.shape)
         elif is_array(arg_1) and is_array(arg_2):
             arg_1 = as_symbolic_array(arg_1)
             arg_2 = as_symbolic_array(arg_2)
             if arg_1.shape == arg_2.shape:
                 return SymbolicArray(
-                    [func(a1, a2) for a1, a2 in
-                     zip(arg_1.flat, arg_2.flat)],
-                    arg_1.shape)
+                    [func(a1, a2) for a1, a2 in zip(arg_1.flat, arg_2.flat)],
+                    arg_1.shape,
+                )
             elif _broadcastable_shapes(arg_1.shape, arg_2.shape):
                 broadcaster = np.broadcast(arg_1, arg_2)
                 return SymbolicArray(
-                    [func(a1, a2) for a1, a2 in broadcaster],
-                    broadcaster.shape)
+                    [func(a1, a2) for a1, a2 in broadcaster], broadcaster.shape
+                )
             else:
                 raise ValueError(
-                    f'operands could not be broadcast together with shapes '
-                    f'{arg_1.shape} {arg_2.shape}.')
+                    f"operands could not be broadcast together with shapes "
+                    f"{arg_1.shape} {arg_2.shape}."
+                )
         else:
             raise NotImplementedError(
-                f'{name} not implemented for arguments of types {type(arg_1)} '
-                f'and {type(arg_2)}.')
+                f"{name} not implemented for arguments of types {type(arg_1)} "
+                f"and {type(arg_2)}."
+            )
 
     wrapped_func.__name__ = name
     wrapped_func.__doc__ = func.__doc__ if doc is None else doc
@@ -96,7 +96,8 @@ def unary_elementwise_func(func, name=None, doc=None):
             return SymbolicArray([func(a) for a in arg.flat], arg.shape)
         else:
             raise NotImplementedError(
-                f'{name} not implemented for argument of type {type(arg)}.')
+                f"{name} not implemented for argument of type {type(arg)}."
+            )
 
     wrapped_func.__name__ = name
     wrapped_func.__doc__ = func.__doc__ if doc is None else doc
@@ -111,9 +112,12 @@ def slice_iterator(arr, axes):
     # Wrap negative axes
     axes = tuple(ax % arr.ndim for ax in axes)
     for indices in product(*[range(arr.shape[ax]) for ax in axes]):
-        yield arr[tuple(
-            indices[axes.index(ax)] if ax in axes else slice(None)
-            for ax in range(arr.ndim))]
+        yield arr[
+            tuple(
+                indices[axes.index(ax)] if ax in axes else slice(None)
+                for ax in range(arr.ndim)
+            )
+        ]
 
 
 def named_array(name, shape, dtype=None):
@@ -121,9 +125,9 @@ def named_array(name, shape, dtype=None):
     if dtype is None:
         dtype = np.float64
     assumptions = {
-        'integer': np.issubdtype(dtype, np.integer),
-        'real': not np.issubdtype(dtype, np.complexfloating),
-        'complex': True,  # Complex numbers are superset of reals
+        "integer": np.issubdtype(dtype, np.integer),
+        "real": not np.issubdtype(dtype, np.complexfloating),
+        "complex": True,  # Complex numbers are superset of reals
     }
     if shape == () or shape is None:
         array = SymbolicArray([sym.Symbol(name, **assumptions)], (), dtype)
@@ -131,12 +135,17 @@ def named_array(name, shape, dtype=None):
         if isinstance(shape, int):
             shape = (shape,)
         array = SymbolicArray(
-            [sym.Symbol(f'{name}[{", ".join([str(i) for i in index])}]',
-                        **assumptions)
-             for index in product(*(range(s) for s in shape))], shape, dtype)
+            [
+                sym.Symbol(
+                    f'{name}[{", ".join([str(i) for i in index])}]', **assumptions
+                )
+                for index in product(*(range(s) for s in shape))
+            ],
+            shape,
+            dtype,
+        )
     else:
-        raise ValueError(
-            f'Unrecognised shape type {type(shape)} with value {shape}.')
+        raise ValueError(f"Unrecognised shape type {type(shape)} with value {shape}.")
     array._name = name
     return array
 
@@ -157,26 +166,34 @@ def _matrix_multiply(left, right):
     """Perform symbolic matrix multiply of two 1D or 2D arrays."""
     if not (left.ndim in (1, 2) and right.ndim in (1, 2)):
         raise NotImplementedError(
-            'Matrix multiplication only implemented for 1D and 2D operands.')
+            "Matrix multiplication only implemented for 1D and 2D operands."
+        )
     elif not left.shape[-1] == right.shape[0]:
         raise ValueError(
-            f'Incompatible shapes {left.shape} and {right.shape} for matrix '
-            f'multiplication.')
+            f"Incompatible shapes {left.shape} and {right.shape} for matrix "
+            f"multiplication."
+        )
     if left.ndim == 1 and right.ndim == 1:
         return sum(left * right)
     elif left.ndim == 2 and right.ndim == 1:
         return SymbolicArray(
             [sum(left[i, :] * right) for i in range(left.shape[0])],
-            shape=(left.shape[0],))
+            shape=(left.shape[0],),
+        )
     elif left.ndim == 1 and right.ndim == 2:
         return SymbolicArray(
             [sum(left * right[:, i]) for i in range(right.shape[-1])],
-            shape=(right.shape[-1],))
+            shape=(right.shape[-1],),
+        )
     elif left.ndim == 2 and right.ndim == 2:
         return SymbolicArray(
-            [sum(left[i, :] * right[:, j]) for i in range(left.shape[0])
-             for j in range(right.shape[-1])],
-            shape=(left.shape[0], right.shape[-1]))
+            [
+                sum(left[i, :] * right[:, j])
+                for i in range(left.shape[0])
+                for j in range(right.shape[-1])
+            ],
+            shape=(left.shape[0], right.shape[-1]),
+        )
 
 
 def as_symbolic_array(array):
@@ -204,8 +221,9 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         if len(self.free_symbols) > 0:
             if dtype is not None:
                 raise ValueError(
-                    f'Array contains free symbols, therefore cannot cast to '
-                    f'NumPy array of dtype {dtype}.')
+                    f"Array contains free symbols, therefore cannot cast to "
+                    f"NumPy array of dtype {dtype}."
+                )
             else:
                 dtype = object
         else:
@@ -360,9 +378,12 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
     @property
     def T(self):
         return SymbolicArray(
-            [self[tuple(indices[::-1])]
-             for indices in product(*[range(s) for s in self.shape[::-1]])],
-            self.shape[::-1])
+            [
+                self[tuple(indices[::-1])]
+                for indices in product(*[range(s) for s in self.shape[::-1]])
+            ],
+            self.shape[::-1],
+        )
 
     def transpose(self, axes=None):
         if axes is None:
@@ -403,7 +424,7 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         elif isinstance(axis, (tuple, list, int)):
             return sum(slice_iterator(self, axis))
         else:
-            raise ValueError(f'Unrecognised axis type {type(axis)}.')
+            raise ValueError(f"Unrecognised axis type {type(axis)}.")
 
     def prod(self, axis=None):
         if axis is None:
@@ -411,4 +432,4 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         elif isinstance(axis, (tuple, list, int)):
             return sym.prod(slice_iterator(self, axis))
         else:
-            raise ValueError(f'Unrecognised axis type {type(axis)}.')
+            raise ValueError(f"Unrecognised axis type {type(axis)}.")
