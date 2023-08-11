@@ -150,7 +150,7 @@ def infer_dtype(array):
     elif all(el.is_complex for el in array.flat):
         return np.complex128
     else:
-        return np.object
+        return object
 
 
 def _matrix_multiply(left, right):
@@ -207,7 +207,7 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
                     f'Array contains free symbols, therefore cannot cast to '
                     f'NumPy array of dtype {dtype}.')
             else:
-                dtype = np.object
+                dtype = object
         else:
             dtype = self.dtype if dtype is None else dtype
         return np.array(self.tolist(), dtype)
