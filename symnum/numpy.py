@@ -9,7 +9,7 @@ from symnum.array import (
     is_sympy_array as _is_sympy_array,
     unary_elementwise_func as _unary_elementwise_func,
     binary_broadcasting_func as _binary_broadcasting_func,
-    slice_iterator as _slice_iterator,
+    _slice_iterator,
 )
 from sympy import S as _sym_singletons
 

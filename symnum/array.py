@@ -160,7 +160,7 @@ def unary_elementwise_func(
     return wrapped_func
 
 
-def slice_iterator(arr: ArrayLike, axes: Union[int, tuple[int, ...]]) -> Generator:
+def _slice_iterator(arr: ArrayLike, axes: Union[int, tuple[int, ...]]) -> Generator:
     """Iterate over slices of array from indexing along a subset of axes."""
     if isinstance(axes, int):
         axes = (axes,)
@@ -498,7 +498,7 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         if axis is None:
             return sum(self.flat)
         elif isinstance(axis, (tuple, list, int)):
-            return sum(slice_iterator(self, axis))
+            return sum(_slice_iterator(self, axis))
         else:
             raise ValueError(f"Unrecognised axis type {type(axis)}.")
 
@@ -506,6 +506,6 @@ class SymbolicArray(sym.ImmutableDenseNDimArray):
         if axis is None:
             return sym.prod(self.flat)
         elif isinstance(axis, (tuple, list, int)):
-            return sym.prod(slice_iterator(self, axis))
+            return sym.prod(_slice_iterator(self, axis))
         else:
             raise ValueError(f"Unrecognised axis type {type(axis)}.")
