@@ -1,46 +1,89 @@
 """Symbolic array classes."""
 
+from __future__ import annotations
+
 from itertools import product
+from typing import get_args, Callable, Generator, Optional, Union
 import sympy as sym
 from sympy.tensor.array import permutedims
 import numpy as np
+from numpy.typing import NDArray, DTypeLike
+
+SympyArray = Union[sym.NDimArray, sym.MatrixBase]
+ArrayLike = Union[SympyArray, NDArray]
+ScalarLike = Union[sym.Expr, int, float, complex]
+ShapeLike = Union[int, tuple, sym.Tuple]
 
 
-_sympy_array_types = (sym.NDimArray, sym.MatrixBase)
-_array_types = _sympy_array_types + (np.ndarray,)
-_scalar_types = (sym.Expr, int, float, complex)
-_shape_types = (int, tuple, sym.Tuple)
+def is_array(obj) -> bool:
+    """Check if object is a valid SymPy or NumPy array type.
+
+    Args:
+        obj: Object to check.
+
+    Returns:
+        Whether object is valid array type.
+    """
+    return isinstance(obj, get_args(ArrayLike))
 
 
-def is_array(obj):
-    """Check if object is a valid SymPy or NumPy array type."""
-    return isinstance(obj, _array_types)
+def is_sympy_array(obj) -> bool:
+    """Check if object is a valid SymPy array type.
+
+    Args:
+        obj: Object to check.
+
+    Returns:
+        Whether object is valid SymPy array type.
+    """
+    return isinstance(obj, get_args(SympyArray))
 
 
-def is_sympy_array(obj):
-    """Check if object is a valid SymPy array type."""
-    return isinstance(obj, _sympy_array_types)
+def is_scalar(obj) -> bool:
+    """Check if object is a symbolic or numeric scalar type.
+
+    Args:
+        obj: Object to check.
+
+    Returns:
+        Whether object is valid scalar type.
+    """
+    return isinstance(obj, get_args(ScalarLike)) or np.isscalar(obj)
 
 
-def is_scalar(obj):
-    """Check if object is a symbolic or numeric scalar type."""
-    return isinstance(obj, _scalar_types) or np.isscalar(obj)
+def is_valid_shape(obj) -> bool:
+    """Check if object is a valid array shape type.
+    Args:
+        obj: Object to check.
+
+    Returns:
+        Whether object is valid array shape type.
+    """
+    return isinstance(obj, get_args(ShapeLike))
 
 
-def is_valid_shape(obj):
-    """Check if object is a valid array shape type."""
-    return isinstance(obj, _shape_types)
-
-
-def _broadcastable_shapes(shape_1, shape_2):
+def _broadcastable_shapes(shape_1: ShapeLike, shape_2: ShapeLike) -> bool:
     """Check if two array shapes are compatible for broadcasting."""
     return all(
         (s1 == s2 or s1 == 1 or s2 == 1) for s1, s2 in zip(shape_1[::-1], shape_2[::-1])
     )
 
 
-def binary_broadcasting_func(func, name=None, doc=None):
-    """Wrap binary function to give broadcasting semantics."""
+def binary_broadcasting_func(
+    func: Callable[[ScalarLike, ScalarLike], ScalarLike],
+    name: Optional[str] = None,
+    doc: Optional[str] = None,
+) -> Callable[[ArrayLike, ArrayLike], ArrayLike]:
+    """Wrap binary function to give broadcasting semantics.
+
+    Args:
+        func: Binary argument function to wrap.
+        name: Name to assign to wrapped function's `__name__` attribute.
+        doc: Docstring to assign to wrapped function's `__doc__` attribute.
+
+    Returns:
+        Wrapped function which broadcasts on both arguments.
+    """
 
     name = func.__name__ if name is None else name
 
@@ -83,8 +126,20 @@ def binary_broadcasting_func(func, name=None, doc=None):
     return wrapped_func
 
 
-def unary_elementwise_func(func, name=None, doc=None):
-    """Wrap unary function to give elementwise semantics."""
+def unary_elementwise_func(
+    func: Callable[[ScalarLike], ScalarLike],
+    name: Optional[str] = None,
+    doc: Optional[str] = None,
+) -> Callable[[ArrayLike], ArrayLike]:
+    """Wrap unary function to give elementwise semantics.
+    Args:
+        func: Binary argument function to wrap.
+        name: Name to assign to wrapped function's `__name__` attribute.
+        doc: Docstring to assign to wrapped function's `__doc__` attribute.
+
+    Returns:
+        Wrapped function which acts elementwise on argument.
+    """
 
     name = func.__name__ if name is None else name
 
@@ -105,7 +160,7 @@ def unary_elementwise_func(func, name=None, doc=None):
     return wrapped_func
 
 
-def slice_iterator(arr, axes):
+def slice_iterator(arr: ArrayLike, axes: Union[int, tuple[int, ...]]) -> Generator:
     """Iterate over slices of array from indexing along a subset of axes."""
     if isinstance(axes, int):
         axes = (axes,)
@@ -120,8 +175,22 @@ def slice_iterator(arr, axes):
         ]
 
 
-def named_array(name, shape, dtype=None):
-    """Create a symbolic array with common name prefix to elements."""
+def named_array(
+    name: str, shape: ShapeLike, dtype: Optional[DTypeLike] = None
+) -> SymbolicArray:
+    """Create a symbolic array with common name prefix to elements.
+
+    Args:
+        name: Name prefix to use for symbolic array elements.
+        shape: Dimensions of array.
+        dtype: NumPy dtype to use for array.
+        
+    Returns:
+        Symbolic array with elements `{name}[index_list]` for `index_list` iterating
+        over strings of valid comma-separated indices, for example calling with
+        `name="a"` and `shape=(2, 2)` would give a symbolic array of shape `(2, 2)` with
+        elements `a[0, 0]`, `a[0, 1]`, `a[1, 0]` and `a[1, 1]`.
+    """
     if dtype is None:
         dtype = np.float64
     assumptions = {
@@ -150,8 +219,15 @@ def named_array(name, shape, dtype=None):
     return array
 
 
-def infer_dtype(array):
-    """Infer safe dtype for array."""
+def infer_dtype(array: SymbolicArray) -> DTypeLike:
+    """Infer safe dtype for array.
+
+    Args:
+        array: Array to infer dtype for.
+
+    Returns:
+        NumPy dtype which can represent array elements.
+    """
     if all(el.is_integer for el in array.flat):
         return np.int64
     elif all(el.is_real for el in array.flat):
@@ -162,7 +238,7 @@ def infer_dtype(array):
         return object
 
 
-def _matrix_multiply(left, right):
+def _matrix_multiply(left: SymbolicArray, right: SymbolicArray) -> SymbolicArray:
     """Perform symbolic matrix multiply of two 1D or 2D arrays."""
     if not (left.ndim in (1, 2) and right.ndim in (1, 2)):
         raise NotImplementedError(
@@ -196,7 +272,7 @@ def _matrix_multiply(left, right):
         )
 
 
-def as_symbolic_array(array):
+def as_symbolic_array(array: Union[ArrayLike, SymbolicArray]) -> SymbolicArray:
     if isinstance(array, SymbolicArray):
         return array
     else:
