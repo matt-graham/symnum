@@ -1,7 +1,7 @@
 """Implementation of a subset of the NumPy API using SymPy primitives."""
 
 
-from collections import Iterable as _Iterable
+from collections.abc import Iterable as _Iterable
 import sympy as _sym
 import numpy as _np
 from symnum.array import (
