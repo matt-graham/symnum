@@ -14,7 +14,7 @@ functions, with the option to generate NumPy code to numerically evaluate these
 derivative functions.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    symnum
