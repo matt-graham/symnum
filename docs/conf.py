@@ -32,6 +32,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://numpy.org/doc/stable/", None),
     "sympy": ("https://docs.sympy.org/latest/", None),
+    "numba": ("https://numba.readthedocs.io/en/stable/", None),
 }
 
 templates_path = ["_templates"]
