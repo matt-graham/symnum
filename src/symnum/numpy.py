@@ -2,17 +2,16 @@
 
 
 from collections.abc import Iterable as _Iterable
-import sympy as _sym
-import numpy as _np
-from symnum.array import (
-    SymbolicArray as _SymbolicArray,
-    is_sympy_array as _is_sympy_array,
-    unary_elementwise_func as _unary_elementwise_func,
-    binary_broadcasting_func as _binary_broadcasting_func,
-    _slice_iterator,
-)
-from sympy import S as _sym_singletons
 
+import numpy as _np  # noqa: ICN001
+import sympy as _sym
+from sympy import S as _sym_singletons  # noqa: N811
+
+from symnum.array import SymbolicArray as _SymbolicArray
+from symnum.array import _slice_iterator
+from symnum.array import binary_broadcasting_func as _binary_broadcasting_func
+from symnum.array import is_sympy_array as _is_sympy_array
+from symnum.array import unary_elementwise_func as _unary_elementwise_func
 
 # Define mappings from objects in NumPy namespace to SymPy equivalents
 
@@ -56,17 +55,21 @@ _unary_elementwise_funcs = {
     "real": _sym.re,
     "imag": _sym.im,
     "logical_not": _sym.Not,
-    "isinf": lambda x: x == _sym_singletons.Infinity
-    or x == _sym_singletons.NegativeInfinity,
+    "isinf": lambda x: x
+    in (
+        _sym_singletons.Infinity,
+        _sym_singletons.NegativeInfinity,
+    ),
     "isposinf": lambda x: x == _sym_singletons.Infinity,
     "isneginf": lambda x: x == _sym_singletons.NegativeInfinity,
     "isnan": lambda x: x == _sym_singletons.NaN,
     "isreal": lambda x: x.is_real,
     "iscomplex": lambda x: not x.is_real,
-    "isfinite": lambda x: not (
-        x == _sym_singletons.Infinity
-        or x == _sym_singletons.NegativeInfinity
-        or x == _sym_singletons.NaN
+    "isfinite": lambda x: x
+    not in (
+        _sym_singletons.Infinity,
+        _sym_singletons.NegativeInfinity,
+        _sym_singletons.NaN,
     ),
 }
 
@@ -94,15 +97,9 @@ _binary_op_funcs = {
 def _wrap_numpy(numpy_name=None):
     def decorator(func):
         _numpy_name = func.__name__ if numpy_name is None else numpy_name
-        try:
-            func.__name__ = _numpy_name
-            numpy_func_doc = getattr(_np, _numpy_name).__doc__
-            if numpy_func_doc[0] == "\n":
-                numpy_func_doc = numpy_func_doc[1:]
-            func.__doc__ = f"symnum implementation of numpy.{_numpy_name}\n\n"
-            func.__doc__ += numpy_func_doc
-        finally:
-            return func
+        func.__name__ = _numpy_name
+        func.__doc__ = f"SymNum implementation of :py:obj:`numpy.{_numpy_name}`."
+        return func
 
     return decorator
 
@@ -113,9 +110,9 @@ def _wrap_unary_elementwise_func(sympy_func, numpy_name):
     @_wrap_numpy(numpy_name)
     def wrapped(x, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
-            raise NotImplementedError(f"Only first argument of {numpy_name} supported.")
-        else:
-            return elementwise_func(x)
+            msg = f"Only first argument of {numpy_name} supported."
+            raise NotImplementedError(msg)
+        return elementwise_func(x)
 
     return wrapped
 
@@ -126,11 +123,9 @@ def _wrap_binary_broadcasting_func(sympy_func, numpy_name):
     @_wrap_numpy(numpy_name)
     def wrapped(x1, x2, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
-            raise NotImplementedError(
-                f"Only first two arguments of {numpy_name} supported."
-            )
-        else:
-            return broadcasting_func(x1, x2)
+            msg = f"Only first two arguments of {numpy_name} supported."
+            raise NotImplementedError(msg)
+        return broadcasting_func(x1, x2)
 
     return wrapped
 
@@ -139,11 +134,9 @@ def _wrap_binary_op_func(op_func, numpy_name):
     @_wrap_numpy(numpy_name)
     def wrapped(x1, x2, *args, **kwargs):
         if len(args) > 0 or len(kwargs) > 0:
-            raise NotImplementedError(
-                f"Only first two arguments of {numpy_name} supported."
-            )
-        else:
-            return op_func(x1, x2)
+            msg = f"Only first two arguments of {numpy_name} supported."
+            raise NotImplementedError(msg)
+        return op_func(x1, x2)
 
     return wrapped
 
@@ -165,10 +158,14 @@ def _populate_namespace(namespace):
         else:
             namespace[name_or_names] = val
     _add_wrapped_funcs_to_namespace(
-        _unary_elementwise_funcs, namespace, _wrap_unary_elementwise_func
+        _unary_elementwise_funcs,
+        namespace,
+        _wrap_unary_elementwise_func,
     )
     _add_wrapped_funcs_to_namespace(
-        _binary_broadcasting_funcs, namespace, _wrap_binary_broadcasting_func
+        _binary_broadcasting_funcs,
+        namespace,
+        _wrap_binary_broadcasting_func,
     )
     _add_wrapped_funcs_to_namespace(_binary_op_funcs, namespace, _wrap_binary_op_func)
 
@@ -191,31 +188,32 @@ def _flatten(iterable):
 
 
 def _contains_expr(iterable):
-    return any([isinstance(el, _sym.Expr) for el in _flatten(iterable)])
+    return any(isinstance(el, _sym.Expr) for el in _flatten(iterable))
 
 
 @_wrap_numpy()
-def array(object, dtype=None):
+def array(object_, dtype=None):  # noqa: D103
     if (
-        _is_sympy_array(object)
-        or isinstance(object, _sym.Expr)
-        or (isinstance(object, _Iterable) and _contains_expr(object))
+        _is_sympy_array(object_)
+        or isinstance(object_, _sym.Expr)
+        or (isinstance(object_, _Iterable) and _contains_expr(object_))
     ):
-        return _SymbolicArray(object, dtype=dtype)
+        return _SymbolicArray(object_, dtype=dtype)
     else:
-        return _np.array(object, dtype)
+        return _np.array(object_, dtype)
 
 
 @_wrap_numpy()
-def eye(N, M=None, k=0):
-    M = N if M is None else M
+def eye(N, M=None, k=0):  # noqa: D103, N803
+    M = N if M is None else M  # noqa: N806
     return _SymbolicArray(
-        [1 if (j - i) == k else 0 for i in range(N) for j in range(M)], (N, M)
+        [1 if (j - i) == k else 0 for i in range(N) for j in range(M)],
+        (N, M),
     )
 
 
 @_wrap_numpy()
-def identity(n):
+def identity(n):  # noqa: D103
     return eye(n, n, 0)
 
 
@@ -225,17 +223,17 @@ def _constant_array(val, shape):
 
 
 @_wrap_numpy()
-def ones(shape):
+def ones(shape):  # noqa: D103
     return _constant_array(1, shape)
 
 
 @_wrap_numpy()
-def zeros(shape):
+def zeros(shape):  # noqa: D103
     return _constant_array(0, shape)
 
 
 @_wrap_numpy()
-def full(shape, fill_value):
+def full(shape, fill_value):  # noqa: D103
     return _constant_array(fill_value, shape)
 
 
@@ -243,12 +241,12 @@ def full(shape, fill_value):
 
 
 @_wrap_numpy()
-def sum(a, axis=None):
+def sum(a, axis=None):  # noqa: D103, A001
     return a.sum(axis)
 
 
 @_wrap_numpy()
-def prod(a, axis=None):
+def prod(a, axis=None):  # noqa: D103
     return a.prod(axis)
 
 
@@ -256,35 +254,38 @@ def prod(a, axis=None):
 
 
 @_wrap_numpy()
-def concatenate(arrays, axis=0):
+def concatenate(arrays, axis=0):  # noqa: D103
     for i in range(len(arrays)):
         if (axis > 0 and axis > arrays[i].ndim - 1) or (
             axis < 0 and abs(axis) > arrays[i].ndim
         ):
-            raise ValueError(
+            msg = (
                 f"axis {axis} is out of bounds for array of dimension "
                 f"{arrays[i].ndim}"
             )
+            raise ValueError(msg)
     ndim = arrays[0].ndim
     for i in range(1, len(arrays)):
         if arrays[i].ndim != ndim:
-            raise ValueError(
+            msg = (
                 f"all the input arrays must have same number of dimensions, but"
                 f" the array at index 0 has {arrays[0].ndim} dimension(s) and "
                 f"the array at index {i} has {arrays[i].ndim} dimension(s)"
             )
-        for d in set(range(arrays[0].ndim)) - set([axis]):
+            raise ValueError(msg)
+        for d in set(range(arrays[0].ndim)) - {axis}:
             if arrays[0].shape[d] != arrays[i].shape[d]:
-                raise ValueError(
+                msg = (
                     f"all the input array dimensions for the concatenation axis"
                     f" must match exactly, but along dimension {d}, the array "
                     f"at index 0 has size {arrays[0].shape[d]} and the array at"
                     f" index {i} has size {arrays[i].shape[d]}"
                 )
+                raise ValueError(msg)
     array_slices = [slc for arr in arrays for slc in _slice_iterator(arr, axis)]
     concatenated = array(array_slices)
     if axis != 0:
         concatenated = concatenated.transpose(
-            tuple(range(1, axis + 1)) + (0,) + tuple(range(axis + 1, ndim))
+            (*tuple(range(1, axis + 1)), 0, *tuple(range(axis + 1, ndim))),
         )
     return concatenated
