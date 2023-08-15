@@ -26,6 +26,12 @@ _constants = {
 }
 
 
+def _angle(x, *, deg=False):
+    if x == 0:
+        return 0.0
+    return _sym.arg(x) * 180 / _sym.pi if deg else _sym.arg(x)
+
+
 _unary_elementwise_funcs = {
     "exp": _sym.exp,
     "expm1": lambda x: _sym.exp(x) - 1,
@@ -50,7 +56,7 @@ _unary_elementwise_funcs = {
     "sqrt": _sym.sqrt,
     ("abs", "absolute"): _sym.Abs,
     "sign": _sym.sign,
-    "angle": lambda x, deg=False: (_sym.arg(x) * 180 / _sym.pi if deg else _sym.arg(x)),
+    "angle": _angle,
     ("conj", "conjugate"): _sym.conjugate,
     "real": _sym.re,
     "imag": _sym.im,
