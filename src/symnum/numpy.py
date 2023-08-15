@@ -184,14 +184,16 @@ _populate_namespace(globals())
 
 
 def _flatten(iterable):
-    """Recursively flatten nested iterables to a list."""
-    flattened = []
-    for el in iterable:
-        if isinstance(el, _Iterable):
-            flattened.extend(_flatten(el))
-        else:
-            flattened.append(el)
-    return flattened
+    """Recursively flatten nested iterables."""
+    # Separately deal with shape () arrays as cannot be iterated over
+    if hasattr(iterable, "shape") and iterable.shape == ():
+        yield iterable[()]
+    else:
+        for el in iterable:
+            if isinstance(el, _Iterable):
+                yield from el
+            else:
+                yield el
 
 
 def _contains_expr(iterable):
