@@ -41,13 +41,12 @@ readme = "README.md"
 requires-python = ">=3.9"
 license.file = "LICENCE"
 urls.homepage = "https://github.com/matt-graham/symnum"
+urls.documentation = "https://matt-graham.github.io/symnum"
 
 [project.optional-dependencies]
 dev = [
     "black",
     "build",
-    "mypy",
-    "pre-commit",
     "pytest",
     "ruff",
     "tox>=4",
@@ -82,8 +81,6 @@ ignore = [
     "D205",  # blank line between summary and description in docstrings
     "D102",  # missing docstrings on public methods
     "D105",  # missing docstrings on magic methods
-    "D107",  # missing docstring on __init__ method
-    "ARG002",  # unused method arguments
 ]
 per-file-ignores = { "test_*" = ["D100", "D101", "D103", "S101"], "__init__.py" = ["F401"] }
 select = [
@@ -137,6 +134,7 @@ pep8-naming.classmethod-decorators = [
     "pydantic.validator",
 ]
 pydocstyle.convention = "google"
+pylint.max-args = 10
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
