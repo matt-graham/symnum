@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: >-
+  SymNum: symbolically construct NumPy functions and their
+  derivatives
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - family-names: Graham
+    given-names: Matthew M.
+    orcid: 'https://orcid.org/0000-0001-9104-7960'
+repository-code: 'https://github.com/matt-graham/symnum'
+url: 'https://matt-graham.github.io/symnum'
+keywords:
+  - symbolic
+  - array
+  - differentiation
+  - automatic differentiation
+license: MIT
