@@ -2,6 +2,7 @@
 
 
 from collections.abc import Iterable as _Iterable
+from itertools import chain as _chain
 
 import numpy as _np  # noqa: ICN001
 import sympy as _sym
@@ -263,8 +264,11 @@ def prod(a, axis=None):  # noqa: D103
 
 @_wrap_numpy()
 def concatenate(arrays, axis=0):  # noqa: D103
+    if axis is None:
+        # NumPy behaviour for axis=None case is to concatenate flattened arrays
+        return array(list(_chain(*(a.flat for a in arrays))))
     for i in range(len(arrays)):
-        if (axis > 0 and axis > arrays[i].ndim - 1) or (
+        if (axis >= 0 and axis > arrays[i].ndim - 1) or (
             axis < 0 and abs(axis) > arrays[i].ndim
         ):
             msg = (
@@ -290,7 +294,12 @@ def concatenate(arrays, axis=0):  # noqa: D103
                     f" index {i} has size {arrays[i].shape[d]}"
                 )
                 raise ValueError(msg)
-    array_slices = [slc for arr in arrays for slc in _slice_iterator(arr, axis)]
+    axis = ndim + axis if axis < 0 else axis
+    array_slices = [
+        slc.tolist() if hasattr(slc, "tolist") else slc
+        for arr in arrays
+        for slc in _slice_iterator(arr, axis)
+    ]
     concatenated = array(array_slices)
     if axis != 0:
         concatenated = concatenated.transpose(
