@@ -1,0 +1,7 @@
+symnum.codegen module
+=====================
+
+.. automodule:: symnum.codegen
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>symnum.codegen module &mdash; SymNum  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="symnum.numpy module" href="symnum.numpy.html" />
+    <link rel="prev" title="symnum.array module" href="symnum.array.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SymNum
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="symnum.html">symnum package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.grad"><code class="docutils literal notranslate"><span class="pre">grad()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.hessian"><code class="docutils literal notranslate"><span class="pre">hessian()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.hessian_vector_product"><code class="docutils literal notranslate"><span class="pre">hessian_vector_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.jacobian"><code class="docutils literal notranslate"><span class="pre">jacobian()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.jacobian_vector_product"><code class="docutils literal notranslate"><span class="pre">jacobian_vector_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.matrix_hessian_product"><code class="docutils literal notranslate"><span class="pre">matrix_hessian_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.matrix_tressian_product"><code class="docutils literal notranslate"><span class="pre">matrix_tressian_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.named_array"><code class="docutils literal notranslate"><span class="pre">named_array()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.numpify"><code class="docutils literal notranslate"><span class="pre">numpify()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.numpify_func"><code class="docutils literal notranslate"><span class="pre">numpify_func()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.vector_jacobian_product"><code class="docutils literal notranslate"><span class="pre">vector_jacobian_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="symnum.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="symnum.array.html">symnum.array module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">symnum.codegen module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.FunctionExpression"><code class="docutils literal notranslate"><span class="pre">FunctionExpression</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.TupleArrayPrinter"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.generate_func"><code class="docutils literal notranslate"><span class="pre">generate_func()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.numpify"><code class="docutils literal notranslate"><span class="pre">numpify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.numpify_func"><code class="docutils literal notranslate"><span class="pre">numpify_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="symnum.numpy.html">symnum.numpy module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SymNum</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="symnum.html">symnum package</a></li>
+      <li class="breadcrumb-item active">symnum.codegen module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/symnum.codegen.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-symnum.codegen">
+<span id="symnum-codegen-module"></span><h1>symnum.codegen module<a class="headerlink" href="#module-symnum.codegen" title="Permalink to this heading"></a></h1>
+<p>Utility functions to generate NumPy function code.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symnum.codegen.FunctionExpression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">FunctionExpression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Function defined by a symbolic expression and set of symbolic arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em><em>, </em><em>...</em><em>]</em>) – Symbolic arguments to function.</p></li>
+<li><p><strong>return_val</strong> (<em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em>) – Symbolic expression in arguments corresponding to function
+return value.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluate symbolic function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*args</strong> (<em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em>) – Symbolic values to pass as positional arguments to function.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Symbolic value corresponding to return value for function for passed
+symbolic arguments.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Union</em>[sympy.Expr, <a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.args" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.return_val">
+<span class="sig-name descname"><span class="pre">return_val</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.return_val" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">TupleArrayPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#TupleArrayPrinter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NumPyPrinter</span></code></p>
+<p>SymPy printer which uses nested tuples for array literals.</p>
+<p>Rather than printing array-like objects as numpy.array calls with a nested list
+argument (which is not numba compatible) a nested tuple argument is used instead.</p>
+<p><cite>settings</cite> is passed to CodePrinter.__init__()
+<cite>module</cite> specifies the array module to use, currently ‘NumPy’, ‘CuPy’
+or ‘JAX’.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.doprint">
+<span class="sig-name descname"><span class="pre">doprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.doprint" title="Permalink to this definition"></a></dt>
+<dd><p>Print the expression as code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Expression</span></code>) – The expression to be printed.</p></li>
+<li><p><strong>assign_to</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Symbol</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixSymbol</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">strings</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Symbols</span> <span class="pre">(optional)</span></code>) – If provided, the printed code will set the expression to a variable or multiple variables
+with the name or names given in <code class="docutils literal notranslate"><span class="pre">assign_to</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.emptyPrinter">
+<span class="sig-name descname"><span class="pre">emptyPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.emptyPrinter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.language">
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Python'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.language" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.modules">
+<span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.modules" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">order</span></span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.order" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.parenthesize">
+<span class="sig-name descname"><span class="pre">parenthesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.parenthesize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.printmethod">
+<span class="sig-name descname"><span class="pre">printmethod</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'_pythoncode'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.printmethod" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.reserved_words">
+<span class="sig-name descname"><span class="pre">reserved_words</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'False',</span> <span class="pre">'None',</span> <span class="pre">'True',</span> <span class="pre">'and',</span> <span class="pre">'as',</span> <span class="pre">'assert',</span> <span class="pre">'break',</span> <span class="pre">'class',</span> <span class="pre">'continue',</span> <span class="pre">'def',</span> <span class="pre">'del',</span> <span class="pre">'elif',</span> <span class="pre">'else',</span> <span class="pre">'except',</span> <span class="pre">'finally',</span> <span class="pre">'for',</span> <span class="pre">'from',</span> <span class="pre">'global',</span> <span class="pre">'if',</span> <span class="pre">'import',</span> <span class="pre">'in',</span> <span class="pre">'is',</span> <span class="pre">'lambda',</span> <span class="pre">'nonlocal',</span> <span class="pre">'not',</span> <span class="pre">'or',</span> <span class="pre">'pass',</span> <span class="pre">'raise',</span> <span class="pre">'return',</span> <span class="pre">'try',</span> <span class="pre">'while',</span> <span class="pre">'with',</span> <span class="pre">'yield'}</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.reserved_words" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.set_global_settings">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_global_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.set_global_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Set system-wide printing settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.stringify">
+<span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.stringify" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.tab">
+<span class="sig-name descname"><span class="pre">tab</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'</span>&#160;&#160;&#160; <span class="pre">'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.tab" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symnum.codegen.generate_func">
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">generate_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy_module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#generate_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.generate_func" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a Python function from symbolic expression(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Iterable</em><em>[</em><em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em><em>]</em>) – List of symbolic inputs to use as function arguments.</p></li>
+<li><p><strong>exprs</strong> (<em>Iterable</em><em>[</em><em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>, </em><a class="reference internal" href="#symnum.codegen.FunctionExpression" title="symnum.codegen.FunctionExpression"><em>FunctionExpression</em></a><em>]</em><em>]</em>) – List of symbolic expressions to use as function return values.</p></li>
+<li><p><strong>func_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name to define generated function with.</p></li>
+<li><p><strong>printer</strong> (<em>Optional</em><em>[</em><em>Printer</em><em>]</em>) – Instance of SymPy <a class="reference external" href="https://docs.sympy.org/latest/modules/printing.html#sympy.printing.printer.Printer" title="(in SymPy v1.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.printing.printer.Printer</span></code></a> (sub)class
+which produces string representations of symbolic expressions to be used in
+code for generated function. Defaults to an instance of
+<a class="reference internal" href="#symnum.codegen.TupleArrayPrinter" title="symnum.codegen.TupleArrayPrinter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupleArrayPrinter</span></code></a>, a subclass of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.printing.numpy.NumpyPrinter</span></code>, which prints <cite>object</cite>
+argument to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="(in NumPy v1.25)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.array()</span></code></a> as a nested tuple rather than a nested
+list, which retains compatibility with <code class="xref py py-mod docutils literal notranslate"><span class="pre">numba</span></code> which only supports
+tuple array literals.</p></li>
+<li><p><strong>numpy_module</strong> (<em>Optional</em><em>[</em><em>ModuleType</em><em>]</em>) – Module implementing NumPy API to use in NumPy API calls in
+generated function. Defaults to <a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v1.25)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code></a>.</p></li>
+<li><p><strong>namespace</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em>]</em>) – Namespace to define generated function in. Default is to create a
+temporary module and define function in that namespace. Set
+<code class="code docutils literal notranslate"><span class="pre">namespace=globals()</span></code> to define in current global namespace.</p></li>
+<li><p><strong>jit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – If <code class="code docutils literal notranslate"><span class="pre">True</span></code> enables just-in-time compilation of the generated function
+using Numba (requires <code class="xref py py-mod docutils literal notranslate"><span class="pre">numba</span></code> package to be installed in the current
+Python environment). Default is <code class="code docutils literal notranslate"><span class="pre">jit=False</span></code>.</p></li>
+<li><p><strong>simplify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether to try to simplify symbolic expressions in <code class="code docutils literal notranslate"><span class="pre">exprs</span></code>
+before generating code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symnum.codegen.numpify">
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator to convert SymPy symbolic array function to a NumPy function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Variable length list of tuples and integers defining shapes of
+array arguments to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite>
+with <cite>x</cite> an array with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape
+<cite>(2, 4, 3)</cite> the call signature would be of the form
+<cite>numpify((2, 2), (2, 4, 3))(func)</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Any keyword arguments to <a class="reference internal" href="#symnum.codegen.generate_func" title="symnum.codegen.generate_func"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_func()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator which takes a SymPy function of which accepts one or more
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> as arguments and returns a symbolic scalar or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> value, and returns a corresponding NumPy function which
+accepts one or more <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> arguments and returns a scalar or
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Callable</em>[[<em>Callable</em>[…, <em>Union</em>[sympy.Expr, <a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a>]]], <em>Callable</em>[…, <em>Union</em>[ScalarLike, NDArray]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symnum.codegen.numpify_func">
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sympy_func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify_func" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a NumPy function from a SymPy symbolic array function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sympy_func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em><em>]</em>) – Function which takes one or more <code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> as
+arguments and returns a symbolic scalar expression or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> value.</p></li>
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Variable length list of tuples or integers defining shapes of array
+arguments to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite>
+an array with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the
+call signature would be of the form <cite>numpify_func(func, (2, 2), (2, 4, 3))</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Any keyword arguments to <a class="reference internal" href="#symnum.codegen.generate_func" title="symnum.codegen.generate_func"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_func()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generated NumPy function which takes one or more <cite>numpy.ndarray</cite> arguments and
+return a scalar or <cite>numpy.ndarray</cite> value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ScalarLike, NDArray]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="symnum.array.html" class="btn btn-neutral float-left" title="symnum.array module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="symnum.numpy.html" class="btn btn-neutral float-right" title="symnum.numpy module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Matt Graham.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

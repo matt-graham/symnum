@@ -1,0 +1,25 @@
+symnum package
+==============
+
+.. automodule:: symnum
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 2
+
+   symnum.diffops
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 2
+
+   symnum.array
+   symnum.codegen
+   symnum.numpy

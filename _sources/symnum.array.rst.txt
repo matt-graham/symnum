@@ -1,0 +1,7 @@
+symnum.array module
+===================
+
+.. automodule:: symnum.array
+   :members:
+   :undoc-members:
+   :show-inheritance:

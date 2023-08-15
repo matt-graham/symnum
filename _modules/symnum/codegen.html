@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>symnum.codegen &mdash; SymNum  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SymNum
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../symnum.html">symnum package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SymNum</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">symnum.codegen</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for symnum.codegen</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions to generate NumPy function code.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">importlib.util</span> <span class="k">as</span> <span class="nn">importlib_util</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>  <span class="c1"># noqa: ICN001</span>
+<span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">from</span> <span class="nn">sympy.printing.numpy</span> <span class="kn">import</span> <span class="n">NumPyPrinter</span>
+
+<span class="kn">from</span> <span class="nn">symnum.array</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SymbolicArray</span><span class="p">,</span>
+    <span class="n">as_symbolic_array</span><span class="p">,</span>
+    <span class="n">is_array</span><span class="p">,</span>
+    <span class="n">is_valid_shape</span><span class="p">,</span>
+    <span class="n">named_array</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numba</span>
+
+    <span class="n">NUMBA_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">NUMBA_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+    <span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+    <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+    <span class="kn">from</span> <span class="nn">sympy.printing</span> <span class="kn">import</span> <span class="n">Printer</span>
+
+    <span class="kn">from</span> <span class="nn">symnum.array</span> <span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ShapeLike</span>
+
+
+<div class="viewcode-block" id="FunctionExpression"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.FunctionExpression">[docs]</a><span class="k">class</span> <span class="nc">FunctionExpression</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function defined by a symbolic expression and set of symbolic arguments.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="s2">&quot;return_val&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">return_val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            args: Symbolic arguments to function.</span>
+<span class="sd">            return_val: Symbolic expression in arguments corresponding to function</span>
+<span class="sd">                return value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_val</span> <span class="o">=</span> <span class="n">return_val</span>
+
+<div class="viewcode-block" id="FunctionExpression.__call__"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.FunctionExpression.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate symbolic function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Symbolic values to pass as positional arguments to function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Symbolic value corresponding to return value for function for passed</span>
+<span class="sd">            symbolic arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arg_subs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">sym_old</span><span class="p">,</span> <span class="n">sym_new</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">arg_old</span><span class="p">,</span> <span class="n">arg_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sym_old</span><span class="p">,</span> <span class="n">sym_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arg_old</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">arg_new</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_val</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">arg_subs</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_get_func_arg_names</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;_arg_names&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">func</span><span class="o">.</span><span class="n">_arg_names</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">[:</span> <span class="n">func</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_argcount</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_construct_symbolic_arguments</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">arg_shapes</span><span class="p">:</span> <span class="n">ShapeLike</span><span class="p">,</span>
+    <span class="n">arg_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a tuple of symbolic array arguments with given shapes.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">arg_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">arg_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;arg_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arg_shapes</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">named_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_valid_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">else</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">shape</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arg_shapes</span><span class="p">,</span> <span class="n">arg_names</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="numpify_func"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.numpify_func">[docs]</a><span class="k">def</span> <span class="nf">numpify_func</span><span class="p">(</span>
+    <span class="n">sympy_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]],</span>
+    <span class="o">*</span><span class="n">arg_shapes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a NumPy function from a SymPy symbolic array function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sympy_func: Function which takes one or more :py:obj:`SymbolicArray` as</span>
+<span class="sd">            arguments and returns a symbolic scalar expression or</span>
+<span class="sd">            :py:obj:`SymbolicArray` value.</span>
+<span class="sd">        *arg_shapes: Variable length list of tuples or integers defining shapes of array</span>
+<span class="sd">            arguments to `func`, e.g. if `func` takes two arguments `x` and `y` with `x`</span>
+<span class="sd">            an array with shape `(2, 2)` and `y` an array with shape `(2, 4, 3)` the</span>
+<span class="sd">            call signature would be of the form `numpify_func(func, (2, 2), (2, 4, 3))`.</span>
+<span class="sd">        **kwargs: Any keyword arguments to :py:func:`generate_func`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Generated NumPy function which takes one or more `numpy.ndarray` arguments and</span>
+<span class="sd">        return a scalar or `numpy.ndarray` value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg_shapes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sympy_func</span><span class="p">,</span> <span class="s2">&quot;_arg_shapes&quot;</span><span class="p">):</span>
+        <span class="n">arg_shapes</span> <span class="o">=</span> <span class="n">sympy_func</span><span class="o">.</span><span class="n">_arg_shapes</span>
+    <span class="n">arg_names</span> <span class="o">=</span> <span class="n">_get_func_arg_names</span><span class="p">(</span><span class="n">sympy_func</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg_shapes</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg_names</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Shapes must be specified for all function arguments.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">_construct_symbolic_arguments</span><span class="p">(</span><span class="o">*</span><span class="n">arg_shapes</span><span class="p">,</span> <span class="n">arg_names</span><span class="o">=</span><span class="n">arg_names</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sympy_func</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;&lt;lambda&gt;&quot;</span><span class="p">:</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;lambda_</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">sympy_func</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sympy_func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">numpy_func</span> <span class="o">=</span> <span class="n">generate_func</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">sympy_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">),</span> <span class="n">func_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">numpy_func</span><span class="o">.</span><span class="n">_sympy_func</span> <span class="o">=</span> <span class="n">sympy_func</span>
+    <span class="n">numpy_func</span><span class="o">.</span><span class="n">_arg_shapes</span> <span class="o">=</span> <span class="n">arg_shapes</span>
+    <span class="n">numpy_func</span><span class="o">.</span><span class="n">_arg_names</span> <span class="o">=</span> <span class="n">arg_names</span>
+    <span class="k">return</span> <span class="n">numpy_func</span></div>
+
+
+<div class="viewcode-block" id="numpify"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.numpify">[docs]</a><span class="k">def</span> <span class="nf">numpify</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">arg_shapes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span>
+    <span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]]],</span>
+    <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]],</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to convert SymPy symbolic array function to a NumPy function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        *arg_shapes: Variable length list of tuples and integers defining shapes of</span>
+<span class="sd">            array arguments to `func`, e.g. if `func` takes two arguments `x` and `y`</span>
+<span class="sd">            with `x` an array with shape `(2, 2)` and `y` an array with shape</span>
+<span class="sd">            `(2, 4, 3)` the call signature would be of the form</span>
+<span class="sd">            `numpify((2, 2), (2, 4, 3))(func)`.</span>
+<span class="sd">        **kwargs: Any keyword arguments to :py:func:`generate_func`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Decorator which takes a SymPy function of which accepts one or more</span>
+<span class="sd">        :py:obj:`SymbolicArray` as arguments and returns a symbolic scalar or</span>
+<span class="sd">        :py:obj:`SymbolicArray` value, and returns a corresponding NumPy function which</span>
+<span class="sd">        accepts one or more :py:obj:`numpy.ndarray` arguments and returns a scalar or</span>
+<span class="sd">        :py:obj:`numpy.ndarray`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">numpify_func</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">arg_shapes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+
+<span class="k">def</span> <span class="nf">_flatten_arrays</span><span class="p">(</span>
+    <span class="n">seq</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">list</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">]]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flatten a sequence of arrays to a flat list.&quot;&quot;&quot;</span>
+    <span class="n">flattened</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">shape_size_and_dtypes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_array</span><span class="p">(</span><span class="n">el</span><span class="p">):</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>  <span class="c1"># noqa: PLW2901</span>
+            <span class="n">flattened</span> <span class="o">+=</span> <span class="n">el</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">shape_size_and_dtypes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">el</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">el</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">el</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flattened</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+            <span class="n">shape_size_and_dtypes</span><span class="o">.</span><span class="n">append</span><span class="p">(())</span>
+
+    <span class="k">def</span> <span class="nf">unflatten</span><span class="p">(</span><span class="n">flattened</span><span class="p">):</span>
+        <span class="n">unflattened</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shape_size_and_dtypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="p">():</span>
+                <span class="n">unflattened</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">flattened</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">shape</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="n">unflattened</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SymbolicArray</span><span class="p">(</span><span class="n">flattened</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">size</span><span class="p">],</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="p">))</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="n">unflattened</span>
+
+    <span class="k">return</span> <span class="n">flattened</span><span class="p">,</span> <span class="n">unflatten</span>
+
+
+<span class="k">def</span> <span class="nf">_to_tuple</span><span class="p">(</span><span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively convert nested lists to nested tuples.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_to_tuple</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TupleArrayPrinter"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.TupleArrayPrinter">[docs]</a><span class="k">class</span> <span class="nc">TupleArrayPrinter</span><span class="p">(</span><span class="n">NumPyPrinter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SymPy printer which uses nested tuples for array literals.</span>
+
+<span class="sd">    Rather than printing array-like objects as numpy.array calls with a nested list</span>
+<span class="sd">    argument (which is not numba compatible) a nested tuple argument is used instead.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_print_arraylike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">array_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print</span><span class="p">(</span><span class="n">_to_tuple</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;numpy.array(</span><span class="si">{</span><span class="n">array_str</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="n">_print_NDimArray</span> <span class="o">=</span> <span class="n">_print_arraylike</span>  <span class="c1"># noqa: N815</span>
+    <span class="n">_print_DenseNDimArray</span> <span class="o">=</span> <span class="n">_print_arraylike</span>  <span class="c1"># noqa: N815</span>
+    <span class="n">_print_ImmutableNDimArray</span> <span class="o">=</span> <span class="n">_print_arraylike</span>  <span class="c1"># noqa: N815</span>
+    <span class="n">_print_ImmutableDenseNDimArray</span> <span class="o">=</span> <span class="n">_print_arraylike</span>  <span class="c1"># noqa: N815</span>
+    <span class="n">_print_MatrixBase</span> <span class="o">=</span> <span class="n">_print_arraylike</span>  <span class="c1"># noqa: N815</span></div>
+
+
+<span class="k">def</span> <span class="nf">_generate_input_list_string</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a function argument string from a list of symbolic inputs.&quot;&quot;&quot;</span>
+    <span class="n">input_strings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">):</span>
+            <span class="n">input_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;_name&quot;</span><span class="p">):</span>
+            <span class="n">input_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;free_symbols&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
+            <span class="n">input_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">free_symbols</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> not of valid type.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_strings</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_generate_code</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]],</span>
+    <span class="n">exprs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]],</span>
+    <span class="n">func_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">printer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Printer</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">simplify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate code for a Python function from symbolic expression(s).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">printer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">printer</span> <span class="o">=</span> <span class="n">TupleArrayPrinter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exprs</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exprs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">exprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">exprs</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exprs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">exprs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">exprs</span><span class="p">)</span>
+    <span class="n">func_expr_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ignore_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exprs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">FunctionExpression</span><span class="p">):</span>
+            <span class="n">func_expr_args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+                <span class="n">ignore_set</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">arg</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">exprs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">return_val</span>
+    <span class="n">flat_exprs</span><span class="p">,</span> <span class="n">unflatten</span> <span class="o">=</span> <span class="n">_flatten_arrays</span><span class="p">(</span><span class="n">exprs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">simplify</span><span class="p">:</span>
+        <span class="n">flat_exprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">flat_exprs</span><span class="p">]</span>
+    <span class="n">intermediates</span><span class="p">,</span> <span class="n">flat_outputs</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">cse</span><span class="p">(</span>
+        <span class="n">flat_exprs</span><span class="p">,</span>
+        <span class="n">symbols</span><span class="o">=</span><span class="n">sympy</span><span class="o">.</span><span class="n">numbered_symbols</span><span class="p">(</span><span class="s2">&quot;_i&quot;</span><span class="p">),</span>
+        <span class="n">optimizations</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span>
+        <span class="n">ignore</span><span class="o">=</span><span class="n">ignore_set</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">unflatten</span><span class="p">(</span><span class="n">flat_outputs</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;def </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">_generate_input_list_string</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">    &quot;</span>
+    <span class="n">code</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">intermediates</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">code</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    return (</span><span class="se">\n</span><span class="s2">        &quot;</span>
+    <span class="n">code</span> <span class="o">+=</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">        &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;lambda </span><span class="si">{</span><span class="n">_generate_input_list_string</span><span class="p">(</span><span class="n">func_expr_args</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">}</span><span class="s2">: &quot;</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">func_expr_args</span>
+                <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">printer</span><span class="o">.</span><span class="n">doprint</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">code</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    )&quot;</span>
+    <span class="k">return</span> <span class="n">code</span>
+
+
+<span class="k">def</span> <span class="nf">_create_temporary_module</span><span class="p">(</span><span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;symnum_autogenerated_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an empty Python module in a temporary file to act as namespace.&quot;&quot;&quot;</span>
+    <span class="n">temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span>
+    <span class="n">temp_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">temp_file_path</span><span class="o">.</span><span class="n">stem</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib_util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">temp_file_path</span><span class="p">)</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib_util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
+    <span class="k">return</span> <span class="n">module</span>
+
+
+<div class="viewcode-block" id="generate_func"><a class="viewcode-back" href="../../symnum.codegen.html#symnum.generate_func">[docs]</a><span class="k">def</span> <span class="nf">generate_func</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]],</span>
+    <span class="n">exprs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">FunctionExpression</span><span class="p">]],</span>
+    <span class="n">func_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">printer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Printer</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">numpy_module</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModuleType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">jit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">simplify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a Python function from symbolic expression(s).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inputs: List of symbolic inputs to use as function arguments.</span>
+<span class="sd">        exprs: List of symbolic expressions to use as function return values.</span>
+<span class="sd">        func_name: Name to define generated function with.</span>
+<span class="sd">        printer: Instance of SymPy :py:class:`sympy.printing.printer.Printer` (sub)class</span>
+<span class="sd">            which produces string representations of symbolic expressions to be used in</span>
+<span class="sd">            code for generated function. Defaults to an instance of</span>
+<span class="sd">            :py:class:`TupleArrayPrinter`, a subclass of</span>
+<span class="sd">            :py:class:`sympy.printing.numpy.NumpyPrinter`, which prints `object`</span>
+<span class="sd">            argument to :py:func:`numpy.array` as a nested tuple rather than a nested</span>
+<span class="sd">            list, which retains compatibility with :py:mod:`numba` which only supports</span>
+<span class="sd">            tuple array literals.</span>
+<span class="sd">        numpy_module: Module implementing NumPy API to use in NumPy API calls in</span>
+<span class="sd">            generated function. Defaults to :py:mod:`numpy`.</span>
+<span class="sd">        namespace: Namespace to define generated function in. Default is to create a</span>
+<span class="sd">            temporary module and define function in that namespace. Set</span>
+<span class="sd">            :code:`namespace=globals()` to define in current global namespace.</span>
+<span class="sd">        jit: If :code:`True` enables just-in-time compilation of the generated function</span>
+<span class="sd">            using Numba (requires :py:mod:`numba` package to be installed in the current</span>
+<span class="sd">            Python environment). Default is :code:`jit=False`.</span>
+<span class="sd">        simplify: Whether to try to simplify symbolic expressions in :code:`exprs`</span>
+<span class="sd">            before generating code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">_generate_code</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">exprs</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">printer</span><span class="o">=</span><span class="n">printer</span><span class="p">,</span> <span class="n">simplify</span><span class="o">=</span><span class="n">simplify</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">namespace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">namespace</span> <span class="o">=</span> <span class="n">_create_temporary_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;symnum_</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">_module_&quot;</span><span class="p">)</span><span class="o">.</span><span class="vm">__dict__</span>
+    <span class="n">namespace</span><span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span> <span class="k">if</span> <span class="n">numpy_module</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">numpy_module</span>
+    <span class="n">namespace</span><span class="p">[</span><span class="s2">&quot;math&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>  <span class="c1"># noqa: S102</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">namespace</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span>
+    <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Automatically generated </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2"> function.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">NUMBA_AVAILABLE</span> <span class="ow">and</span> <span class="n">jit</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">numba</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">jit</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot just-in-time compile function as Numba is not installed.&quot;</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">func</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Matt Graham.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

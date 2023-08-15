@@ -1,0 +1,7 @@
+symnum.diffops.numpy module
+===========================
+
+.. automodule:: symnum.diffops.numpy
+   :members:
+   :undoc-members:
+   :show-inheritance:

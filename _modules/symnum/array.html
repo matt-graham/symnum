@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>symnum.array &mdash; SymNum  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SymNum
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../symnum.html">symnum package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SymNum</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">symnum.array</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for symnum.array</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Symbolic array classes.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_origin</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">DTypeLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">from</span> <span class="nn">sympy.tensor.array</span> <span class="kn">import</span> <span class="n">permutedims</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterator</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeAlias</span>
+
+<span class="n">SympyArray</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">NDimArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">MatrixBase</span><span class="p">]</span>
+<span class="n">ScalarLike</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">boolalg</span><span class="o">.</span><span class="n">Boolean</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">ShapeLike</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Tuple</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_union_type_unsubscripted_args</span><span class="p">(</span><span class="n">union_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">get_origin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">union_type</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="is_array"><a class="viewcode-back" href="../../symnum.array.html#symnum.is_array">[docs]</a><span class="k">def</span> <span class="nf">is_array</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a valid SymNum, SymPy or NumPy array type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj: Object to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether object is valid array type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_get_union_type_unsubscripted_args</span><span class="p">(</span><span class="n">ArrayLike</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="is_sympy_array"><a class="viewcode-back" href="../../symnum.array.html#symnum.is_sympy_array">[docs]</a><span class="k">def</span> <span class="nf">is_sympy_array</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a valid SymPy array type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj: Object to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether object is valid SymPy array type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_get_union_type_unsubscripted_args</span><span class="p">(</span><span class="n">SympyArray</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="is_scalar"><a class="viewcode-back" href="../../symnum.array.html#symnum.is_scalar">[docs]</a><span class="k">def</span> <span class="nf">is_scalar</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a symbolic or numeric scalar type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj: Object to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether object is valid scalar type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">obj</span><span class="p">,</span>
+        <span class="n">_get_union_type_unsubscripted_args</span><span class="p">(</span><span class="n">ScalarLike</span><span class="p">),</span>
+    <span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_valid_shape"><a class="viewcode-back" href="../../symnum.array.html#symnum.is_valid_shape">[docs]</a><span class="k">def</span> <span class="nf">is_valid_shape</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if object is a valid array shape type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj: Object to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether object is valid array shape type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_get_union_type_unsubscripted_args</span><span class="p">(</span><span class="n">ShapeLike</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_broadcastable_shapes</span><span class="p">(</span><span class="n">shape_1</span><span class="p">:</span> <span class="n">ShapeLike</span><span class="p">,</span> <span class="n">shape_2</span><span class="p">:</span> <span class="n">ShapeLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if two array shapes are compatible for broadcasting.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">s1</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">s2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">shape_1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape_2</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="binary_broadcasting_func"><a class="viewcode-back" href="../../symnum.array.html#symnum.binary_broadcasting_func">[docs]</a><span class="k">def</span> <span class="nf">binary_broadcasting_func</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ScalarLike</span><span class="p">],</span> <span class="n">ScalarLike</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">],</span> <span class="n">ArrayLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap binary function to give broadcasting semantics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func: Binary argument function to wrap.</span>
+<span class="sd">        name: Name to assign to wrapped function&#39;s `__name__` attribute.</span>
+<span class="sd">        doc: Docstring to assign to wrapped function&#39;s `__doc__` attribute.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Wrapped function which broadcasts on both arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">wrapped_func</span><span class="p">(</span>
+        <span class="n">arg_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">],</span>
+        <span class="n">arg_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">arg_2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">arg_1</span><span class="p">,</span> <span class="n">arg_2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_array</span><span class="p">(</span><span class="n">arg_2</span><span class="p">):</span>
+            <span class="n">arg_2</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">arg_2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">arg_1</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a2</span> <span class="ow">in</span> <span class="n">arg_2</span><span class="o">.</span><span class="n">flat</span><span class="p">],</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">arg_2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_array</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">arg_2</span><span class="p">):</span>
+            <span class="n">arg_1</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">arg_2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a1</span> <span class="ow">in</span> <span class="n">arg_1</span><span class="o">.</span><span class="n">flat</span><span class="p">],</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">arg_1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_array</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_array</span><span class="p">(</span><span class="n">arg_2</span><span class="p">):</span>
+            <span class="n">arg_1</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span>
+            <span class="n">arg_2</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">arg_2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">arg_1</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">arg_2</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arg_1</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">arg_2</span><span class="o">.</span><span class="n">flat</span><span class="p">)],</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="n">arg_1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">_broadcastable_shapes</span><span class="p">(</span><span class="n">arg_1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">arg_2</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                <span class="n">broadcaster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">arg_1</span><span class="p">,</span> <span class="n">arg_2</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="ow">in</span> <span class="n">broadcaster</span><span class="p">],</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="n">broadcaster</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;operands could not be broadcast together with shapes &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg_1</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">arg_2</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not implemented for arguments of types </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg_1</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg_2</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">wrapped_func</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">wrapped_func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">doc</span>
+
+    <span class="k">return</span> <span class="n">wrapped_func</span></div>
+
+
+<div class="viewcode-block" id="unary_elementwise_func"><a class="viewcode-back" href="../../symnum.array.html#symnum.unary_elementwise_func">[docs]</a><span class="k">def</span> <span class="nf">unary_elementwise_func</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ScalarLike</span><span class="p">],</span> <span class="n">ScalarLike</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ArrayLike</span><span class="p">],</span> <span class="n">ArrayLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap unary function to give elementwise semantics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func: Binary argument function to wrap.</span>
+<span class="sd">        name: Name to assign to wrapped function&#39;s `__name__` attribute.</span>
+<span class="sd">        doc: Docstring to assign to wrapped function&#39;s `__doc__` attribute.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Wrapped function which acts elementwise on argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">wrapped_func</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_array</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">flat</span><span class="p">],</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">arg</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not implemented for argument of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">wrapped_func</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">wrapped_func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">doc</span>
+
+    <span class="k">return</span> <span class="n">wrapped_func</span></div>
+
+
+<span class="k">def</span> <span class="nf">_slice_iterator</span><span class="p">(</span>
+    <span class="n">arr</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">axes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate over slices of array from indexing along a subset of axes.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="p">(</span><span class="n">axes</span><span class="p">,)</span>
+    <span class="c1"># Wrap negative axes</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ax</span> <span class="o">%</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">ax</span><span class="p">])</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]):</span>
+        <span class="k">yield</span> <span class="n">arr</span><span class="p">[</span>
+            <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">indices</span><span class="p">[</span><span class="n">axes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ax</span><span class="p">)]</span> <span class="k">if</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
+
+<div class="viewcode-block" id="named_array"><a class="viewcode-back" href="../../symnum.array.html#symnum.named_array">[docs]</a><span class="k">def</span> <span class="nf">named_array</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">ShapeLike</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a symbolic array with common name prefix to elements.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: Name prefix to use for symbolic array elements.</span>
+<span class="sd">        shape: Dimensions of array.</span>
+<span class="sd">        dtype: NumPy dtype to use for array.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Symbolic array with elements `name[index_list]` for `index_list` iterating</span>
+<span class="sd">        over strings of valid comma-separated indices, for example calling with</span>
+<span class="sd">        `name=&quot;a&quot;` and `shape=(2, 2)` would give a symbolic array of shape `(2, 2)` with</span>
+<span class="sd">        elements `a[0, 0]`, `a[0, 1]`, `a[1, 0]` and `a[1, 1]`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="n">assumptions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">),</span>
+        <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">),</span>
+        <span class="s2">&quot;complex&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Complex numbers are superset of reals</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="p">()</span> <span class="ow">or</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">assumptions</span><span class="p">)],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_valid_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">[</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">index</span><span class="p">])</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">assumptions</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">))</span>
+            <span class="p">],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unrecognised shape type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">array</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">array</span></div>
+
+
+<div class="viewcode-block" id="infer_array_dtype"><a class="viewcode-back" href="../../symnum.array.html#symnum.infer_array_dtype">[docs]</a><span class="k">def</span> <span class="nf">infer_array_dtype</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">SymbolicArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DTypeLike</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Infer safe dtype for array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        array: Array to infer dtype for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        NumPy dtype which can represent array elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">is_integer</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">array</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">is_real</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">array</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">is_complex</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">array</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">object</span></div>
+
+
+<div class="viewcode-block" id="infer_scalar_dtype"><a class="viewcode-back" href="../../symnum.array.html#symnum.infer_scalar_dtype">[docs]</a><span class="k">def</span> <span class="nf">infer_scalar_dtype</span><span class="p">(</span><span class="n">scalar</span><span class="p">:</span> <span class="n">ScalarLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DTypeLike</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Infer safe dtype for array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        array: Scalar to infer dtype for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        NumPy dtype which can represent array elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">scalar</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">scalar</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">scalar</span><span class="o">.</span><span class="n">is_integer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">scalar</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">scalar</span><span class="o">.</span><span class="n">is_complex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;complex128&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">object</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Argument is not of valid scalar type.&quot;</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_matrix_multiply</span><span class="p">(</span><span class="n">left</span><span class="p">:</span> <span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">SymbolicArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform symbolic matrix multiply of two 1D or 2D arrays.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Matrix multiplication only implemented for 1D and 2D operands.&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Incompatible shapes </span><span class="si">{</span><span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for matrix &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;multiplication.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">left</span> <span class="o">*</span> <span class="n">right</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">left</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">right</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">left</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">left</span> <span class="o">*</span> <span class="n">right</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],),</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">left</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">right</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Arguments unexpectedly failed to match any of branch conditions.&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="as_symbolic_array"><a class="viewcode-back" href="../../symnum.array.html#symnum.as_symbolic_array">[docs]</a><span class="k">def</span> <span class="nf">as_symbolic_array</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an array to a `SymbolicArray` instance if not already an instance.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        array: Array to return as :py:class:`SymbolicArray` instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Original array if argument is already an :py:class:`SymbolicArray` instance and</span>
+<span class="sd">        :py:class:`SymbolicArray`SymbolicArray` with equivalent shape and entries to</span>
+<span class="sd">        array argument if not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_implements_numpy_ndarray_method</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="n">method</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;SymNum implementation of :py:obj:`numpy.ndarray.</span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">`.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">method</span>
+
+
+<div class="viewcode-block" id="SymbolicArray"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray">[docs]</a><span class="k">class</span> <span class="nc">SymbolicArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Symbolic `n`-dimensional array with NumPy-like interface.</span>
+
+<span class="sd">    Specifically implements NumPy style operator overloading, broadcasting and indexing</span>
+<span class="sd">    semantics.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__array_priority__</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">object_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ScalarLike</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="n">DTypeLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            object_: Object to construct symbolic array from. Either a nested sequence</span>
+<span class="sd">                of (symbolic) scalars, an existing array like object or a single</span>
+<span class="sd">                (symbolic) scalar.</span>
+<span class="sd">            shape: Tuple defining shape of array (sizes of each dimension / axis). If</span>
+<span class="sd">                :code:`object_` is array-like or scalar-like and :code:`shape` is set</span>
+<span class="sd">                to :code:`None` (the default) the :code:`object_.shape` attribute will</span>
+<span class="sd">                be used if array-like or a :code:`()` shape used if scalar-like.</span>
+<span class="sd">            dtype: Object defining datatype to use for array when converting to NumPy</span>
+<span class="sd">                arrays. If set to :code:`None` (default) then an appropriate datatype</span>
+<span class="sd">                will be inferred from the properties of the symbolic expressions in the</span>
+<span class="sd">                array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">object_</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">object_</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="c1"># Avoid nesting 0-dimensional NumPy and symbolic arrays</span>
+            <span class="n">iterable</span> <span class="o">=</span> <span class="p">(</span><span class="n">object_</span><span class="p">[()],)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">object_</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
+            <span class="n">iterable</span> <span class="o">=</span> <span class="n">object_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">iterable</span> <span class="o">=</span> <span class="p">(</span><span class="n">object_</span><span class="p">,)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">ImmutableDenseNDimArray</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dtype</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">slice</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]:</span>
+        <span class="n">indexed_base_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">indexed_base_array</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">indexed_base_array</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="n">indexed_base_array</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="n">indexed_base_array</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;len() of unsized object&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Iteration over a 0-d array&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Array contains free symbols, therefore cannot cast to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;NumPy array of dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dtype</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">dtype</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DTypeLike</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">infer_array_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SymbolicArray(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_repr_latex_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">_repr_latex_</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SymbolicArray.diff"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.diff">[docs]</a>    <span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">variables</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute derivative of array with respect to one or more arguments.</span>
+
+<span class="sd">        Wrapper of :py:meth:`sympy.NDimArray.diff`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *variables: One or more variables to differentiate with respect to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array of derivatives.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="o">*</span><span class="n">variables</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymbolicArray.subs"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.subs">[docs]</a>    <span class="k">def</span> <span class="nf">subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Substitute variables in an expression.</span>
+
+<span class="sd">        Wrapper of :py:meth:`sympy.NDimArray.subs`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Either two arguments `(old, new)` corresponding to the old and new</span>
+<span class="sd">                variables to subsitute for respectively, or an iterable of `(old, new)`</span>
+<span class="sd">                pairs, with replacements processed in order given, or a dictionary</span>
+<span class="sd">                mapping from old to new variables.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array with subsititutions applies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">),</span>
+            <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">free_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set of all free symbols in symbolic expressions defined in array.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">free_symbols</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">*</span> <span class="bp">self</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">/</span> <span class="n">other</span>
+
+    <span class="n">__div__</span> <span class="o">=</span> <span class="fm">__truediv__</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">/</span> <span class="bp">self</span>
+
+    <span class="n">__rdiv__</span> <span class="o">=</span> <span class="fm">__rtruediv__</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__floordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">//</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rfloordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">//</span> <span class="bp">self</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__mod__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">%</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">+</span> <span class="bp">self</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">-</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">-</span> <span class="bp">self</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">**</span><span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span><span class="o">**</span><span class="bp">self</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">!=</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">&lt;</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">&lt;=</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">&gt;</span> <span class="n">other</span>
+
+    <span class="nd">@binary_broadcasting_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">&gt;=</span> <span class="n">other</span>
+
+    <span class="nd">@unary_elementwise_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="bp">self</span>
+
+    <span class="nd">@unary_elementwise_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__pos__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@unary_elementwise_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__abs__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__matmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_array</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="n">_matrix_multiply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="fm">__rmatmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_array</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="n">_matrix_multiply</span><span class="p">(</span><span class="n">as_symbolic_array</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@unary_elementwise_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">real</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sympy</span><span class="o">.</span><span class="n">re</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@unary_elementwise_func</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">imag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sympy</span><span class="o">.</span><span class="n">im</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">ndim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SymbolicArray.flatten"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.flatten">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">flat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="c1"># SymPy arrays with shape () cannot be indexed so deal with this case</span>
+            <span class="c1"># separately</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="p">[()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)):</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SymbolicArray.tolist"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.tolist">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="c1"># SymPy arrays with shape () error when calling tolist method so deal with</span>
+            <span class="c1"># this case separately</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>  <span class="c1"># noqa: N802</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+                <span class="k">for</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="p">],</span>
+            <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SymbolicArray.transpose"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.transpose">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="n">permutedims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="p">,</span> <span class="n">axes</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymbolicArray.reshape"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.reshape">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">reshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">ShapeLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymbolicArray.sum"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.sum">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span>  <span class="c1"># noqa: A003</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[()]</span>
+        <span class="k">elif</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">_slice_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unrecognised axis type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymbolicArray.prod"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.prod">[docs]</a>    <span class="nd">@_implements_numpy_ndarray_method</span>
+    <span class="k">def</span> <span class="nf">prod</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">SymbolicArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[()]</span>
+        <span class="k">elif</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sympy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">sympy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">_slice_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unrecognised axis type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
+
+
+<span class="n">ArrayLike</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">SympyArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">SymbolicArray</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Matt Graham.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

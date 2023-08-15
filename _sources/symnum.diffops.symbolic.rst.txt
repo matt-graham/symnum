@@ -1,0 +1,7 @@
+symnum.diffops.symbolic module
+==============================
+
+.. automodule:: symnum.diffops.symbolic
+   :members:
+   :undoc-members:
+   :show-inheritance:

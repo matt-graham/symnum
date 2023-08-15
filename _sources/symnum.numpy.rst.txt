@@ -1,0 +1,7 @@
+symnum.numpy module
+===================
+
+.. automodule:: symnum.numpy
+   :members:
+   :undoc-members:
+   :show-inheritance:
