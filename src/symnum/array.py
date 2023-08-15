@@ -700,7 +700,6 @@ class SymbolicArray:
         else:
             return SymbolicArray(
                 permutedims(self._base_array, axes),
-                shape=self.shape,
                 dtype=self.dtype,
             )
 
