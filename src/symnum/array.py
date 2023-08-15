@@ -395,7 +395,11 @@ class SymbolicArray:
                 will be inferred from the properties of the symbolic expressions in the
                 array.
         """
-        if hasattr(object_, "__len__"):
+        if hasattr(object_, "shape") and object_.shape == ():
+            # Avoid nesting 0-dimensional NumPy and symbolic arrays
+            iterable = (object_[()],)
+            shape = ()
+        elif hasattr(object_, "__len__"):
             iterable = object_
         else:
             iterable = (object_,)
@@ -416,12 +420,18 @@ class SymbolicArray:
             dtype=self.dtype,
         )
 
+    def __len__(self):
+        if self.shape == ():
+            msg = "len() of unsized object"
+            raise TypeError(msg)
+        return self.shape[0]
+
     def __iter__(self) -> Iterator[Union[SymbolicArray, sympy.Expr]]:
         if self.shape == ():
-            yield self[()]
-        else:
-            for i in range(self.shape[0]):
-                yield self[i]
+            msg = "Iteration over a 0-d array"
+            raise ValueError(msg)
+        for i in range(self.shape[0]):
+            yield self[i]
 
     @_implements_numpy_ndarray_method
     def __array__(self, dtype=None) -> NDArray:
@@ -703,7 +713,9 @@ class SymbolicArray:
         self,
         axis: Optional[Union[tuple, list, int]] = None,
     ) -> Union[SymbolicArray, sympy.Expr]:
-        if axis is None:
+        if self.shape == ():
+            return self[()]
+        elif axis is None:
             return sum(self.flat)
         elif isinstance(axis, (tuple, list, int)):
             return sum(_slice_iterator(self, axis))
@@ -716,7 +728,9 @@ class SymbolicArray:
         self,
         axis: Optional[Union[tuple, list, int]] = None,
     ) -> Union[SymbolicArray, sympy.Expr]:
-        if axis is None:
+        if self.shape == ():
+            return self[()]
+        elif axis is None:
             return sympy.prod(self.flat)
         elif isinstance(axis, (tuple, list, int)):
             return sympy.prod(_slice_iterator(self, axis))
