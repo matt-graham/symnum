@@ -17,7 +17,7 @@ from symnum.array import unary_elementwise_func as _unary_elementwise_func
 
 _constants = {
     "pi": _sym_singletons.Pi,
-    ("inf", "infty", "INF", "Infinity", "PINF"): _sym_singletons.Infinity,
+    ("inf", "infty", "Inf", "Infinity", "PINF"): _sym_singletons.Infinity,
     ("nan", "NaN", "NAN"): _sym_singletons.NaN,
     "NINF": _sym_singletons.NegativeInfinity,
     "e": _sym_singletons.Exp1,
