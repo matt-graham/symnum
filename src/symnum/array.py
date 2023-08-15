@@ -11,13 +11,12 @@ from numpy.typing import DTypeLike, NDArray
 from sympy.tensor.array import permutedims
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
-    from typing import Callable, Optional
+    from collections.abc import Iterator
+    from typing import Callable, Optional, TypeAlias
 
-SympyArray = Union[sympy.NDimArray, sympy.MatrixBase]
-ArrayLike = Union[SympyArray, NDArray]
-ScalarLike = Union[sympy.Expr, int, float, complex]
-ShapeLike = Union[int, tuple[int, ...], sympy.Tuple]
+SympyArray: TypeAlias = Union[sympy.NDimArray, sympy.MatrixBase]
+ScalarLike: TypeAlias = Union[sympy.Expr, int, float, complex, np.number]
+ShapeLike: TypeAlias = Union[int, tuple[int, ...], sympy.Tuple]
 
 
 def _get_union_type_unsubscripted_args(union_type: type) -> tuple[type]:
@@ -27,7 +26,7 @@ def _get_union_type_unsubscripted_args(union_type: type) -> tuple[type]:
 
 
 def is_array(obj) -> bool:
-    """Check if object is a valid SymPy or NumPy array type.
+    """Check if object is a valid SymNum, SymPy or NumPy array type.
 
     Args:
         obj: Object to check.
@@ -101,28 +100,37 @@ def binary_broadcasting_func(
     """
     name = func.__name__ if name is None else name
 
-    def wrapped_func(arg_1, arg_2):
+    def wrapped_func(
+        arg_1: Union[ScalarLike, ArrayLike],
+        arg_2: Union[ScalarLike, ArrayLike],
+    ) -> Union[ScalarLike, ArrayLike]:
         if is_scalar(arg_1) and is_scalar(arg_2):
             return func(arg_1, arg_2)
         elif is_scalar(arg_1) and is_array(arg_2):
             arg_2 = as_symbolic_array(arg_2)
-            return SymbolicArray([func(arg_1, a2) for a2 in arg_2.flat], arg_2.shape)
+            return SymbolicArray(
+                [func(arg_1, a2) for a2 in arg_2.flat],
+                shape=arg_2.shape,
+            )
         elif is_array(arg_1) and is_scalar(arg_2):
             arg_1 = as_symbolic_array(arg_1)
-            return SymbolicArray([func(a1, arg_2) for a1 in arg_1.flat], arg_1.shape)
+            return SymbolicArray(
+                [func(a1, arg_2) for a1 in arg_1.flat],
+                shape=arg_1.shape,
+            )
         elif is_array(arg_1) and is_array(arg_2):
             arg_1 = as_symbolic_array(arg_1)
             arg_2 = as_symbolic_array(arg_2)
             if arg_1.shape == arg_2.shape:
                 return SymbolicArray(
                     [func(a1, a2) for a1, a2 in zip(arg_1.flat, arg_2.flat)],
-                    arg_1.shape,
+                    shape=arg_1.shape,
                 )
             elif _broadcastable_shapes(arg_1.shape, arg_2.shape):
                 broadcaster = np.broadcast(arg_1, arg_2)
                 return SymbolicArray(
                     [func(a1, a2) for a1, a2 in broadcaster],
-                    broadcaster.shape,
+                    shape=broadcaster.shape,
                 )
             else:
                 msg = (
@@ -160,12 +168,15 @@ def unary_elementwise_func(
     """
     name = func.__name__ if name is None else name
 
-    def wrapped_func(arg):
+    def wrapped_func(arg: Union[ScalarLike, ArrayLike]) -> Union[ScalarLike, ArrayLike]:
         if is_scalar(arg):
             return func(arg)
         elif is_array(arg):
             arg = as_symbolic_array(arg)
-            return SymbolicArray([func(a) for a in arg.flat], arg.shape)
+            return SymbolicArray(
+                [func(a) for a in arg.flat],
+                shape=arg.shape,
+            )
         else:
             msg = f"{name} not implemented for argument of type {type(arg)}."
             raise NotImplementedError(msg)
@@ -176,7 +187,10 @@ def unary_elementwise_func(
     return wrapped_func
 
 
-def _slice_iterator(arr: ArrayLike, axes: Union[int, tuple[int, ...]]) -> Generator:
+def _slice_iterator(
+    arr: ArrayLike,
+    axes: Union[int, tuple[int, ...]],
+) -> Iterator[ArrayLike]:
     """Iterate over slices of array from indexing along a subset of axes."""
     if isinstance(axes, int):
         axes = (axes,)
@@ -217,7 +231,11 @@ def named_array(
         "complex": True,  # Complex numbers are superset of reals
     }
     if shape == () or shape is None:
-        array = SymbolicArray([sympy.Symbol(name, **assumptions)], (), dtype)
+        array = SymbolicArray(
+            [sympy.Symbol(name, **assumptions)],
+            shape=(),
+            dtype=dtype,
+        )
     elif is_valid_shape(shape):
         if isinstance(shape, int):
             shape = (shape,)
@@ -229,8 +247,8 @@ def named_array(
                 )
                 for index in product(*(range(s) for s in shape))
             ],
-            shape,
-            dtype,
+            shape=shape,
+            dtype=dtype,
         )
     else:
         msg = f"Unrecognised shape type {type(shape)} with value {shape}."
@@ -239,7 +257,7 @@ def named_array(
     return array
 
 
-def infer_dtype(array: SymbolicArray) -> DTypeLike:
+def infer_array_dtype(array: SymbolicArray) -> DTypeLike:
     """Infer safe dtype for array.
 
     Args:
@@ -256,6 +274,33 @@ def infer_dtype(array: SymbolicArray) -> DTypeLike:
         return np.complex128
     else:
         return object
+
+
+def infer_scalar_dtype(scalar: ScalarLike) -> DTypeLike:
+    """Infer safe dtype for array.
+
+    Args:
+        array: Scalar to infer dtype for.
+
+    Returns:
+        NumPy dtype which can represent array elements.
+    """
+    if isinstance(scalar, np.number):
+        return scalar.dtype
+    elif isinstance(scalar, (int, float, complex)):
+        return np.dtype(type(scalar))
+    elif isinstance(scalar, sympy.Expr):
+        if scalar.is_integer:
+            return np.dtype("int64")
+        elif scalar.is_real:
+            return np.dtype("float64")
+        elif scalar.is_complex:
+            return np.dtype("complex128")
+        else:
+            return object
+    else:
+        msg = "Argument is not of valid scalar type."
+        raise TypeError(msg)
 
 
 def _matrix_multiply(left: SymbolicArray, right: SymbolicArray) -> SymbolicArray:
@@ -299,16 +344,17 @@ def as_symbolic_array(array: Union[ArrayLike, SymbolicArray]) -> SymbolicArray:
     """Convert an array to a `SymbolicArray` instance if not already an instance.
 
     Args:
-        array: Array to return as `SymbolicArray` instance.
+        array: Array to return as :py:class:`SymbolicArray` instance.
 
     Returns:
-        Original array if argument is `SymbolicArray` and `SymbolicArray` with
-        equivalent shape and entries to array argument if not.
+        Original array if argument is already an :py:class:`SymbolicArray` instance and
+        :py:class:`SymbolicArray`SymbolicArray` with equivalent shape and entries to
+        array argument if not.
     """
     if isinstance(array, SymbolicArray):
         return array
     else:
-        return SymbolicArray(array, array.shape)
+        return SymbolicArray(array, shape=array.shape)
 
 
 def _implements_numpy_ndarray_method(method):
@@ -318,23 +364,66 @@ def _implements_numpy_ndarray_method(method):
     return method
 
 
-class SymbolicArray(sympy.ImmutableDenseNDimArray):
+class SymbolicArray:
     """Symbolic `n`-dimensional array with NumPy-like interface.
 
-    Specifically implements NumPy style operator overloading and broadcasting
+    Specifically implements NumPy style operator overloading, broadcasting and indexing
     semantics.
     """
 
     __array_priority__ = 1
 
-    def __new__(cls, iterable, shape=None, dtype=None):
-        instance = super().__new__(SymbolicArray, iterable, shape)
-        instance._dtype = dtype
-        return instance
+    def __init__(
+        self,
+        object_: Union[ScalarLike, ArrayLike, tuple, list],
+        shape: Optional[tuple[int, ...]] = None,
+        dtype: DTypeLike = None,
+    ):
+        """
+        Args:
+            object_: Object to construct symbolic array from. Either a nested sequence
+                of (symbolic) scalars, an existing array like object or a single
+                (symbolic) scalar.
+            shape: Tuple defining shape of array (sizes of each dimension / axis). If
+                :code:`object_` is array-like or scalar-like and :code:`shape` is set
+                to :code:`None` (the default) the :code:`object_.shape` attribute will
+                be used if array-like or a :code:`()` shape used if scalar-like.
+            dtype: Object defining datatype to use for array when converting to NumPy
+                arrays. If set to :code:`None` (default) then an appropriate datatype
+                will be inferred from the properties of the symbolic expressions in the
+                array.
+        """
+        if hasattr(object_, "__len__"):
+            iterable = object_
+        else:
+            iterable = (object_,)
+            shape = () if shape is None else shape
+        self._base_array = sympy.ImmutableDenseNDimArray(iterable, shape)
+        self._dtype = np.dtype(dtype) if dtype is not None else dtype
+
+    def __getitem__(
+        self,
+        index: Union[int, tuple, slice],
+    ) -> Union[SymbolicArray, sympy.Expr]:
+        indexed_base_array = self._base_array[index]
+        if is_scalar(indexed_base_array):
+            return indexed_base_array
+        return SymbolicArray(
+            indexed_base_array,
+            shape=indexed_base_array.shape,
+            dtype=self.dtype,
+        )
+
+    def __iter__(self) -> Iterator[Union[SymbolicArray, sympy.Expr]]:
+        if self.shape == ():
+            yield self[()]
+        else:
+            for i in range(self.shape[0]):
+                yield self[i]
 
     @_implements_numpy_ndarray_method
-    def __array__(self, dtype=None):
-        if len(self.free_symbols) > 0:
+    def __array__(self, dtype=None) -> NDArray:
+        if len(self._base_array.free_symbols) > 0:
             if dtype is not None:
                 msg = (
                     f"Array contains free symbols, therefore cannot cast to "
@@ -348,10 +437,65 @@ class SymbolicArray(sympy.ImmutableDenseNDimArray):
 
     @property
     @_implements_numpy_ndarray_method
-    def dtype(self):
+    def dtype(self) -> DTypeLike:
         if self._dtype is None:
-            self._dtype = infer_dtype(self)
+            self._dtype = infer_array_dtype(self)
         return self._dtype
+
+    @property
+    @_implements_numpy_ndarray_method
+    def shape(self) -> tuple[int, ...]:
+        return self._base_array.shape
+
+    def __str__(self) -> str:
+        return f"SymbolicArray({self._base_array}, dtype={self._dtype})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def _repr_latex_(self):
+        return self._base_array._repr_latex_()
+
+    def diff(self, *variables: Union[sympy.Expr, SymbolicArray]) -> SymbolicArray:
+        """Compute derivative of array with respect to one or more arguments.
+
+        Wrapper of :py:meth:`sympy.NDimArray.diff`.
+
+        Args:
+            *variables: One or more variables to differentiate with respect to.
+
+        Returns:
+            Array of derivatives.
+        """
+        return SymbolicArray(
+            self._base_array.diff(*variables),
+            dtype=self.dtype,
+        )
+
+    def subs(self, *args) -> SymbolicArray:
+        """Substitute variables in an expression.
+
+        Wrapper of :py:meth:`sympy.NDimArray.subs`.
+
+        Args:
+            *args: Either two arguments `(old, new)` corresponding to the old and new
+                variables to subsitute for respectively, or an iterable of `(old, new)`
+                pairs, with replacements processed in order given, or a dictionary
+                mapping from old to new variables.
+
+        Returns:
+            Array with subsititutions applies.
+        """
+        return SymbolicArray(
+            self._base_array.subs(*args),
+            shape=self.shape,
+            dtype=self.dtype,
+        )
+
+    @property
+    def free_symbols(self) -> set[sympy.Symbol]:
+        """Set of all free symbols in symbolic expressions defined in array."""
+        return self._base_array.free_symbols
 
     @binary_broadcasting_func
     @_implements_numpy_ndarray_method
@@ -468,18 +612,16 @@ class SymbolicArray(sympy.ImmutableDenseNDimArray):
         return abs(self)
 
     @_implements_numpy_ndarray_method
-    def __matmul__(self, other):
+    def __matmul__(self, other: ArrayLike) -> SymbolicArray:
         if not is_array(other):
             return NotImplemented
-        other = SymbolicArray(other)
-        return _matrix_multiply(self, other)
+        return _matrix_multiply(self, as_symbolic_array(other))
 
     @_implements_numpy_ndarray_method
-    def __rmatmul__(self, other):
+    def __rmatmul__(self, other: ArrayLike) -> SymbolicArray:
         if not is_array(other):
             return NotImplemented
-        other = SymbolicArray(other)
-        return _matrix_multiply(other, self)
+        return _matrix_multiply(as_symbolic_array(other), self)
 
     @property
     @unary_elementwise_func
@@ -495,58 +637,70 @@ class SymbolicArray(sympy.ImmutableDenseNDimArray):
 
     @property
     @_implements_numpy_ndarray_method
-    def size(self):
+    def size(self) -> int:
         return np.prod(self.shape)
 
     @property
     @_implements_numpy_ndarray_method
-    def ndim(self):
+    def ndim(self) -> int:
         return len(self.shape)
 
     @_implements_numpy_ndarray_method
-    def flatten(self):
-        return SymbolicArray(self.flat, self.size)
+    def flatten(self) -> SymbolicArray:
+        return self.reshape(self.size)
 
     @property
     @_implements_numpy_ndarray_method
-    def flat(self):
+    def flat(self) -> Iterator[sympy.Expr]:
         if self.shape == ():
-            yield self._args[0][0]
+            # SymPy arrays with shape () cannot be indexed so deal with this case
+            # separately
+            yield self[()]
         else:
             for idx in product(*(range(s) for s in self.shape)):
                 yield self[idx]
 
     @_implements_numpy_ndarray_method
-    def tolist(self):
+    def tolist(self) -> Union[list, sympy.Expr]:
         if self.shape == ():
-            return self._args[0][0]
+            # SymPy arrays with shape () error when calling tolist method so deal with
+            # this case separately
+            return self[()]
         else:
-            return super().tolist()
+            return self._base_array.tolist()
 
     @property
     @_implements_numpy_ndarray_method
-    def T(self):  # noqa: N802
+    def T(self) -> SymbolicArray:  # noqa: N802
         return SymbolicArray(
             [
                 self[tuple(indices[::-1])]
                 for indices in product(*[range(s) for s in self.shape[::-1]])
             ],
-            self.shape[::-1],
+            shape=self.shape[::-1],
+            dtype=self.dtype,
         )
 
     @_implements_numpy_ndarray_method
-    def transpose(self, axes=None):
+    def transpose(self, axes: Optional[tuple[int, ...]] = None) -> SymbolicArray:
         if axes is None:
             return self.T
         else:
-            return permutedims(self, axes)
+            return SymbolicArray(
+                permutedims(self._base_array, axes),
+                shape=self.shape,
+                dtype=self.dtype,
+            )
 
     @_implements_numpy_ndarray_method
-    def reshape(self, shape):
-        return SymbolicArray(self.flat, shape)
+    def reshape(self, shape: ShapeLike) -> SymbolicArray:
+        return SymbolicArray(list(self.flat), shape=shape, dtype=self.dtype)
 
     @_implements_numpy_ndarray_method
-    def sum(self, axis=None):  # noqa: A003
+    def sum(  # noqa: A003
+        self,
+        axis: Optional[Union[tuple, list, int]] = None,
+    ) -> Union[SymbolicArray, sympy.Expr]:
         if axis is None:
             return sum(self.flat)
         elif isinstance(axis, (tuple, list, int)):
@@ -556,7 +710,10 @@ class SymbolicArray(sympy.ImmutableDenseNDimArray):
             raise ValueError(msg)
 
     @_implements_numpy_ndarray_method
-    def prod(self, axis=None):
+    def prod(
+        self,
+        axis: Optional[Union[tuple, list, int]] = None,
+    ) -> Union[SymbolicArray, sympy.Expr]:
         if axis is None:
             return sympy.prod(self.flat)
         elif isinstance(axis, (tuple, list, int)):
@@ -564,3 +721,6 @@ class SymbolicArray(sympy.ImmutableDenseNDimArray):
         else:
             msg = f"Unrecognised axis type {type(axis)}."
             raise ValueError(msg)
+
+
+ArrayLike: TypeAlias = Union[SympyArray, NDArray, SymbolicArray]

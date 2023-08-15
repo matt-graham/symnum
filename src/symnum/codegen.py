@@ -14,7 +14,13 @@ import numpy  # noqa: ICN001
 import sympy
 from sympy.printing.numpy import NumPyPrinter
 
-from symnum.array import SymbolicArray, is_sympy_array, is_valid_shape, named_array
+from symnum.array import (
+    SymbolicArray,
+    as_symbolic_array,
+    is_array,
+    is_valid_shape,
+    named_array,
+)
 
 try:
     import numba
@@ -39,7 +45,11 @@ class FunctionExpression:
 
     __slots__ = ["args", "return_val"]
 
-    def __init__(self, args: tuple[sympy.Expr, ...], return_val: sympy.Expr):
+    def __init__(
+        self,
+        args: tuple[Union[sympy.Expr, SymbolicArray], ...],
+        return_val: Union[sympy.Expr, SymbolicArray],
+    ):
         """
         Args:
             args: Symbolic arguments to function.
@@ -49,7 +59,10 @@ class FunctionExpression:
         self.args = args
         self.return_val = return_val
 
-    def __call__(self, *args: sympy.Expr) -> sympy.Expr:
+    def __call__(
+        self,
+        *args: Union[sympy.Expr, SymbolicArray],
+    ) -> Union[sympy.Expr, SymbolicArray]:
         """Evaluate symbolic function.
 
         Args:
@@ -164,9 +177,9 @@ def _flatten_arrays(
     flattened = []
     shape_size_and_dtypes = []
     for el in seq:
-        if is_sympy_array(el):
-            el = SymbolicArray(el)  # noqa: PLW2901
-            flattened += el.reshape(el.size).tolist()
+        if is_array(el):
+            el = as_symbolic_array(el)  # noqa: PLW2901
+            flattened += el.flatten().tolist()
             shape_size_and_dtypes.append((el.shape, el.size, el.dtype))
         else:
             flattened.append(el)
