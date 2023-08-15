@@ -15,7 +15,9 @@ if TYPE_CHECKING:
     from typing import Callable, Optional, TypeAlias
 
 SympyArray: TypeAlias = Union[sympy.NDimArray, sympy.MatrixBase]
-ScalarLike: TypeAlias = Union[sympy.Expr, int, float, complex, np.number]
+ScalarLike: TypeAlias = Union[
+    sympy.Expr, sympy.logic.boolalg.Boolean, bool, int, float, complex, np.number,
+]
 ShapeLike: TypeAlias = Union[int, tuple[int, ...], sympy.Tuple]
 
 
