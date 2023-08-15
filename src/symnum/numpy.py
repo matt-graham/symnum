@@ -202,7 +202,9 @@ def _contains_expr(iterable):
 
 @_wrap_numpy()
 def array(object_, dtype=None):  # noqa: D103
-    if isinstance(object_, _SymbolicArray):
+    if isinstance(object_, _SymbolicArray) or (
+        isinstance(object_, _np.ndarray) and object_.dtype != object
+    ):
         return object_
     elif (
         _is_sympy_array(object_)
