@@ -107,29 +107,9 @@ jacob_func_np = jacobian(func_np)
 dy_dx_np = jacob_func_np(x_np)
 ```
 
-See also the demo Jupyter notebook
+See also the [demo Jupyter notebook](https://github.com/matt-graham/symnum/blob/main/Demo.ipynb).
 
-<table>
-  <tr>
-    <th colspan="2"><img src='https://raw.githubusercontent.com/jupyter/design/master/logos/Favicon/favicon.svg?sanitize=true' width="15" style="vertical-align:text-bottom; margin-right: 5px;"/> <a href="Demo.ipynb">Demo.ipynb</a></th>
-  </tr>
-  <tr>
-    <td>Open non-interactive version with nbviewer</td>
-    <td>
-      <a href="https://nbviewer.jupyter.org/github/matt-graham/symnum/blob/master/Demo.ipynb">
-        <img src="https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg?sanitize=true" width="109" alt="Render with nbviewer"  style="vertical-align:text-bottom" />
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td>Open interactive version with Binder</td>
-    <td>
-      <a href="https://mybinder.org/v2/gh/matt-graham/symnum/master?filepath=Demo.ipynb">
-        <img src="https://mybinder.org/badge_logo.svg" alt="Launch with Binder"  style="vertical-align:text-bottom"/>
-      </a>
-    </td>
-  </tr>
-</table>
+
 
 ## Current limitations
 
