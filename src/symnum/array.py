@@ -650,7 +650,7 @@ class SymbolicArray:
     @property
     @_implements_numpy_ndarray_method
     def size(self) -> int:
-        return np.prod(self.shape)
+        return int(np.prod(self.shape))
 
     @property
     @_implements_numpy_ndarray_method

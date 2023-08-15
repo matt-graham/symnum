@@ -226,7 +226,7 @@ def identity(n):  # noqa: D103
 
 
 def _constant_array(val, shape):
-    size = _np.prod(shape)
+    size = int(_np.prod(shape))
     return _SymbolicArray([val] * size, shape)
 
 
