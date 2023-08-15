@@ -1,6 +1,15 @@
+# SymNum
+
 <a href="https://badge.fury.io/py/symnum">
   <img src="https://badge.fury.io/py/symnum.svg" alt="PyPI version"/>
 </a>
+<a href="https://github.com/matt-graham/symnum/actions/workflows/tests.yml">
+  <img src="https://github.com/matt-graham/symnum/actions/workflows/tests.yml/badge.svg" alt="Test status" />
+</a>
+<a href="https://matt-graham.github.io/symnum">
+  <img src="https://github.com/matt-graham/symnum/actions/workflows/docs.yml/badge.svg" alt="Documentation status" />
+</a>
+
 
 ## What is SymNum?
 
