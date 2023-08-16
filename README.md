@@ -1,5 +1,5 @@
 
-<div style="text-align: center;">
+<div style="text-align: center;" align="center">
 
 <img src="images/logomark-dark-background.svg" width="200"/>
 
