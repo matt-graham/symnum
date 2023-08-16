@@ -1,111 +1,325 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>symnum.codegen module &mdash; SymNum  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>symnum.codegen module &#8212; SymNum  documentation</title>
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/js/theme.js"></script>
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ccbe24c1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'symnum.codegen';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="symnum.numpy module" href="symnum.numpy.html" />
-    <link rel="prev" title="symnum.array module" href="symnum.array.html" /> 
-</head>
+    <link rel="prev" title="symnum.array module" href="symnum.array.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
 
-          
-          
-          <a href="index.html" class="icon icon-home">
-            SymNum
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="symnum.html">symnum package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.grad"><code class="docutils literal notranslate"><span class="pre">grad()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.hessian"><code class="docutils literal notranslate"><span class="pre">hessian()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.hessian_vector_product"><code class="docutils literal notranslate"><span class="pre">hessian_vector_product()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.jacobian"><code class="docutils literal notranslate"><span class="pre">jacobian()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.jacobian_vector_product"><code class="docutils literal notranslate"><span class="pre">jacobian_vector_product()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.matrix_hessian_product"><code class="docutils literal notranslate"><span class="pre">matrix_hessian_product()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.matrix_tressian_product"><code class="docutils literal notranslate"><span class="pre">matrix_tressian_product()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.named_array"><code class="docutils literal notranslate"><span class="pre">named_array()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.numpify"><code class="docutils literal notranslate"><span class="pre">numpify()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.numpify_func"><code class="docutils literal notranslate"><span class="pre">numpify_func()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#symnum.vector_jacobian_product"><code class="docutils literal notranslate"><span class="pre">vector_jacobian_product()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="symnum.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="symnum.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="symnum.array.html">symnum.array module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">symnum.codegen module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.FunctionExpression"><code class="docutils literal notranslate"><span class="pre">FunctionExpression</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.TupleArrayPrinter"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.generate_func"><code class="docutils literal notranslate"><span class="pre">generate_func()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.numpify"><code class="docutils literal notranslate"><span class="pre">numpify()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#symnum.codegen.numpify_func"><code class="docutils literal notranslate"><span class="pre">numpify_func()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="symnum.numpy.html">symnum.numpy module</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">SymNum</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="symnum.html">symnum package</a></li>
-      <li class="breadcrumb-item active">symnum.codegen module</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/symnum.codegen.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo-dark-background-and-text.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo-white-background-and-text.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="symnum.html">
+                        symnum package
+                      </a>
+                    </li>
+                
   </ul>
-  <hr/>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="symnum.html">
+                        symnum package
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="symnum.diffops.numpy.html">symnum.diffops.numpy module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symnum.diffops.symbolic.html">symnum.diffops.symbolic module</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="symnum.array.html">symnum.array module</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">symnum.codegen module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symnum.numpy.html">symnum.numpy module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="symnum.html" class="nav-link">symnum package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">symnum.codegen module</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="module-symnum.codegen">
-<span id="symnum-codegen-module"></span><h1>symnum.codegen module<a class="headerlink" href="#module-symnum.codegen" title="Permalink to this heading"></a></h1>
+<span id="symnum-codegen-module"></span><h1>symnum.codegen module<a class="headerlink" href="#module-symnum.codegen" title="Permalink to this heading">#</a></h1>
 <p>Utility functions to generate NumPy function code.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="symnum.codegen.FunctionExpression">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">FunctionExpression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">FunctionExpression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Function defined by a symbolic expression and set of symbolic arguments.</p>
 <dl class="field-list simple">
@@ -119,7 +333,7 @@ return value.</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression.__call__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#FunctionExpression.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.FunctionExpression.__call__" title="Permalink to this definition">#</a></dt>
 <dd><p>Evaluate symbolic function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -137,19 +351,19 @@ symbolic arguments.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.args" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.args" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.FunctionExpression.return_val">
-<span class="sig-name descname"><span class="pre">return_val</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.return_val" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">return_val</span></span><a class="headerlink" href="#symnum.codegen.FunctionExpression.return_val" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">TupleArrayPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#TupleArrayPrinter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">TupleArrayPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#TupleArrayPrinter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NumPyPrinter</span></code></p>
 <p>SymPy printer which uses nested tuples for array literals.</p>
 <p>Rather than printing array-like objects as numpy.array calls with a nested list
@@ -159,7 +373,7 @@ argument (which is not numba compatible) a nested tuple argument is used instead
 or ‘JAX’.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.doprint">
-<span class="sig-name descname"><span class="pre">doprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.doprint" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">doprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.doprint" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the expression as code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -174,60 +388,60 @@ with the name or names given in <code class="docutils literal notranslate"><span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.emptyPrinter">
-<span class="sig-name descname"><span class="pre">emptyPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.emptyPrinter" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">emptyPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.emptyPrinter" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.language">
-<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Python'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.language" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Python'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.language" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.modules">
-<span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.modules" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.modules" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.order">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">order</span></span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.order" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">order</span></span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.order" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.parenthesize">
-<span class="sig-name descname"><span class="pre">parenthesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.parenthesize" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">parenthesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.parenthesize" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.printmethod">
-<span class="sig-name descname"><span class="pre">printmethod</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'_pythoncode'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.printmethod" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">printmethod</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'_pythoncode'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.printmethod" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.reserved_words">
-<span class="sig-name descname"><span class="pre">reserved_words</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'False',</span> <span class="pre">'None',</span> <span class="pre">'True',</span> <span class="pre">'and',</span> <span class="pre">'as',</span> <span class="pre">'assert',</span> <span class="pre">'break',</span> <span class="pre">'class',</span> <span class="pre">'continue',</span> <span class="pre">'def',</span> <span class="pre">'del',</span> <span class="pre">'elif',</span> <span class="pre">'else',</span> <span class="pre">'except',</span> <span class="pre">'finally',</span> <span class="pre">'for',</span> <span class="pre">'from',</span> <span class="pre">'global',</span> <span class="pre">'if',</span> <span class="pre">'import',</span> <span class="pre">'in',</span> <span class="pre">'is',</span> <span class="pre">'lambda',</span> <span class="pre">'nonlocal',</span> <span class="pre">'not',</span> <span class="pre">'or',</span> <span class="pre">'pass',</span> <span class="pre">'raise',</span> <span class="pre">'return',</span> <span class="pre">'try',</span> <span class="pre">'while',</span> <span class="pre">'with',</span> <span class="pre">'yield'}</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.reserved_words" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reserved_words</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'False',</span> <span class="pre">'None',</span> <span class="pre">'True',</span> <span class="pre">'and',</span> <span class="pre">'as',</span> <span class="pre">'assert',</span> <span class="pre">'break',</span> <span class="pre">'class',</span> <span class="pre">'continue',</span> <span class="pre">'def',</span> <span class="pre">'del',</span> <span class="pre">'elif',</span> <span class="pre">'else',</span> <span class="pre">'except',</span> <span class="pre">'finally',</span> <span class="pre">'for',</span> <span class="pre">'from',</span> <span class="pre">'global',</span> <span class="pre">'if',</span> <span class="pre">'import',</span> <span class="pre">'in',</span> <span class="pre">'is',</span> <span class="pre">'lambda',</span> <span class="pre">'nonlocal',</span> <span class="pre">'not',</span> <span class="pre">'or',</span> <span class="pre">'pass',</span> <span class="pre">'raise',</span> <span class="pre">'return',</span> <span class="pre">'try',</span> <span class="pre">'while',</span> <span class="pre">'with',</span> <span class="pre">'yield'}</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.reserved_words" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.set_global_settings">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_global_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.set_global_settings" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_global_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.set_global_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Set system-wide printing settings.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.stringify">
-<span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.stringify" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.stringify" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="symnum.codegen.TupleArrayPrinter.tab">
-<span class="sig-name descname"><span class="pre">tab</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'</span>&#160;&#160;&#160; <span class="pre">'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.tab" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tab</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'</span>&#160;&#160;&#160; <span class="pre">'</span></em><a class="headerlink" href="#symnum.codegen.TupleArrayPrinter.tab" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.codegen.generate_func">
-<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">generate_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy_module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#generate_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.generate_func" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">generate_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exprs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy_module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#generate_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.generate_func" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a Python function from symbolic expression(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -260,7 +474,7 @@ before generating code.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.codegen.numpify">
-<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify" title="Permalink to this definition">#</a></dt>
 <dd><p>Decorator to convert SymPy symbolic array function to a NumPy function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -288,7 +502,7 @@ accepts one or more <a class="reference external" href="https://numpy.org/doc/st
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.codegen.numpify_func">
-<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sympy_func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify_func" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.codegen.</span></span><span class="sig-name descname"><span class="pre">numpify_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sympy_func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.codegen.numpify_func" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a NumPy function from a SymPy symbolic array function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -316,34 +530,136 @@ return a scalar or <cite>numpy.ndarray</cite> value.</p>
 </section>
 
 
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="symnum.array.html" class="btn btn-neutral float-left" title="symnum.array module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="symnum.numpy.html" class="btn btn-neutral float-right" title="symnum.numpy module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Matt Graham.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="symnum.array.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">symnum.array module</p>
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    </a>
+    <a class="right-next"
+       href="symnum.numpy.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">symnum.numpy module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
 
-</body>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.FunctionExpression"><code class="docutils literal notranslate"><span class="pre">FunctionExpression</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.FunctionExpression.__call__"><code class="docutils literal notranslate"><span class="pre">FunctionExpression.__call__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.FunctionExpression.args"><code class="docutils literal notranslate"><span class="pre">FunctionExpression.args</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.FunctionExpression.return_val"><code class="docutils literal notranslate"><span class="pre">FunctionExpression.return_val</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.doprint"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.doprint()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.emptyPrinter"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.emptyPrinter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.language"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.language</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.modules"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.modules</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.order"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.order</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.parenthesize"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.parenthesize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.printmethod"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.printmethod</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.reserved_words"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.reserved_words</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.set_global_settings"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.set_global_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.stringify"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.stringify()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.TupleArrayPrinter.tab"><code class="docutils literal notranslate"><span class="pre">TupleArrayPrinter.tab</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.generate_func"><code class="docutils literal notranslate"><span class="pre">generate_func()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.numpify"><code class="docutils literal notranslate"><span class="pre">numpify()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.codegen.numpify_func"><code class="docutils literal notranslate"><span class="pre">numpify_func()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/symnum.codegen.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Matt Graham.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>
