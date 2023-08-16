@@ -50,4 +50,12 @@ html_theme_options = {
         "image_light": "../images/logo-dark-background-and-text.svg",
         "image_dark": "../images/logo-white-background-and-text.svg",
     },
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/matt-graham/symnum",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+    ],
 }
