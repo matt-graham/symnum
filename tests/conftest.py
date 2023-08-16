@@ -79,7 +79,33 @@ def non_zero_symbolic_array_literal(request):
         operator.mul,
         operator.truediv,
         operator.floordiv,
+        operator.mod,
     ],
 )
 def binary_op(request):
+    return request.param
+
+
+@pytest.fixture(
+    params=[
+        operator.eq,
+        operator.ne,
+        operator.lt,
+        operator.gt,
+        operator.le,
+        operator.ge,
+    ],
+)
+def binary_comparison_op(request):
+    return request.param
+
+
+@pytest.fixture(
+    params=[
+        abs,
+        operator.pos,
+        operator.neg,
+    ],
+)
+def unary_op(request):
     return request.param
