@@ -306,7 +306,13 @@ document.write(`
 
 <span class="n">SympyArray</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">NDimArray</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">MatrixBase</span><span class="p">]</span>
 <span class="n">ScalarLike</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
-    <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">boolalg</span><span class="o">.</span><span class="n">Boolean</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+    <span class="n">sympy</span><span class="o">.</span><span class="n">Expr</span><span class="p">,</span>
+    <span class="n">sympy</span><span class="o">.</span><span class="n">logic</span><span class="o">.</span><span class="n">boolalg</span><span class="o">.</span><span class="n">Boolean</span><span class="p">,</span>
+    <span class="nb">bool</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">,</span>
+    <span class="nb">float</span><span class="p">,</span>
+    <span class="nb">complex</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">ShapeLike</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Tuple</span><span class="p">]</span>
 
@@ -793,6 +799,28 @@ document.write(`
             <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
             <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">,</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SymbolicArray.simplify"><a class="viewcode-back" href="../../symnum.array.html#symnum.SymbolicArray.simplify">[docs]</a>    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolicArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simplify symbolic expressions in array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs: Any keyword arguments to :py:meth:`sympy.NDimArray.simplify`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array with simplified symbolic expressions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">[()]</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SymbolicArray</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_base_array</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">free_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">]:</span>

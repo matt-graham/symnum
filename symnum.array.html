@@ -447,6 +447,23 @@ array.</p></li>
 <dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.shape.html#numpy.ndarray.shape" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray.shape</span></code></a>.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="symnum.array.SymbolicArray.simplify">
+<span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/array.html#SymbolicArray.simplify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.array.SymbolicArray.simplify" title="Permalink to this definition">#</a></dt>
+<dd><p>Simplify symbolic expressions in array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Any keyword arguments to <code class="xref py py-meth docutils literal notranslate"><span class="pre">sympy.NDimArray.simplify()</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array with simplified symbolic expressions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="symnum.array.SymbolicArray.size">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></em><a class="headerlink" href="#symnum.array.SymbolicArray.size" title="Permalink to this definition">#</a></dt>
@@ -767,6 +784,7 @@ elements <cite>a[0, 0]</cite>, <cite>a[0, 1]</cite>, <cite>a[1, 0]</cite> and <c
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.real"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.real</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.reshape"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.reshape()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.shape</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.simplify"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.simplify()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.size"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.size</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.subs"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.subs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.array.SymbolicArray.sum"><code class="docutils literal notranslate"><span class="pre">SymbolicArray.sum()</span></code></a></li>
