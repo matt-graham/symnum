@@ -16,7 +16,13 @@ if TYPE_CHECKING:
 
 SympyArray: TypeAlias = Union[sympy.NDimArray, sympy.MatrixBase]
 ScalarLike: TypeAlias = Union[
-    sympy.Expr, sympy.logic.boolalg.Boolean, bool, int, float, complex, np.number,
+    sympy.Expr,
+    sympy.logic.boolalg.Boolean,
+    bool,
+    int,
+    float,
+    complex,
+    np.number,
 ]
 ShapeLike: TypeAlias = Union[int, tuple[int, ...], sympy.Tuple]
 
@@ -503,6 +509,28 @@ class SymbolicArray:
             shape=self.shape,
             dtype=self._dtype,
         )
+
+    def simplify(self, **kwargs) -> SymbolicArray:
+        """Simplify symbolic expressions in array.
+
+        Args:
+            **kwargs: Any keyword arguments to :py:meth:`sympy.NDimArray.simplify`.
+
+        Returns:
+            Array with simplified symbolic expressions.
+        """
+        if self.shape == ():
+            return SymbolicArray(
+                self[()].simplify(**kwargs),
+                shape=(),
+                dtype=self._dtype,
+            )
+        else:
+            return SymbolicArray(
+                self._base_array.simplify(**kwargs),
+                shape=self.shape,
+                dtype=self._dtype,
+            )
 
     @property
     def free_symbols(self) -> set[sympy.Symbol]:
