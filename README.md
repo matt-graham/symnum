@@ -1,4 +1,9 @@
-# SymNum
+
+<div style="text-align: center;">
+
+<img src="images/logomark-dark-background.svg" width="200"/>
+
+<h1>SymNum</h1>
 
 <a href="https://badge.fury.io/py/symnum">
   <img src="https://badge.fury.io/py/symnum.svg" alt="PyPI version"/>
@@ -9,6 +14,7 @@
 <a href="https://matt-graham.github.io/symnum">
   <img src="https://github.com/matt-graham/symnum/actions/workflows/docs.yml/badge.svg" alt="Documentation status" />
 </a>
+</div>
 
 
 ## What is SymNum?
@@ -21,8 +27,6 @@ take arrays as arguments and return arrays or scalars as values. A series of
 operators are also provided to construct derivatives of symbolic functions,
 with the option to generate NumPy code to numerically evaluate these derivative
 functions.
-
-This is a very early stage project so expect lots of rough edges!
 
 ## Why use SymNum instead of Autograd or JAX?
 
