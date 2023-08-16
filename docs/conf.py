@@ -43,13 +43,11 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "pydata_sphinx_theme"
-html_static_path = ["_static"]
-
-html_logo = "../images/logo-dark-background-and-text.svg"
+html_static_path = ["_static", "../images"]
 
 html_theme_options = {
-   "logo": {
-      "image_light": "../images/logo-dark-background-and-text.svg",
-      "image_dark": "../images/logo-white-background-and-text.svg",
-   }
+    "logo": {
+        "image_light": "../images/logo-dark-background-and-text.svg",
+        "image_dark": "../images/logo-white-background-and-text.svg",
+    },
 }
