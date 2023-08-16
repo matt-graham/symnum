@@ -417,7 +417,7 @@ class SymbolicArray:
         return SymbolicArray(
             indexed_base_array,
             shape=indexed_base_array.shape,
-            dtype=self.dtype,
+            dtype=self._dtype,
         )
 
     def __len__(self):
@@ -481,7 +481,7 @@ class SymbolicArray:
         """
         return SymbolicArray(
             self._base_array.diff(*variables),
-            dtype=self.dtype,
+            dtype=self._dtype,
         )
 
     def subs(self, *args) -> SymbolicArray:
@@ -501,7 +501,7 @@ class SymbolicArray:
         return SymbolicArray(
             self._base_array.subs(*args),
             shape=self.shape,
-            dtype=self.dtype,
+            dtype=self._dtype,
         )
 
     @property
@@ -690,7 +690,7 @@ class SymbolicArray:
                 for indices in product(*[range(s) for s in self.shape[::-1]])
             ],
             shape=self.shape[::-1],
-            dtype=self.dtype,
+            dtype=self._dtype,
         )
 
     @_implements_numpy_ndarray_method
@@ -700,12 +700,12 @@ class SymbolicArray:
         else:
             return SymbolicArray(
                 permutedims(self._base_array, axes),
-                dtype=self.dtype,
+                dtype=self._dtype,
             )
 
     @_implements_numpy_ndarray_method
     def reshape(self, shape: ShapeLike) -> SymbolicArray:
-        return SymbolicArray(list(self.flat), shape=shape, dtype=self.dtype)
+        return SymbolicArray(list(self.flat), shape=shape, dtype=self._dtype)
 
     @_implements_numpy_ndarray_method
     def sum(  # noqa: A003
