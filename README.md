@@ -8,6 +8,9 @@
 <a href="https://badge.fury.io/py/symnum">
   <img src="https://badge.fury.io/py/symnum.svg" alt="PyPI version"/>
 </a>
+<a href="https://zenodo.org/badge/latestdoi/247063908">
+  <img src="https://zenodo.org/badge/247063908.svg" alt="Zenodo DOI badge">
+</a>
 <a href="https://github.com/matt-graham/symnum/actions/workflows/tests.yml">
   <img src="https://github.com/matt-graham/symnum/actions/workflows/tests.yml/badge.svg" alt="Test status" />
 </a>
