@@ -1,7 +1,7 @@
 
 <div style="text-align: center;" align="center">
 
-<img src="images/logomark-dark-background.svg" width="200"/>
+<img src="https://raw.githubusercontent.com/matt-graham/symnum/main/images/logomark-dark-background.svg" alt="SymNum logo" width="120"/>
 
 <h1>SymNum</h1>
 
