@@ -12,6 +12,8 @@ on:
       - "docs/**"
       - "CITATION.cff"
       - "LICENSE"
+  schedule:
+    - cron: "0 0 * * 1"
 
 jobs:
   tests:
