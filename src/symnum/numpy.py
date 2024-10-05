@@ -28,7 +28,7 @@ _constants = {
 
 
 def _angle(x, *, deg=False):
-    if x == 0:
+    if x in (0, 0.0):
         return 0.0
     return _sym.arg(x) * 180 / _sym.pi if deg else _sym.arg(x)
 

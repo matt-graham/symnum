@@ -440,7 +440,7 @@ class SymbolicArray:
             yield self[i]
 
     @_implements_numpy_ndarray_method
-    def __array__(self, dtype=None) -> NDArray:
+    def __array__(self, dtype=None, *, copy=None) -> NDArray:
         if len(self._base_array.free_symbols) > 0:
             if dtype is not None:
                 msg = (
@@ -485,6 +485,26 @@ class SymbolicArray:
         Returns:
             Array of derivatives.
         """
+        free_symbols = tuple(set().union(*(v.free_symbols for v in variables)))
+        if all(x.is_constant(*free_symbols) for x in self.flat):
+            # SymPy diff method returns a zero array of same shape as self when all
+            # elements are constant wrt variables irrespective of the shape of variables
+            # so explicitly construct zero array of correct shape for this case.
+            # SymPy convention is for taking derivative of an array wrt var to produce
+            # an array with shape var.shape + array.shape that is with new dimension(s)
+            # for var along leading not trailing axes.
+            shape = (
+                sum(
+                    (
+                        v.shape if hasattr(v, "shape") else ()
+                        for v in reversed(variables)
+                    ),
+                    start=(),
+                )
+                + self.shape
+            )
+            size = np.prod(shape)
+            return SymbolicArray([0] * size, shape=shape, dtype=self._dtype)
         return SymbolicArray(
             self._base_array.diff(*variables),
             dtype=self._dtype,
