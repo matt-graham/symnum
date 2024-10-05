@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -14,29 +14,30 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ccbe24c1"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'symnum';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,19 +52,23 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -85,16 +90,25 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="index.html">
@@ -102,39 +116,34 @@
   
   
   
+  
     
     
       
     
     
-    <img src="_static/logo-dark-background-and-text.svg" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/logo-white-background-and-text.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/logo-dark-background-and-text.svg" class="logo__image only-light" alt="SymNum  documentation - Home"/>
+    <script>document.write(`<img src="_static/logo-white-background-and-text.svg" class="logo__image only-dark" alt="SymNum  documentation - Home"/>`);</script>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        symnum package
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    symnum package
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -145,28 +154,32 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -177,8 +190,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -188,27 +201,33 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -219,23 +238,21 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        symnum package
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    symnum package
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -244,17 +261,18 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -265,8 +283,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -275,15 +293,16 @@ document.write(`
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="symnum.diffops.numpy.html">symnum.diffops.numpy module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="symnum.diffops.symbolic.html">symnum.diffops.symbolic module</a></li>
 </ul>
-</li>
+</details></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="symnum.array.html">symnum.array module</a></li>
@@ -303,13 +322,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -318,8 +337,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
@@ -341,14 +360,14 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="module-symnum">
-<span id="symnum-package"></span><h1>symnum package<a class="headerlink" href="#module-symnum" title="Permalink to this heading">#</a></h1>
+<span id="symnum-package"></span><h1>symnum package<a class="headerlink" href="#module-symnum" title="Link to this heading">#</a></h1>
 <p>Symbolically construct NumPy functions and their derivatives.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.grad">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.grad" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.grad" title="Link to this definition">#</a></dt>
 <dd><p>Generate a function to evaluate the gradient of a scalar-valued function.</p>
 <p>The passed function should take as arguments NumPy arrays and return a NumPy
 scalar, and likewise the returned function will take NumPy array arguments.</p>
@@ -356,13 +375,13 @@ scalar, and likewise the returned function will take NumPy array arguments.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ScalarLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns a scalar.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">gradient(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated gradient function returns both the gradient
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated gradient function returns both the gradient
 and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 2-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the gradient
 (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -373,14 +392,14 @@ and value of <code class="code docutils literal notranslate"><span class="pre">f
 <dd class="field-even"><p>Generated gradient function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[ArrayLike, ScalarLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[ArrayLike, ScalarLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.gradient">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.gradient" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.gradient" title="Link to this definition">#</a></dt>
 <dd><p>Generate a function to evaluate the gradient of a scalar-valued function.</p>
 <p>The passed function should take as arguments NumPy arrays and return a NumPy
 scalar, and likewise the returned function will take NumPy array arguments.</p>
@@ -388,13 +407,13 @@ scalar, and likewise the returned function will take NumPy array arguments.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ScalarLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns a scalar.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">gradient(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated gradient function returns both the gradient
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated gradient function returns both the gradient
 and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 2-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the gradient
 (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -405,14 +424,14 @@ and value of <code class="code docutils literal notranslate"><span class="pre">f
 <dd class="field-even"><p>Generated gradient function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[ArrayLike, ScalarLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[ArrayLike, ScalarLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.hessian">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.hessian" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.hessian" title="Link to this definition">#</a></dt>
 <dd><p>Generate a function to evaluate the Hessian of a scalar-valued function.</p>
 <p>The passed function should take as arguments NumPy arrays and return a NumPy
 scalar, and likewise the returned function will take NumPy array arguments.</p>
@@ -420,13 +439,13 @@ scalar, and likewise the returned function will take NumPy array arguments.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ScalarLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns a scalar.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">hessian(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated Hessian function returns the Hessian, gradient
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated Hessian function returns the Hessian, gradient
 and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 3-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the Hessian
 (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -437,14 +456,14 @@ and value of <code class="code docutils literal notranslate"><span class="pre">f
 <dd class="field-even"><p>Generated Hessian function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[ArrayLike, ArrayLike, ScalarLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[ArrayLike, ArrayLike, ScalarLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.hessian_vector_product">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">hessian_vector_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.hessian_vector_product" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">hessian_vector_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.hessian_vector_product" title="Link to this definition">#</a></dt>
 <dd><p>Generate an operator to evaluate Hessian-vector-products for a function.</p>
 <p>The passed function should take as arguments NumPy arrays and return a NumPy
 scalar, and likewise the returned operator will take NumPy array arguments.</p>
@@ -461,13 +480,13 @@ axes (dimensions) of <code class="code docutils literal notranslate"><span class
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ScalarLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns a scalar.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">hessian_vector_product(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated operator returns the Hessian-vector-product
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated operator returns the Hessian-vector-product
 function, gradient and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 3-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or
 just the Hessian-vector-product function (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -478,14 +497,14 @@ just the Hessian-vector-product function (<code class="code docutils literal not
 <dd class="field-even"><p>Generated Hessian-vector-product operator.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ScalarLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ScalarLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.jacobian">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.jacobian" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.jacobian" title="Link to this definition">#</a></dt>
 <dd><p>Generate a function to evaluate the Jacobian of a function.</p>
 <p>The passed function should take as arguments and return NumPy array(s), and
 likewise the returned function will take NumPy array arguments.</p>
@@ -493,13 +512,13 @@ likewise the returned function will take NumPy array arguments.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ArrayLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns an array.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">jacobian(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated Jacobian function returns both the Jacobian
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated Jacobian function returns both the Jacobian
 and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 2-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the Jacobian
 (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -510,14 +529,14 @@ and value of <code class="code docutils literal notranslate"><span class="pre">f
 <dd class="field-even"><p>Generated Jacobian function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[ArrayLike, ArrayLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[ArrayLike, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[ArrayLike, ArrayLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.jacobian_vector_product">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">jacobian_vector_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.jacobian_vector_product" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">jacobian_vector_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.jacobian_vector_product" title="Link to this definition">#</a></dt>
 <dd><p>Generate an operator to evaluate Jacobian-vector-products for a function.</p>
 <p>The passed function should take as arguments and return NumPy array(s), and
 likewise the returned operator will take NumPy array arguments.</p>
@@ -534,13 +553,13 @@ axes (dimensions) of <code class="code docutils literal notranslate"><span class
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ArrayLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns an array.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">jacobian_vector_product(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated operator returns the Jacobian-vector-product
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated operator returns the Jacobian-vector-product
 function and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 2-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the
 Jacobian-vector-product function (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -551,14 +570,14 @@ Jacobian-vector-product function (<code class="code docutils literal notranslate
 <dd class="field-even"><p>Generated Jacobian-vector-product operator.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.matrix_hessian_product">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">matrix_hessian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.matrix_hessian_product" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">matrix_hessian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.matrix_hessian_product" title="Link to this definition">#</a></dt>
 <dd><p>Generate an operator to evaluate matrix-Hessian-products for a function.</p>
 <p>The passed function should take as arguments and return NumPy array(s), and
 likewise the returned function will act on NumPy arrays.</p>
@@ -577,13 +596,13 @@ axes (dimensions) of <code class="code docutils literal notranslate"><span class
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ArrayLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns an array.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">matrix_hessian_product(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated operator return the matrix-Hessian-product
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated operator return the matrix-Hessian-product
 function, Jacobian and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 3-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or
 just the matrix-Hessian-product function (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -594,14 +613,14 @@ just the matrix-Hessian-product function (<code class="code docutils literal not
 <dd class="field-even"><p>Generated matrix-Hessian-product operator.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ArrayLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ArrayLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.matrix_tressian_product">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">matrix_tressian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.matrix_tressian_product" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">matrix_tressian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.matrix_tressian_product" title="Link to this definition">#</a></dt>
 <dd><p>Generate an operator to evaluate matrix-Tressian-products for a function.</p>
 <p>The passed function should take as arguments NumPy arrays and return a NumPy
 scalar, and likewise the returned operator will take NumPy array arguments.</p>
@@ -620,13 +639,13 @@ axes (dimensions) of <code class="code docutils literal notranslate"><span class
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ScalarLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns a scalar.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">matrix_tressian_product(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated operator returns the matrix-Tressian-product
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated operator returns the matrix-Tressian-product
 function, Hessian, gradient and value of <cite>func</cite> as a 4-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>)
 or just the matrix-Tressian-product function (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -637,19 +656,19 @@ or just the matrix-Tressian-product function (<code class="code docutils literal
 <dd class="field-even"><p>Generated matrix-Tressian-product operator.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ArrayLike, ScalarLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike, ArrayLike, ScalarLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.named_array">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">named_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/array.html#named_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.named_array" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">named_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/array.html#named_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.named_array" title="Link to this definition">#</a></dt>
 <dd><p>Create a symbolic array with common name prefix to elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name prefix to use for symbolic array elements.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name prefix to use for symbolic array elements.</p></li>
 <li><p><strong>shape</strong> (<em>ShapeLike</em>) – Dimensions of array.</p></li>
 <li><p><strong>dtype</strong> (<em>Optional</em><em>[</em><em>DTypeLike</em><em>]</em>) – NumPy dtype to use for array.</p></li>
 </ul>
@@ -668,12 +687,12 @@ elements <cite>a[0, 0]</cite>, <cite>a[0, 1]</cite>, <cite>a[1, 0]</cite> and <c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpify">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">numpify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpify" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">numpify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpify" title="Link to this definition">#</a></dt>
 <dd><p>Decorator to convert SymPy symbolic array function to a NumPy function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Variable length list of tuples and integers defining shapes of
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – Variable length list of tuples and integers defining shapes of
 array arguments to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite>
 with <cite>x</cite> an array with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape
 <cite>(2, 4, 3)</cite> the call signature would be of the form
@@ -685,8 +704,8 @@ with <cite>x</cite> an array with shape <cite>(2, 2)</cite> and <cite>y</cite> a
 <dd class="field-even"><p>Decorator which takes a SymPy function of which accepts one or more
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> as arguments and returns a symbolic scalar or
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> value, and returns a corresponding NumPy function which
-accepts one or more <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> arguments and returns a scalar or
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+accepts one or more <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> arguments and returns a scalar or
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Callable</em>[[<em>Callable</em>[…, <em>Union</em>[sympy.Expr, <a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a>]]], <em>Callable</em>[…, <em>Union</em>[ScalarLike, NDArray]]]</p>
@@ -696,7 +715,7 @@ accepts one or more <a class="reference external" href="https://numpy.org/doc/st
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpify_func">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">numpify_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sympy_func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpify_func" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">numpify_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sympy_func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/codegen.html#numpify_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpify_func" title="Link to this definition">#</a></dt>
 <dd><p>Generate a NumPy function from a SymPy symbolic array function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -704,7 +723,7 @@ accepts one or more <a class="reference external" href="https://numpy.org/doc/st
 <li><p><strong>sympy_func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Union</em><em>[</em><em>sympy.Expr</em><em>, </em><a class="reference internal" href="symnum.array.html#symnum.array.SymbolicArray" title="symnum.array.SymbolicArray"><em>SymbolicArray</em></a><em>]</em><em>]</em>) – Function which takes one or more <code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> as
 arguments and returns a symbolic scalar expression or
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolicArray</span></code> value.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Variable length list of tuples or integers defining shapes of array
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – Variable length list of tuples or integers defining shapes of array
 arguments to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite>
 an array with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the
 call signature would be of the form <cite>numpify_func(func, (2, 2), (2, 4, 3))</cite>.</p></li>
@@ -723,7 +742,7 @@ return a scalar or <cite>numpy.ndarray</cite> value.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.vector_jacobian_product">
-<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">vector_jacobian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.vector_jacobian_product" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.</span></span><span class="sig-name descname"><span class="pre">vector_jacobian_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.vector_jacobian_product" title="Link to this definition">#</a></dt>
 <dd><p>Generate an operator to evaluate vector-Jacobian-products for a function.</p>
 <p>The passed function should take as arguments and return NumPy array(s), and
 likewise the returned function will act on NumPy arrays.</p>
@@ -740,13 +759,13 @@ axes (dimensions) of <code class="code docutils literal notranslate"><span class
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>ArrayLike</em><em>]</em>) – Function which takes one or more arrays as arguments and returns an array.</p></li>
-<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
+<li><p><strong>*arg_shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>...</em><em>]</em>) – Variable length list of tuples defining shapes of array arguments
 to <cite>func</cite>, e.g. if <cite>func</cite> takes two arguments <cite>x</cite> and <cite>y</cite> with <cite>x</cite> an array
 with shape <cite>(2, 2)</cite> and <cite>y</cite> an array with shape <cite>(2, 4, 3)</cite> the call
 signature would be of the form
 <code class="code docutils literal notranslate"><span class="pre">vector_jacobian_product(func,</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">4,</span> <span class="pre">3),</span> <span class="pre">...)</span></code>.</p></li>
-<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
-<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Whether the generated operator returns the vector-Jacobian-product
+<li><p><strong>wrt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of argument to take derivatives with respect to.</p></li>
+<li><p><strong>return_aux</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether the generated operator returns the vector-Jacobian-product
 function and value of <code class="code docutils literal notranslate"><span class="pre">func</span></code> as a 2-tuple (<code class="code docutils literal notranslate"><span class="pre">True</span></code>) or just the
 vector-Jacobian-product function (<code class="code docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Any keyword arguments to the NumPy code generation function
@@ -757,13 +776,13 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
 <dd class="field-even"><p>Generated vector-Jacobian-product operator.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike]]]</p>
+<dd class="field-odd"><p><em>Callable</em>[…, <em>Union</em>[<em>Callable</em>[[ArrayLike], ArrayLike], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>[<em>Callable</em>[[ArrayLike], ArrayLike], ArrayLike]]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">#</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><ul>
@@ -774,7 +793,7 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="symnum.array.html">symnum.array module</a><ul>
@@ -870,11 +889,10 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="index.html"
@@ -894,10 +912,7 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -906,11 +921,14 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.grad"><code class="docutils literal notranslate"><span class="pre">grad()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
@@ -930,6 +948,7 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
   </nav></div>
 
   <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="_sources/symnum.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -950,8 +969,8 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -959,6 +978,7 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2023, Matt Graham.
@@ -968,8 +988,9 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>
@@ -977,10 +998,12 @@ vector-Jacobian-product function (<code class="code docutils literal notranslate
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>

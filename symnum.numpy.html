@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -14,29 +14,30 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ccbe24c1"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'symnum.numpy';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -50,19 +51,23 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -84,16 +89,25 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
+  
+    
   
 
 <a class="navbar-brand logo" href="index.html">
@@ -101,39 +115,34 @@
   
   
   
+  
     
     
       
     
     
-    <img src="_static/logo-dark-background-and-text.svg" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/logo-white-background-and-text.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/logo-dark-background-and-text.svg" class="logo__image only-light" alt="SymNum  documentation - Home"/>
+    <script>document.write(`<img src="_static/logo-white-background-and-text.svg" class="logo__image only-dark" alt="SymNum  documentation - Home"/>`);</script>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="symnum.html">
-                        symnum package
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="symnum.html">
+    symnum package
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -144,28 +153,32 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -176,8 +189,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -187,27 +200,33 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -218,23 +237,21 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="symnum.html">
-                        symnum package
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="symnum.html">
+    symnum package
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -243,17 +260,18 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -264,8 +282,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/matt-graham/symnum" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -274,15 +292,16 @@ document.write(`
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="symnum.diffops.html">symnum.diffops package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="symnum.diffops.numpy.html">symnum.diffops.numpy module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="symnum.diffops.symbolic.html">symnum.diffops.symbolic module</a></li>
 </ul>
-</li>
+</details></li>
 </ul>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="symnum.array.html">symnum.array module</a></li>
@@ -302,13 +321,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -317,8 +336,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
@@ -343,357 +362,357 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="module-symnum.numpy">
-<span id="symnum-numpy-module"></span><h1>symnum.numpy module<a class="headerlink" href="#module-symnum.numpy" title="Permalink to this heading">#</a></h1>
+<span id="symnum-numpy-module"></span><h1>symnum.numpy module<a class="headerlink" href="#module-symnum.numpy" title="Link to this heading">#</a></h1>
 <p>Implementation of a subset of the NumPy API using SymPy primitives.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.abs">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.abs" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.abs" title="Link to this definition">#</a></dt>
 <dd><p>SymNum implementation of <code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.abs</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.absolute">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.absolute" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html#numpy.absolute" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.absolute</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.absolute" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.absolute.html#numpy.absolute" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.absolute</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.add">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.add" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.add.html#numpy.add" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.add</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.add" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.add.html#numpy.add" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.add</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.angle">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.angle" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.angle.html#numpy.angle" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.angle</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.angle" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.angle.html#numpy.angle" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.angle</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arccos">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arccos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arccos" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html#numpy.arccos" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arccos</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arccos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arccos" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html#numpy.arccos" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arccos</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arccosh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arccosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arccosh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccosh.html#numpy.arccosh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arccosh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arccosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arccosh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccosh.html#numpy.arccosh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arccosh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arcsin">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arcsin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arcsin" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html#numpy.arcsin" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arcsin</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arcsin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arcsin" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html#numpy.arcsin" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arcsin</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arcsinh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arcsinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arcsinh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html#numpy.arcsinh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arcsinh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arcsinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arcsinh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html#numpy.arcsinh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arcsinh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arctan">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctan" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctan.html#numpy.arctan" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctan</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctan" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctan.html#numpy.arctan" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctan</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arctan2">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctan2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctan2" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html#numpy.arctan2" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctan2</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctan2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctan2" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html#numpy.arctan2" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctan2</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.arctanh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctanh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html#numpy.arctanh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctanh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">arctanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.arctanh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html#numpy.arctanh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.arctanh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.array">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.array" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.array</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.array" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.array</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.ceil">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">ceil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.ceil" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ceil.html#numpy.ceil" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ceil</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">ceil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.ceil" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ceil.html#numpy.ceil" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ceil</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.concatenate">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">concatenate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#concatenate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.concatenate" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">concatenate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#concatenate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.concatenate" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.conj">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">conj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.conj" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conj.html#numpy.conj" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conj</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">conj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.conj" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conj.html#numpy.conj" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conj</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.conjugate">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.conjugate" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.conjugate" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.cos">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.cos" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cos</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.cos" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cos</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.cosh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">cosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.cosh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cosh.html#numpy.cosh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cosh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">cosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.cosh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cosh.html#numpy.cosh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cosh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.divide">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">divide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.divide" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.divide.html#numpy.divide" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.divide</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">divide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.divide" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.divide.html#numpy.divide" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.divide</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.exp">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.exp" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.exp</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.exp" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.exp</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.expm1">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">expm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.expm1" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.expm1.html#numpy.expm1" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.expm1</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">expm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.expm1" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.expm1.html#numpy.expm1" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.expm1</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.eye">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#eye"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.eye" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.eye</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#eye"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.eye" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.eye</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.floor">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">floor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.floor" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.floor.html#numpy.floor" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.floor</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">floor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.floor" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.floor.html#numpy.floor" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.floor</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.full">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.full" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.full.html#numpy.full" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.full</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.full" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.full.html#numpy.full" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.full</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.identity">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.identity" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.identity.html#numpy.identity" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.identity</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.identity" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.identity.html#numpy.identity" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.identity</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.imag">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.imag" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.imag.html#numpy.imag" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.imag</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.imag" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.imag.html#numpy.imag" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.imag</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.iscomplex">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">iscomplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.iscomplex" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html#numpy.iscomplex" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.iscomplex</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">iscomplex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.iscomplex" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html#numpy.iscomplex" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.iscomplex</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isfinite">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isfinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isfinite" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html#numpy.isfinite" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isfinite</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isfinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isfinite" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html#numpy.isfinite" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isfinite</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isinf">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isinf" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isinf.html#numpy.isinf" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isinf</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isinf" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isinf.html#numpy.isinf" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isinf</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isnan">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isnan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isnan" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isnan.html#numpy.isnan" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isnan</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isnan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isnan" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isnan.html#numpy.isnan" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isnan</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isneginf">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isneginf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isneginf" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isneginf.html#numpy.isneginf" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isneginf</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isneginf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isneginf" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isneginf.html#numpy.isneginf" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isneginf</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isposinf">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isposinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isposinf" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html#numpy.isposinf" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isposinf</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isposinf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isposinf" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html#numpy.isposinf" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isposinf</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.isreal">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isreal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isreal" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isreal.html#numpy.isreal" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isreal</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">isreal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.isreal" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isreal.html#numpy.isreal" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.isreal</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.log">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log.html#numpy.log" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log.html#numpy.log" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.log10">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log10" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log10.html#numpy.log10" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log10</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log10" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log10.html#numpy.log10" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log10</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.log1p">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log1p" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log1p.html#numpy.log1p" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log1p</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log1p" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log1p.html#numpy.log1p" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log1p</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.log2">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log2" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log2.html#numpy.log2" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log2</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.log2" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.log2.html#numpy.log2" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.log2</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.logical_and">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_and</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_and" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html#numpy.logical_and" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_and</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_and</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_and" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html#numpy.logical_and" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_and</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.logical_not">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_not</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_not" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html#numpy.logical_not" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_not</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_not</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_not" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html#numpy.logical_not" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_not</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.logical_or">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_or" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html#numpy.logical_or" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_or</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_or" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html#numpy.logical_or" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_or</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.logical_xor">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_xor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_xor" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_xor.html#numpy.logical_xor" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_xor</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">logical_xor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.logical_xor" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_xor.html#numpy.logical_xor" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.logical_xor</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.matmul">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.matmul" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html#numpy.matmul" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.matmul</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.matmul" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html#numpy.matmul" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.matmul</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.maximum">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.maximum" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.maximum.html#numpy.maximum" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.maximum</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.maximum" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.maximum.html#numpy.maximum" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.maximum</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.minimum">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.minimum" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.minimum.html#numpy.minimum" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.minimum</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.minimum" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.minimum.html#numpy.minimum" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.minimum</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.multiply">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.multiply" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.multiply.html#numpy.multiply" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.multiply</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">multiply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.multiply" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.multiply.html#numpy.multiply" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.multiply</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.ones">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">ones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#ones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.ones" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ones</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">ones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#ones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.ones" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ones</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.power">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.power" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.power.html#numpy.power" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.power</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.power" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.power.html#numpy.power" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.power</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.prod">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#prod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.prod" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.prod.html#numpy.prod" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.prod</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#prod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.prod" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.prod.html#numpy.prod" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.prod</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.real">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.real" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.real.html#numpy.real" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.real</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.real" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.real.html#numpy.real" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.real</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.sign">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sign" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sign.html#numpy.sign" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sign</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sign" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sign.html#numpy.sign" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sign</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.sin">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sin" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sin</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sin" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sin</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.sinh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sinh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sinh.html#numpy.sinh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sinh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sinh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sinh.html#numpy.sinh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sinh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.sqrt">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sqrt" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html#numpy.sqrt" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sqrt</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.sqrt" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html#numpy.sqrt" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sqrt</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.subtract">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.subtract" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.subtract.html#numpy.subtract" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.subtract</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.subtract" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.subtract.html#numpy.subtract" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.subtract</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.sum">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.sum" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sum</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.sum" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sum</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.tan">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">tan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.tan" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tan.html#numpy.tan" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.tan</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">tan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.tan" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tan.html#numpy.tan" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.tan</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.tanh">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.tanh" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tanh.html#numpy.tanh" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.tanh</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#symnum.numpy.tanh" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.tanh.html#numpy.tanh" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.tanh</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symnum.numpy.zeros">
-<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#zeros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.zeros" title="Permalink to this definition">#</a></dt>
-<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v1.25)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.zeros</span></code></a>.</p>
+<span class="sig-prename descclassname"><span class="pre">symnum.numpy.</span></span><span class="sig-name descname"><span class="pre">zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/symnum/numpy.html#zeros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symnum.numpy.zeros" title="Link to this definition">#</a></dt>
+<dd><p>SymNum implementation of <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.zeros</span></code></a>.</p>
 </dd></dl>
 
 </section>
@@ -703,11 +722,10 @@ document.write(`
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer d-print-none">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="symnum.codegen.html"
@@ -718,10 +736,7 @@ document.write(`
         <p class="prev-next-title">symnum.codegen module</p>
       </div>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -730,11 +745,14 @@ document.write(`
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.numpy.abs"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symnum.numpy.absolute"><code class="docutils literal notranslate"><span class="pre">absolute()</span></code></a></li>
@@ -798,6 +816,7 @@ document.write(`
   </nav></div>
 
   <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="_sources/symnum.numpy.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -818,8 +837,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -827,6 +846,7 @@ document.write(`
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2023, Matt Graham.
@@ -836,8 +856,9 @@ document.write(`
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>
@@ -845,10 +866,12 @@ document.write(`
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>
