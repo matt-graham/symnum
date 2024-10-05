@@ -440,7 +440,7 @@ class SymbolicArray:
             yield self[i]
 
     @_implements_numpy_ndarray_method
-    def __array__(self, dtype=None) -> NDArray:
+    def __array__(self, dtype=None, *, copy=None) -> NDArray:
         if len(self._base_array.free_symbols) > 0:
             if dtype is not None:
                 msg = (
