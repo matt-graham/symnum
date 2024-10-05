@@ -20,8 +20,13 @@ def test_array_binary_operator_symbolic(symbolic_array_literal, binary_op):
     numpy_array = numpy.array(symbolic_array_literal)
     symbolic_array = SymbolicArray(symbolic_array_literal)
     assert numpy.all(
-        binary_op(numpy_array, numpy_array)
-        == binary_op(symbolic_array, symbolic_array),
+        # Compute difference and compare to zero to make robust to SymPy symbolic
+        # constants not comparing equal to corresponding floating point values
+        (
+            binary_op(numpy_array, numpy_array)
+            - binary_op(symbolic_array, symbolic_array)
+        )
+        == 0
     )
 
 
@@ -47,7 +52,8 @@ def test_array_binary_comparison_operator_numeric(shape, binary_comparison_op, r
 
 
 def test_array_binary_comparison_operator_symbolic(
-    symbolic_array_literal, binary_comparison_op,
+    symbolic_array_literal,
+    binary_comparison_op,
 ):
     symbolic_array = SymbolicArray(symbolic_array_literal)
     binary_comparison_array = binary_comparison_op(symbolic_array, symbolic_array)
